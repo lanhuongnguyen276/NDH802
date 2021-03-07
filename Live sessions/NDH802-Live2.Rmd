@@ -1,0 +1,88 @@
+---
+title: "NDH802 R Application - Live session 2"
+author: "Huong Nguyen"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Set your working directory
+```{r}
+setwd("~/Documents/GitHub/NDH802") #This is my WD, change it to yours!
+```
+
+### Load your data
+```{r}
+salaries <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")
+```
+
+### Discrete distribution
+From the data you have, what is the probability of RM/BE student? More formally, compute $P(RM)$ and $P(BE)$.
+```{r}
+table(salaries$program)
+prop.table(table(salaries$program))
+```
+Similarly, can you compute $P(male)$ and $P(female)$?
+```{r}
+
+```
+
+Now let's spice things up a little bit. Compute $P(RM,female)$, $P(RM\mid female)$ and $P(female\mid RM)$
+```{r}
+prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
+           margin = 1)
+prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
+           margin = 2)
+```
+
+## Working with packages in R.
+A package is the ready-to-use commands written by the great minds before us, that may, for example, pack series of commands into one simple command, or translating boring computer language into human-friendly language. Can I do the same thing without packages, you ask? You surely can, if you have great minds and time and passion to experiment things yourselves. Actually, you're free to use whatever works. That's the beauty of programming, right?
+
+In this course, I prefer to use (but not abuse) some of the common packages to make our lives much easier.
+
+To install a package, type in (preferably) your console ` install.package("name of the package") `, for example, ` install.package("tidyverse") `. Make sure you have internet connection when installing packages.
+
+Install a package is like buying a book. To read the book, you need to take it out from your library. To do that, you type ` library("name of the package") `, for example
+```{r, message=FALSE}
+library(tidyverse)
+```
+You only need to buy the books once (or when they launch new edition and you need it), but you need to take the books out of your library every time you read them. In our case, remember to ` library() ` the package(s) you will use in your code in EVERY new session. Once you have a hang of R and the packages you frequently use, I recommend making ` library() ` (of all the packages you need) the first block of your code chunk. If you want to add in some package(s) along the way, just go back to the first chunk and add (rather than scattering ` library() ` here and there in your script).
+
+Now that you have bought the book and taken it out, i.e., ` library(tidyverse) `, it's ready to be used.
+Check out  `dplyr` cheat sheet [here](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+**Some nice-to-know verbs**.  
+
+* ` select() `: to pick columns
+* ` filter() `: to pick rows
+* ` count() `: to count number of rows
+
+```{r, results='hide'}
+salaries %>% select(sal_expected)
+salaries %>% filter(program == "RM")
+salaries %>% filter(program == "RM") %>% select(sal_expected) 
+# NOTE: order matters. Try
+#salaries %>% select(sal_expected) %>% filter(program == "RM")
+# It doesn't work. why?
+```
+Now let's try to calculate $P(RM)$ using these verbs
+```{r}
+n_be = salaries %>% filter(program == "RM") %>% count()
+n_total = salaries %>% count()
+p_be = n_be/n_total
+```
+Now let's try to calculate $P(RM, female)$ using these verbs
+```{r}
+n_be_female = salaries %>% filter(program == "RM" & whatisyourgender1isfemale == 1) %>% count()
+p_be_female = n_be_female/n_total
+```
+Now let's try to calculate $P(RM \mid female)$ using these verbs
+```{r}
+n_be_female = salaries %>% filter(program == "RM" & whatisyourgender1isfemale == 1) %>% count()
+n_female = salaries %>% filter(whatisyourgender1isfemale == 1) %>% count()
+p_be_female = n_be_female/n_female
+```
+Your turn, calculate $P(female \mid BE)$ using these verbs
