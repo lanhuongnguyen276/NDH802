@@ -1,0 +1,105 @@
+---
+title: "Hello R!"
+author: "NDH802 student"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require(tinytex)){
+    install.packages("tinytex")
+    library(tinytex)
+}
+```
+
+## Quick recall
+For your own good, you are strongly encouraged to go through the highly recommended reads on Canvas.
+As a quick recap, in RMarkdown, there are generally four components.
+
+* **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working with html and pdf as document outputs. Now, try make it your report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
+* **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and _italics_ , **bold** and __bold__, superscript^2^, ~~strikethrough~~. Unfortunately, unlike Word, what you type is not what you'll see in the final documents. You need to Knit it first. (More on this later)
+* **The code chunks**: where the magic happens in RMarkdown. The first code chunk in this file is line 7 to 13 to install a package you need to translate a RMarkdown file to a pdf file. We will learn more about packages in Live session 2.
+* **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.
+
+## About the assignments
+You will be asked to use RMarkdown to write up your assignments. Because:
+
+* you can write your thoughts in words, code, print out the results, visualize your data, all in one place 
+* you don't have to copy your results from Excel and paste them into Word. Why do you do manual labor when you can automate things?
+* you don't have to worry about formatting your document. RMarkdown will take care of that, so you can focus on "data analytics", which is why you are here
+* I really hope it helps developing a new habit and forever enhance your workflow. 
+
+This can also happen. When your code cannot run or it produce errors because of, e.g., what I consider a typo, but I can see your (correct) thought process in there, you will get full score. It's because (1) your understanding is what matters most and (2) I am nice, in general.
+
+## Now the fun begins
+### Creating code chunk
+Below, inside ```{r} ```, the shady zone, is the code chunk
+```{r}
+
+```
+Put your cursor at the end of this line and try Ctrl + Alt + I (OS X: Cmd + Option + I). What do you see?   
+Little tips: if you're a shortcut fan (like I am), try `Tools -> Keyboard Shortcuts Help` to learn what works in **your** computer. You can even modify/create your own shortcuts. For now, I suggest you go with the currently available ones.
+
+### R the calculator
+Inside the chunk, type 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?  
+Now let's create another chunk. You already know how right?
+
+Now, type in x = 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? No, you're not mistaken, nothing new appears this time.  
+Now, start a new line (press Enter) in the code chunk above, type x and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? Also, observe the change(s) in the Global Environment on your top right.
+
+You're starting to get a hang of it, right? When you press Ctrl(Windows)/Cmd(Mac) + Enter, you tell R to run the code on the same row with your cursor. I suggest you do it everytime you type in new code, make sure it works before you write the new ones.
+
+#### Your turn
+Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator.
+For example, I now calculate the mean by typing in exactly Lecture 1 - slide 21 to a code chunk in RStudio.
+```{r}
+mean = (37000+70000+40000+32000+35000)/5
+```
+Your turn, try Lecture 1 - slide 24. 
+
+If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. You're absolutely right. In the next session, we will learn how to do it the more time- and energy-efficient way.
+
+### R the data manager
+#### Load your data
+Now let's create another chunk, copy and paste this `read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")` (only the text inside ` ` and without ` `) into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+```{r}
+read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")
+```
+
+Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")`
+
+```{r}
+salaries = read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")
+```
+
+This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries`, R will understand you refer to the above data.
+
+#### Explore your data
+These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+```{r}
+head(salaries)
+tail(salaries)
+summary(salaries)
+```
+
+\newpage
+### Knit your document, 
+For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, observe the pdf document (appreciate your hard work) then come back here (please!!!).  
+*Note*: If you can not knit pdf document, please change it to html_document in line 4, try again and shoot me a quick message.
+
+```{r, echo=FALSE}
+page = round(1000000/365*5)
+```
+Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 rows. In the assignments, you will be working with 1,000,000 rows which is `r paste(page)` pages. Isn't that crazy? So, when you write your assignments, please
+
+* don't print out the data, or things that are not relevant to the questions. If there is some cool code that you want me to read, but you don't want to run, make them a "comment" (more on this in the live session)
+* knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*
+
+## Phew, 
+I think that's enough for now. How do you feel?  
+If you're still here, thank you very much for your effort. It will pay off.
+If you have questions, please bring them to the class, or start a discussion on Canvas, or shoot me a message, or send me an email. The more you ask at the early stage, the less you do later.
+
+\vfill
+Huong
