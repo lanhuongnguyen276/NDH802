@@ -19,8 +19,8 @@ As a quick recap, in RMarkdown, there are generally four components.
 * **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working with html and pdf as document outputs. Now, try make it your report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
 * **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and _italics_ , **bold** and __bold__, superscript^2^, ~~strikethrough~~. Unfortunately, unlike Word, what you type is not what you'll see in the final documents. You need to Knit it first. (More on this later)
 * **The code chunks**: where the magic happens in RMarkdown. The first code chunk in this file is line 7 to 13 to install a package you need to translate a RMarkdown file to a pdf file. We will learn more about packages in Live session 2.
-* **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.
-
+* **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.  
+  
 ## About the assignments
 You will be asked to use RMarkdown to write up your assignments. Because:
 
@@ -61,16 +61,16 @@ If you are like, *"Why do I have to do this while it's equally easy to do it wit
 
 ### R the data manager
 #### Load your data
-Now let's create another chunk, copy and paste this `read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")` (only the text inside ` ` and without ` `) into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+Now let's create another chunk, copy and paste this `read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")` (only the text inside ` ` and without ` `) into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
 
 ```{r}
-read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")
+read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")
 ```
 
-Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")`
+Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")`
 
 ```{r}
-salaries = read.csv("https://github.com/lanhuongnguyen276/NDH802/raw/main/Data/salaries.csv")
+salaries = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")
 ```
 
 This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries`, R will understand you refer to the above data.
@@ -78,9 +78,9 @@ This is loading your data into R Environment. From now on (until you restart you
 #### Explore your data
 These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
 ```{r}
-head(salaries)
-tail(salaries)
-summary(salaries)
+# head(salaries)
+# tail(salaries)
+# summary(salaries)
 ```
 
 \newpage
@@ -95,6 +95,8 @@ Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 row
 
 * don't print out the data, or things that are not relevant to the questions. If there is some cool code that you want me to read, but you don't want to run, make them a "comment" (more on this in the live session)
 * knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*
+
+*Tips*. When you name your Rmd file, you may **not** want to include spaces, dots and commas. For example, this, "NDH802 assignment 1, group 1", is **not** recommended. R is smart and will try to "fill in the blank", but in my experience, it doesn't work perfectly every time. Therefore, to avoid unnecessary trouble, you should try "NDH802-assignment-group-1", "NDH802_assignment_1_Group_1", or "NDH802Assignment1Group1" instead. On the other hand, you can be more creative with the `title` (the text in line 2).
 
 ## Phew, 
 I think that's enough for now. How do you feel?  
