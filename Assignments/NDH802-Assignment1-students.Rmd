@@ -28,12 +28,16 @@ Set your working directory
 
 Load the package(s) you're going to use. If you don't use any packages, leave it as is.
 ```{r, message=FALSE, warning=FALSE}
-#library(tidyverse)
+library(tidyverse)
+if(!require(tinytex)){
+    install.packages("tinytex")
+    library(tinytex)
+}
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set, i.e., everytime you run the code, you have a new (unique) data set `df`. Accordingly, your results should be different from your friends and you should not be comparing them.
 ```{r}
-inference_dataset <- read.csv("~/Desktop/Data/NDH802/inference_dataset.csv")
+inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
 df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]
@@ -46,17 +50,21 @@ Please refer to [Canvas]() for more details about the data set.
 ### Question 1. Mean and variance
 
 (a) Plot the histogram of customer's `value`. Imagine you will present this to your boss at work. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p)
-(b) Make a box plot for `visits` for 2 groups, loyal and not loyal customers. (1p)  
+(b) Make a box plot for `visits` for 2 groups, loyal and not loyal customers. Refer to the code provided (1p)  
 Imagine you are the customer relationship manager. What would you say about this figure? (1p)
+
+```{r}
+# boxplot(
+#   sal_expected ~ program,
+#   data = salaries,
+#   ylim = c(0, 120)
+# )
+```
+
 (c) Compute the mean and variance of `value`, `deals`, `points`. Be careful, variance is **not** standard deviation. (1p)
 (d) Compute the mean and variance of `value`, `deals`, `points` of the *loyal* customers. (1p)
 (e) Compute the mean and variance of `value`, `deals`, `points` of the *loyal* customers who *shop offline*. (1p) 
-(f) Imagine you receive this figure from your data analyst and you need to explain it to your boss. What would you say? (1p) 
-```{r, echo=FALSE, fig.align='center', out.width="70%"}
-set.seed(8); toplot = df[sample(1:nrow(df), size = 20000, replace = FALSE),]
-plot(toplot$visits, toplot$items, pch = 19, col = rgb(0.2, 0.45, 0.55, 0.15), xlim = c(0,150), ylim = c(0,500),
-     xlab = "visits", ylab = "items")
-```
+
 
 ### Question 2. Probability theory
 (a) How many loyal and not loyal customer do you have in your `df`? Formally, compute $N_{loyal}$ and $N_{not\_loyal}$. (1p)  
@@ -65,8 +73,8 @@ plot(toplot$visits, toplot$items, pch = 19, col = rgb(0.2, 0.45, 0.55, 0.15), xl
 \begin{itemize}
   \item[] (E1) Being loyal customer  
   \item[] (E2) Not being loyal customer  
-  \item[] (E3) Shop offline
-  \item[] (E4) Shop online  
+  \item[] (E3) Being an offline customer
+  \item[] (E4) Being an online customer
 \end{itemize}
 
 (b) Are E1 and E2 mutually exclusive? Why/why not? (1p) 
