@@ -1,7 +1,7 @@
 ---
 title: "NDH802 - Assignment 1"
 author: "Group no. "
-output: pdf_document
+output: html_document
 
 ---
 
@@ -12,11 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ********
 
 * The assignment includes 2 questions, 6 points each.
-* Submit your assignment via Canvas before 17:00 CET, April 12, 2021.
-* Your submission should include (1) an RMarkdown file with your solutions in words and/or R code, (2) a knitted pdf file and (3) your handwritten solution if you have one. Name the files NDH802_Assignment1_GroupNumber.
+* Submit your assignment via Canvas before 10:00 CET, April 12, 2021.
+* Your submission should include (1) an RMarkdown file with your solutions in words and/or R code, (2) a pdf file. If you handwrite parts of your assignment, include a photo of it in your pdf file. Name the files NDH802_Assignment1_GroupNumber.
 * You should work in groups and contribute equally.
-* You can copy code from "Hello R!", but make sure you understand it.
+* You can copy my code, but make sure you understand it.
 * You should not have the exact solutions and/or results with other groups.
+* Results without code/justifications will not be graded.
 
 ********
 
@@ -28,23 +29,19 @@ Set your working directory
 
 Load the package(s) you're going to use. If you don't use any packages, leave it as is.
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-if(!require(tinytex)){
-    install.packages("tinytex")
-    library(tinytex)
-}
+
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set, i.e., everytime you run the code, you have a new (unique) data set `df`. Accordingly, your results should be different from your friends and you should not be comparing them.
 ```{r}
-inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
-df <- inference_dataset[sample(1:nrow(inference_dataset),
-                           size = 1000000,
-                           replace = FALSE), -1]
-rm(inference_dataset)
+# inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
+# df <- inference_dataset[sample(1:nrow(inference_dataset),
+#                            size = 1000000,
+#                            replace = FALSE), -1]
+# rm(inference_dataset)
 ```
 
-Please refer to [Canvas]() for more details about the data set.
+Please refer to Canvas, Hand-in 1 for more details about the data set.
 
 \newpage
 ### Question 1. Mean and variance
@@ -70,12 +67,11 @@ Imagine you are the customer relationship manager. What would you say about this
 (a) How many loyal and not loyal customer do you have in your `df`? Formally, compute $N_{loyal}$ and $N_{not\_loyal}$. (1p)  
 
 | For Q2b-f, consider the following events in your `df`:
-\begin{itemize}
-  \item[] (E1) Being loyal customer  
-  \item[] (E2) Not being loyal customer  
-  \item[] (E3) Being an offline customer
-  \item[] (E4) Being an online customer
-\end{itemize}
+* (E1) Being loyal
+* (E2) Not being loyal
+* (E3) Made at least one offline purchase
+* (E4) Made at least one oline purchase
+
 
 (b) Are E1 and E2 mutually exclusive? Why/why not? (1p) 
 (c) Are E1 and E2 collectively exhaustive? Why/why not? (1p) 

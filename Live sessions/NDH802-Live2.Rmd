@@ -20,11 +20,13 @@ salaries <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802
 ```
 
 ### Discrete distribution
-From the data you have, what is the probability of RM/BE student? More formally, compute $P(RM)$ and $P(BE)$.
+From the data you have, what is the probability of RM/BE student? More formally, compute $P(RM)$ and $P(BE)$.  
+
 ```{r}
 table(salaries$program)
 prop.table(table(salaries$program))
 ```
+
 Similarly, can you compute $P(male)$ and $P(female)$?
 ```{r}
 
@@ -32,12 +34,11 @@ Similarly, can you compute $P(male)$ and $P(female)$?
 
 Now let's spice things up a little bit. Compute $P(RM,female)$, $P(RM\mid female)$ and $P(female\mid RM)$
 ```{r}
-prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
+a = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
            margin = 1)
 prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
            margin = 2)
 ```
-
 ## Working with packages in R.
 A package is the ready-to-use commands written by the great minds before us, that may, for example, pack series of commands into one simple command, or translating boring computer language into human-friendly language. Can I do the same thing without packages, you ask? You surely can, if you have great minds and time and passion to experiment things yourselves. Actually, you're free to use whatever works. That's the beauty of programming, right?
 
@@ -74,7 +75,8 @@ n_be = salaries %>% filter(program == "RM") %>% count()
 n_total = salaries %>% count()
 p_be = n_be/n_total
 ```
-Now let's try to calculate $P(RM, female)$ using these verbs
+
+Now let's try to calculate $P(RM \cap female)$ using these verbs
 ```{r}
 n_be_female = salaries %>% filter(program == "RM" & whatisyourgender1isfemale == 1) %>% count()
 p_be_female = n_be_female/n_total

@@ -51,11 +51,24 @@ You're starting to get a hang of it, right? When you press Ctrl(Windows)/Cmd(Mac
 
 #### Your turn
 Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator.
-For example, I now calculate the mean by typing in exactly Lecture 1 - slide 21 to a code chunk in RStudio.
+For example, assume Huong gets 9 pt on Assignment 1, 10 pt on Assignment 2, and 7 pt on Assignment 3. The mean of Huong's three assignment is: 
 ```{r}
-mean = (37000+70000+40000+32000+35000)/5
+my_n = 3
+my_mean = (9+10+7)/my_n
 ```
-Your turn, try Lecture 1 - slide 24. 
+Easy peasy right? Now I'll compute the variance by:
+```{r}
+my_variance = ((9-my_mean)^2 + (10-my_mean)^2 + (7-my_mean)^2)/(my_n-1)
+```
+Here, I just type in the exact formula in Canvas. The mean of my assignments points is `r my_mean`. The variance of my assignments points is `r my_variance`.
+
+Your turn. Compute the **mean** and **variance** of *the number of likes* you get from the most 5 recent Intagram/Facebook posts (or all of your posts if you have less than 5). 
+```{r}
+your_n = 5
+your_mean = 1
+your_variance = 1
+```
+The mean of your Instagram/Facebook likes is `r your_mean`. The variance of your Instagram/Facebook likes is `r your_variance`.
 
 If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. You're absolutely right. In the next session, we will learn how to do it the more time- and energy-efficient way.
 
@@ -78,23 +91,19 @@ This is loading your data into R Environment. From now on (until you restart you
 #### Explore your data
 These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
 ```{r}
-# head(salaries)
-# tail(salaries)
-# summary(salaries)
+head(salaries)
+tail(salaries)
+summary(salaries)
 ```
 
-\newpage
 ### Knit your document, 
 For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, observe the pdf document (appreciate your hard work) then come back here (please!!!).  
 *Note*: If you can not knit pdf document, please change it to html_document in line 4, try again and shoot me a quick message.
 
-```{r, echo=FALSE}
-page = round(1000000/365*5)
-```
-Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 rows. In the assignments, you will be working with 1,000,000 rows which is `r paste(page)` pages. Isn't that crazy? So, when you write your assignments, please
+Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 rows. In the assignments, you will be working with 1,000,000 rows which is appx. `r paste(round(1000000/365*5))` pages. Isn't that crazy? So, when you write your assignments, please
 
 * don't print out the data, or things that are not relevant to the questions. If there is some cool code that you want me to read, but you don't want to run, make them a "comment" (more on this in the live session)
-* knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*
+* knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*.
 
 *Tips*. When you name your Rmd file, you may **not** want to include spaces, dots and commas. For example, this, "NDH802 assignment 1, group 1", is **not** recommended. R is smart and will try to "fill in the blank", but in my experience, it doesn't work perfectly every time. Therefore, to avoid unnecessary trouble, you should try "NDH802-assignment-group-1", "NDH802_assignment_1_Group_1", or "NDH802Assignment1Group1" instead. On the other hand, you can be more creative with the `title` (the text in line 2).
 
