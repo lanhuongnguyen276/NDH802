@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Set your working directory
 ...so you (and your files) don't get lost later. To do that, you either type 
 ```{r}
-setwd("~/Documents/GitHub/NDH802") #This is my WD, change it to yours!
+setwd("/Users/hu.4622/Documents/GitHub/NDH802") #This is my WD, change it to yours!
 ```
 with the path to the folder you want to store your working files (e.g., R script, data tables, results). You can also do that by clicking Session/Set Working Directory. More on this in the live session.
 
@@ -66,10 +66,7 @@ salaries[,1] #here you refer to the column by the column position from the left 
 ```
 
 **When to use which?**  
-It's all about your personal preference. I introduce several ways to give you options, **not** to confuse you. You can totally explore and see which you're more comfortable with, then stick with one. This is also applicable for most of other commands. If I'm forced to choose one, it would be
-```{r}
-salaries[,"sal_expected"]
-```
+It's all about your personal preference. I introduce several ways to give you options, **not** to confuse you. You can totally explore and see which you're more comfortable with. This is also applicable for most of other commands.
 
 To select more than 1 column:
 ```{r, results='hide'}
@@ -80,8 +77,8 @@ salaries[,c(1,3,10)]  #here you refer to the column by the column position from 
 ### Select rows from a dataframe
 There are numerious way to select a row. The most basic way (with base R) are:
 ```{r, results='hide'}
-salaries["program" == "BE",]
-salaries["whatisyourgender1isfemale" == 1,]
+salaries[salaries$program == "RM",]
+salaries[salaries$whatisyourgender1isfemale == 1,]
 ```
 
 ### Let's take a closer look
@@ -113,11 +110,11 @@ boxplot(salaries[,"sal_expected"]) #a plot like this in the assignment will get 
 This looks nothing like the video. Why do you think it is and can you help me fix it?
 
 ```{r, echo=FALSE, results='hide'}
-boxplot( #I expect something like this
-  sal_expected/1000 ~ program,
-  data = salaries,
-  ylim = c(0, 100)
-)
+# boxplot( #I expect something like this
+#   sal_expected/1000 ~ program,
+#   data = salaries,
+#   ylim = c(0, 100)
+# )
 ```
 
 # Means and standard deviation (SD)
@@ -130,19 +127,19 @@ sd(salaries[,"sal_expected"])
 but it doesn't work. why?
 
 ```{r}
-mean(salaries[,"sal_expected"], na.rm = TRUE)
-sd(salaries[,"sal_expected"], na.rm = TRUE)
+#mean(salaries[,"sal_expected"], na.rm = TRUE)
+#sd(salaries[,"sal_expected"], na.rm = TRUE)
 ```
 
 ### Can I calculate the mean of salary expected of the RM, and the mean of salary expected of the BE students separately?
 ```{r}
-mean(salaries[salaries$program == "BE","sal_expected"], na.rm = TRUE)
-mean(salaries[salaries$program == "RM","sal_expected"], na.rm = TRUE)
+#mean(salaries[salaries$program == "BE","sal_expected"], na.rm = TRUE)
+#mean(salaries[salaries$program == "RM","sal_expected"], na.rm = TRUE)
 ```
 
 ### Can I calculate the mean of salary expected of the female RM student?
 ```{r}
-mean(salaries[salaries$program == "BE" & salaries$whatisyourgender1isfemale == "1", "sal_expected"], na.rm = TRUE)
+#mean(salaries[salaries$program == "BE" & salaries$whatisyourgender1isfemale == "1", "sal_expected"], na.rm = TRUE)
 ```
 
 # Probability theory
@@ -165,4 +162,14 @@ From the table above, can you tell
 
 * how many **RM female students** we have in the data?
 * if RM and BE are mutually **exclusive/collectively exaustive** events?
+
+## Your turn
+(1) Plot a histogram for `worktime`.
+(2) Make a boxplot for `idealpay`.
+(3) Make a boxplot for `idealpay`, for RM and BE students.
+(4) Compute the mean and variance of `fairpay`.
+(4) Compute the mean and variance of `fairpay` of the female students.
+(5) Compute the mean and variance of `fairpay` of the students who are female and belong to RM program.
+(6) How many male students and female students do we have in the data set? Formally, compute $N_{male}$ and $N_{female}$
+(7) How many *students who are female and belong to RM program* do we have in the data set? compute $N_{female \cap RM}$
 

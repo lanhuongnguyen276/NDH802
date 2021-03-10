@@ -1,11 +1,11 @@
 ---
 title: "NDH802 - Assignment 1"
 author: "Group no. "
-output: html_document
-
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
+rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -27,18 +27,13 @@ Set your working directory
 #setwd("")
 ```
 
-Load the package(s) you're going to use. If you don't use any packages, leave it as is.
-```{r, message=FALSE, warning=FALSE}
-
-```
-
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set, i.e., everytime you run the code, you have a new (unique) data set `df`. Accordingly, your results should be different from your friends and you should not be comparing them.
 ```{r}
-# inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
-# df <- inference_dataset[sample(1:nrow(inference_dataset),
-#                            size = 1000000,
-#                            replace = FALSE), -1]
-# rm(inference_dataset)
+inference_dataset = read.csv("https://cda.hhs.se/inference_dataset.csv")
+df <- inference_dataset[sample(1:nrow(inference_dataset),
+                           size = 1000000,
+                           replace = FALSE), -1]
+rm(inference_dataset)
 ```
 
 Please refer to Canvas, Hand-in 1 for more details about the data set.
@@ -47,31 +42,28 @@ Please refer to Canvas, Hand-in 1 for more details about the data set.
 ### Question 1. Mean and variance
 
 (a) Plot the histogram of customer's `value`. Imagine you will present this to your boss at work. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p)
-(b) Make a box plot for `visits` for 2 groups, loyal and not loyal customers. Refer to the code provided (1p)  
-Imagine you are the customer relationship manager. What would you say about this figure? (1p)
+(b) Make a box plot for `visits` for 2 groups, loyal and not loyal customers. Refer to the code provided and modify it (1p). Imagine you are the customer relationship manager. What would you say about this figure? (1p)
 
-```{r}
+```{r,fig.height=6, fig.width=6}
 # boxplot(
-#   sal_expected ~ program,
-#   data = salaries,
-#   ylim = c(0, 120)
+#   your_variable_of_interest ~ the_group,
+#   data = your_df,
+#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
 # )
 ```
 
-(c) Compute the mean and variance of `value`, `deals`, `points`. Be careful, variance is **not** standard deviation. (1p)
+(c) Compute the mean and variance of `value`, `deals`, `points`. Be careful, variance is **different from** standard deviation. (1p)
 (d) Compute the mean and variance of `value`, `deals`, `points` of the *loyal* customers. (1p)
-(e) Compute the mean and variance of `value`, `deals`, `points` of the *loyal* customers who *shop offline*. (1p) 
-
+(e) Compute the mean and variance of `value`, `deals`, `points` of the *loyal* customers who *made at least one offline purchase*. (1p)
 
 ### Question 2. Probability theory
-(a) How many loyal and not loyal customer do you have in your `df`? Formally, compute $N_{loyal}$ and $N_{not\_loyal}$. (1p)  
+(a) How many loyal customers and not loyal customer do you have in your `df`? (1p)
 
 | For Q2b-f, consider the following events in your `df`:
 * (E1) Being loyal
 * (E2) Not being loyal
 * (E3) Made at least one offline purchase
 * (E4) Made at least one oline purchase
-
 
 (b) Are E1 and E2 mutually exclusive? Why/why not? (1p) 
 (c) Are E1 and E2 collectively exhaustive? Why/why not? (1p) 

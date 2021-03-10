@@ -32,7 +32,7 @@ Similarly, can you compute $P(male)$ and $P(female)$?
 
 ```
 
-Now let's spice things up a little bit. Compute $P(RM,female)$, $P(RM\mid female)$ and $P(female\mid RM)$
+Now let's spice things up a little bit. Compute $P(RM,female)$, $P(RM \mid female)$ and $P(female\mid RM)$
 ```{r}
 a = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
            margin = 1)

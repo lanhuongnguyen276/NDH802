@@ -1,15 +1,11 @@
 ---
 title: "Hello R!"
 author: "NDH802 student"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-if(!require(tinytex)){
-    install.packages("tinytex")
-    library(tinytex)
-}
 ```
 
 ## Quick recall
@@ -97,7 +93,9 @@ summary(salaries)
 ```
 
 ### Knit your document, 
-For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, observe the pdf document (appreciate your hard work) then come back here (please!!!).  
+For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. First you need to install a sort of software and it's a bit complicated. We will get into that in the live session. Now, you will 
+Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, click "Install"/"Yes" to the windows popping up.
+Observe the pdf document (appreciate your hard work) then come back here (please!!!).  
 *Note*: If you can not knit pdf document, please change it to html_document in line 4, try again and shoot me a quick message.
 
 Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 rows. In the assignments, you will be working with 1,000,000 rows which is appx. `r paste(round(1000000/365*5))` pages. Isn't that crazy? So, when you write your assignments, please
