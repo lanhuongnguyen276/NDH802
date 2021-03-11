@@ -5,8 +5,9 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-rm(list=ls())
 knitr::opts_chunk$set(echo = TRUE)
+library(tinytex)
+rm(list=ls())
 ```
 
 ********
@@ -27,10 +28,11 @@ Set your working directory
 #setwd("")
 ```
 
-Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set, i.e., everytime you run the code, you have a new (unique) data set `df`. Accordingly, your results should be different from your friends and you should not be comparing them.
+Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. \textcolor{red}{Fill in your group number within `set.seed()`.} For example, if you are group 3, make it `set.seed(3)`. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.  
+*Note*. If you make the wrong seed, your assignment will **not** be graded.
 ```{r}
-inference_dataset = read.csv("https://cda.hhs.se/inference_dataset.csv")
-df <- inference_dataset[sample(1:nrow(inference_dataset),
+inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
+set.seed(1); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]
 rm(inference_dataset)
