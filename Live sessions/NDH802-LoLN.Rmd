@@ -1,5 +1,5 @@
 ---
-title: "Law of large number demo"
+title: "Law of large number examples"
 author: "NDH802 R Application"
 output: html_document
 runtime: shiny
@@ -16,15 +16,16 @@ library(shiny)
 
 <br>
 
-### Binomial distribution (size = 1)
+### Bernoulli distribution
 ```{r, echo=FALSE, out.width=0.1}
 sliderInput("p", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
 sliderInput("n", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
 
+set.seed(2706)
 renderPlot(barplot(
   table(rbinom(input$n, 1, input$p)),
   main = paste(
-    "Binomial distribution with",
+    "Bernoulli distribution with",
     input$n,
     "observation(s).",
     "Sample mean =",
@@ -33,6 +34,7 @@ renderPlot(barplot(
   xlab = "", col = "lightblue3", border = F,
 ))
 ```
+
 
 ### Standard normal distribution
 ```{r, echo=FALSE}
@@ -50,4 +52,4 @@ renderPlot(hist(
 ))
 ```
 
-Notice that sample mean gets closer and closer to the population mean when the number of observation increases, but it will *never* be equal to the .
+Notice that sample mean $\bar{X}$ gets closer and closer to the population mean when the number of observation $n$ increases. However, it will *never* be equal to the $\mu$.

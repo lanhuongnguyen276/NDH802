@@ -1,0 +1,76 @@
+---
+title: "Central limit theorem simply explained"
+author: "NDH802 - R Application"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+setwd("~/Documents/GitHub/NDH802")
+```
+
+<br/>
+
+### Key takeaways
+
+* Distribution of the random variable $X$ is **different from** the distribution of the sample mean $\bar{X}$. 
+* When number of observations is large, the the distribution of the sample mean $\bar{X}$ converges (approximates) to the normal distribution $N(\mu,\frac{\sigma^2}{n})$
+
+### Bernoulli distribution example
+
+```{r, echo=FALSE}
+# Set up the parameters
+prob = 0.75
+n = 70
+size = 4
+nsim = 10000
+mean = rep(NA, nsim)
+data = matrix(NA, ncol = n, nrow = nsim)
+set.seed(80221)
+ourclass = rbinom(n=n, size = size, prob = prob)
+mean_ourclass = round(mean(ourclass),1)
+```
+
+In the beginning of the course, we have a checklist that includes 4 questions (i.e., `size =``r size`). Each question has 2 possible responses, "true" or "false" (hence binomial). Assume the probability is `r prob*100`% that the students choose "true" (i.e., `prob =``r prob`) on each question. That's the same old binomial distribution, $number\_of\_response\_true \sim Bin$(`r size`, `r prob`) and can be illustrated by this blue-ish bar plot with `n =``r n` (because we have 70 students).
+
+```{r, ourclass, echo=FALSE, fig.height=4, fig.width=4, fig.align='center'}
+barplot(table(ourclass), main = "Distribution of our class checklist result", cex.main = 0.95,
+        col = "lightblue3", border = FALSE, xlab = 'numbers of response "true"', ylab = "frequency")
+```
+
+We can easily compute the **mean** of number of the response "true" in our class, which is `r mean_ourclass` (i.e., on average, each of you choose `r mean_ourclass` responses "true" over 4 questions).
+
+So far so good? Now, what I'm going to say does take a bit of imagination. If you watch tons of sci-fi movies/series, it would be a bit easier. Anyway, imagine there are `r paste(nsim)` parallel realities, or universes if you will. Within each reality, there is a NDH802 class. By some miracle we can collect their checklist results, then compute the **mean** of number of the response "true" of each and every classes, exactly like what we did earlier.
+
+
+Now we have a set of `r paste(nsim)` **means**, right?
+<span style="color:FireBrick">__The Central Limit Theorem suggests that when we have a huge number of observations (the number of realities in our case), these **means** follow a normal distribution.__</span> Formally, when $n$ is large, $\bar{X_n} \sim N(\mu,\frac{\sigma^2}{n})$.
+
+```{r, echo=FALSE, fig.height=8, fig.width=8}
+#Simulate data
+for (i in 1:nsim) {
+  data[i,] = rbinom(n=n, size = size, prob = prob)
+  mean[i] = mean(data[i,])
+}
+
+sigma = sqrt(prob*(1-prob)/size)
+
+#Visualization
+par(mfrow = c(2,2))
+layout(matrix(c(1,0,2,3), 2, 2, byrow = TRUE))
+barplot(table(data[276,]), main = "Distribution of a random variable X", col = "lightblue3", xlab = "X", border = FALSE)
+hist(mean, main = "Distribution of the sample mean Xbar", breaks = 15, xlab = expression(bar(X)), col = "pink3", border = FALSE)
+hist(rnorm(nsim, mean = size*prob, sd = sigma), breaks = 15,
+     main = paste("Distribution of a random variable N(", size*prob,",",round(sigma^2,2),")",sep = ""),
+     col = "darkseagreen", border = FALSE, xlab = expression(bar(X)))
+```
+<br/>
+In summary,
+
+* The blue bars illustrate the checklist results of a random NDH802 class, i.e., the distribution of a random variable $X$.
+* The pink bars illustrate the **means** of `r paste(nsim)` NDH802 classes, i.e., the distribution of the mean $\bar{X_n}$.
+* The green bars illustrate data simulated from $N(\mu,\frac{\sigma^2}{n})$. In our case, $N$(`r size*prob`,`r round(sigma^2,2)`)
+* Notice when $n$ (number of observations) grows, the pink bars approximate the green bars.

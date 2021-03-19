@@ -1,0 +1,109 @@
+---
+title: "Hello R!"
+author: "NDH802 student"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Quick recall
+
+For your own good, you are strongly encouraged to go through the highly recommended reads on Canvas. As a quick recap, in RMarkdown, there are generally four components.
+
+-   **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working with html and pdf as document outputs. Now, try make it your report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
+-   **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and *italics* , **bold** and **bold**, superscript^2^, ~~strikethrough~~.
+-   **The code chunks**: where the magic happens in RMarkdown. More on this later.
+-   **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document (I think we'll do this in the live session). In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.
+
+## Some words about the assignments
+
+You will be asked to use RMarkdown to write up your assignments because:
+
+-   you can write your thoughts in words, code, print out the results, visualize your data, and much more, all in one place.
+-   you don't have to copy your results from, e.g., Excel and paste them into, e.g., Word. Why do manual labor when you can automate things (and save that time for something else)?
+-   you don't have to worry about formatting your document. RMarkdown will take care of that, so you can focus on "data analytics", which is why you are here
+-   Finally, I really hope it helps developing a new habit and forever enhance your workflow.
+
+This can also happen. When your code cannot run or it produces errors because of, e.g., what I consider a typo, but I can see your (correct) thought process in there, you will get full score. It's because (1) your understanding is what matters most and (2) I am nice, in general. However, it doesn't work the other way around. That is, the results (correct or not) without code/justifications won't be graded. I don't care about the mean. I care if you can compute the mean.
+
+## Now the fun begins
+
+### Creating code chunk
+
+Below, inside `{r}`, the shady zone, is a code chunk
+
+```{r}
+```
+
+Put your cursor at the end of this line and try Ctrl + Alt + I (OS X: Cmd + Option + I). What do you see?\
+*Little tips*: if you're a shortcut fan (like I am), try `Tools -> Keyboard Shortcuts Help` to learn what works in **your** computer. You can even modify/create your own shortcuts. For now, I suggest you go with the currently available ones.
+
+### R the calculator
+
+Inside the chunk, type 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?\
+Now let's create another chunk. You already know how right?
+
+Now, type in x = 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? No, you're not mistaken, nothing new appears this time.\
+Now, start a new line (press Enter) in the code chunk above, type x and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? Also, observe the change(s) in the Global Environment on your top right.
+
+You're starting to get a hang of it, right? When you press Ctrl(Windows)/Cmd(Mac) + Enter, you tell R to run the code on the same row with your cursor. I suggest you do it everytime you type in new code, make sure it works before you write the new ones.
+
+#### Your turn
+
+Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator.
+
+For example, assume Huong gets 9 pt on Assignment 1, 10 pt on Assignment 2 (😎), and 7 pt on Assignment 3. The mean of Huong's three assignment is:
+
+```{r}
+my_n = 3
+my_mean = (9+10+7)/my_n
+```
+
+Easy peasy right? Now I'll compute the variance:
+
+```{r}
+my_variance = ((9-my_mean)^2 + (10-my_mean)^2 + (7-my_mean)^2)/(my_n-1)
+```
+
+Here, I just type in the exact formula in Canvas. The mean of my assignments points is `r my_mean`. The variance of my assignments points is `r my_variance`.
+
+**Your turn.** Compute the **mean** and **variance** of *the number of hearts/likes* you get from the most 5 recent Intagram/Facebook posts (or all of your posts if you have less than 5). If you want to keep it a secret, you can compute the **mean** and **variance** of *the number of hearts* @centerforretailing get from the most 5 recent Instagram posts.
+
+```{r}
+your_n = 5
+your_mean 
+your_variance
+```
+
+If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. Fair point. In the live session, we will learn how to do it the more time- and energy-efficient way. Plus, when you need to work with 1,000,000 rows of data , your calculator is no longer your best friend. Case in point, your upcoming assignments.
+
+### R the data manager
+
+#### Load your data
+
+Now let's create another code chunk, copy and paste this `read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")` into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")` , then run it.
+
+This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries` in code chunks, R will understand you refer to the above data.
+
+#### Explore your data
+
+These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+```{r}
+head(salaries)
+tail(salaries)
+summary(salaries)
+```
+
+## Phew,
+
+I think that's enough for now. How do you feel?\
+If you're still here, thank you very much for your effort. It will pay off. If you have questions, please bring them to the class, or start a discussion on Canvas, or shoot me a message, or send me an email. The more you ask at the early stage, the less you do later.
+
+\vfill
+
+Huong

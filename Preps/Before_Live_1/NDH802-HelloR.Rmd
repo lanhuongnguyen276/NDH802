@@ -9,68 +9,81 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Quick recall
-For your own good, you are strongly encouraged to go through the highly recommended reads on Canvas.
-As a quick recap, in RMarkdown, there are generally four components.
 
-* **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working with html and pdf as document outputs. Now, try make it your report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
-* **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and _italics_ , **bold** and __bold__, superscript^2^, ~~strikethrough~~. Unfortunately, unlike Word, what you type is not what you'll see in the final documents. You need to Knit it first. (More on this later)
-* **The code chunks**: where the magic happens in RMarkdown. The first code chunk in this file is line 7 to 13 to install a package you need to translate a RMarkdown file to a pdf file. We will learn more about packages in Live session 2.
-* **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.  
-  
-## About the assignments
+For your own good, you are strongly encouraged to go through the highly recommended reads on Canvas. As a quick recap, in RMarkdown, there are generally four components.
+
+-   **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working with html and pdf as document outputs. Now, try make it your report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
+-   **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and *italics* , **bold** and **bold**, superscript^2^, ~~strikethrough~~. Unfortunately, unlike Word, what you type is not what you'll see in the final documents. You need to Knit it first. (More on this later)
+-   **The code chunks**: where the magic happens in RMarkdown. The first code chunk in this file is line 7 to 13 to install a package you need to translate a RMarkdown file to a pdf file. We will learn more about packages in Live session 2.
+-   **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. As another example, notice how I integrate the `page` result in the last section. This can come in handy when you write up your assignments or other reports.
+
+## Some words about the assignments
+
 You will be asked to use RMarkdown to write up your assignments. Because:
 
-* you can write your thoughts in words, code, print out the results, visualize your data, all in one place 
-* you don't have to copy your results from Excel and paste them into Word. Why do you do manual labor when you can automate things?
-* you don't have to worry about formatting your document. RMarkdown will take care of that, so you can focus on "data analytics", which is why you are here
-* I really hope it helps developing a new habit and forever enhance your workflow. 
+-   you can write your thoughts in words, code, print out the results, visualize your data, all in one place
+-   you don't have to copy your results from, e.g., Excel and paste them into, e.g., Word. Why do manual labor when you can automate things (and save that time to do something else)?
+-   you don't have to worry about formatting your document. RMarkdown will take care of that, so you can focus on "data analytics", which is why you are here
+-   I really hope it helps developing a new habit and forever enhance your workflow.
 
-This can also happen. When your code cannot run or it produce errors because of, e.g., what I consider a typo, but I can see your (correct) thought process in there, you will get full score. It's because (1) your understanding is what matters most and (2) I am nice, in general.
+This can also happen. When your code cannot run or it produce errors because of, e.g., what I consider a typo, but I can see your (correct) thought process in there, you will get full score. It's because (1) your understanding is what matters most and (2) I am nice, in general. However, I don't accept the other way around, that is, the results without code/justifications. In such case, even if your results are right, they won't be graded.
 
 ## Now the fun begins
-### Creating code chunk
-Below, inside ```{r} ```, the shady zone, is the code chunk
-```{r}
 
+### Creating code chunk
+
+Below, inside `{r}`, the shady zone, is the code chunk
+
+```{r}
 ```
-Put your cursor at the end of this line and try Ctrl + Alt + I (OS X: Cmd + Option + I). What do you see?   
-Little tips: if you're a shortcut fan (like I am), try `Tools -> Keyboard Shortcuts Help` to learn what works in **your** computer. You can even modify/create your own shortcuts. For now, I suggest you go with the currently available ones.
+
+Put your cursor at the end of this line and try Ctrl + Alt + I (OS X: Cmd + Option + I). What do you see?\
+*Little tips*: if you're a shortcut fan (like I am), try `Tools -> Keyboard Shortcuts Help` to learn what works in **your** computer. You can even modify/create your own shortcuts. For now, I suggest you go with the currently available ones.
 
 ### R the calculator
-Inside the chunk, type 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?  
+
+Inside the chunk, type 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?\
 Now let's create another chunk. You already know how right?
 
-Now, type in x = 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? No, you're not mistaken, nothing new appears this time.  
+Now, type in x = 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? No, you're not mistaken, nothing new appears this time.\
 Now, start a new line (press Enter) in the code chunk above, type x and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? Also, observe the change(s) in the Global Environment on your top right.
 
 You're starting to get a hang of it, right? When you press Ctrl(Windows)/Cmd(Mac) + Enter, you tell R to run the code on the same row with your cursor. I suggest you do it everytime you type in new code, make sure it works before you write the new ones.
 
 #### Your turn
-Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator.
-For example, assume Huong gets 9 pt on Assignment 1, 10 pt on Assignment 2, and 7 pt on Assignment 3. The mean of Huong's three assignment is: 
+
+Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator. For example, assume Huong gets 9 pt on Assignment 1, 10 pt on Assignment 2, and 7 pt on Assignment 3. The mean of Huong's three assignment is:
+
 ```{r}
 my_n = 3
 my_mean = (9+10+7)/my_n
 ```
-Easy peasy right? Now I'll compute the variance by:
+
+Easy peasy right? Now I'll compute the variance:
+
 ```{r}
 my_variance = ((9-my_mean)^2 + (10-my_mean)^2 + (7-my_mean)^2)/(my_n-1)
 ```
+
 Here, I just type in the exact formula in Canvas. The mean of my assignments points is `r my_mean`. The variance of my assignments points is `r my_variance`.
 
-Your turn. Compute the **mean** and **variance** of *the number of likes* you get from the most 5 recent Intagram/Facebook posts (or all of your posts if you have less than 5). 
+Your turn. Compute the **mean** and **variance** of *the number of likes* you get from the most 5 recent Intagram/Facebook posts (or all of your posts if you have less than 5).
+
 ```{r}
 your_n = 5
 your_mean = 1
 your_variance = 1
 ```
+
 The mean of your Instagram/Facebook likes is `r your_mean`. The variance of your Instagram/Facebook likes is `r your_variance`.
 
 If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. You're absolutely right. In the next session, we will learn how to do it the more time- and energy-efficient way.
 
 ### R the data manager
+
 #### Load your data
-Now let's create another chunk, copy and paste this `read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")` (only the text inside ` ` and without ` `) into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+Now let's create another chunk, copy and paste this `read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")` (only the text inside and without ) into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
 
 ```{r}
 read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv")
@@ -85,30 +98,32 @@ salaries = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/
 This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries`, R will understand you refer to the above data.
 
 #### Explore your data
+
 These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
 ```{r}
 head(salaries)
 tail(salaries)
 summary(salaries)
 ```
 
-### Knit your document, 
-For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. First you need to install a sort of software and it's a bit complicated. We will get into that in the live session. Now, you will 
-Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, click "Install"/"Yes" to the windows popping up.
-Observe the pdf document (appreciate your hard work) then come back here (please!!!).  
+### Knit your document,
+
+For the assignments, you will submit both the RMarkdown file (so something like this), and a pdf document. First you need to install a sort of software and it's a bit complicated. We will get into that in the live session. Now, you will Now, click Knit (top left of the RMarkdown screen) or, press Ctrl/Cmd + Shift + K, click "Install"/"Yes" to the windows popping up. Observe the pdf document (appreciate your hard work) then come back here (please!!!).\
 *Note*: If you can not knit pdf document, please change it to html_document in line 4, try again and shoot me a quick message.
 
 Did you freeze for a second when you saw 5 pages of data? `salaries` has 365 rows. In the assignments, you will be working with 1,000,000 rows which is appx. `r paste(round(1000000/365*5))` pages. Isn't that crazy? So, when you write your assignments, please
 
-* don't print out the data, or things that are not relevant to the questions. If there is some cool code that you want me to read, but you don't want to run, make them a "comment" (more on this in the live session)
-* knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*.
+-   don't print out the data, or things that are not relevant to the questions. If there is some cool code that you want me to read, but you don't want to run, make them a "comment" (more on this in the live session)
+-   knit your document frequently, see if it works, if you like how it looks. Just like trying your code, if it doesn't work, you want to know *soon*.
 
-*Tips*. When you name your Rmd file, you may **not** want to include spaces, dots and commas. For example, this, "NDH802 assignment 1, group 1", is **not** recommended. R is smart and will try to "fill in the blank", but in my experience, it doesn't work perfectly every time. Therefore, to avoid unnecessary trouble, you should try "NDH802-assignment-group-1", "NDH802_assignment_1_Group_1", or "NDH802Assignment1Group1" instead. On the other hand, you can be more creative with the `title` (the text in line 2).
+*Tips*. When you name your Rmd file, you may **not** want to include spaces, dots and commas. For example, this, "NDH802 assignment 1, group 1", is **not** recommended. R is smart and will try to "fill in the blank", but in my experience, it doesn't work perfectly every time. Therefore, to avoid unnecessary trouble, you should try "NDH802-assignment-group-1", "NDH802_assignment_1\_Group_1", or "NDH802Assignment1Group1" instead. On the other hand, you can be more creative with the `title` (the text in line 2).
 
-## Phew, 
-I think that's enough for now. How do you feel?  
-If you're still here, thank you very much for your effort. It will pay off.
-If you have questions, please bring them to the class, or start a discussion on Canvas, or shoot me a message, or send me an email. The more you ask at the early stage, the less you do later.
+## Phew,
+
+I think that's enough for now. How do you feel?\
+If you're still here, thank you very much for your effort. It will pay off. If you have questions, please bring them to the class, or start a discussion on Canvas, or shoot me a message, or send me an email. The more you ask at the early stage, the less you do later.
 
 \vfill
+
 Huong

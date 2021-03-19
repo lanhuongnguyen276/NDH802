@@ -1,0 +1,157 @@
+---
+title: "Central limit theorem - simple example"
+author: "NDH802"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+<br/>
+
+#### Research problem
+Suppose we want to invetigate the cheating behaviors among the 360,000 Swedish students. The variable of interest is binary, to cheat or not to cheat. Each student takes ten exams in a school year. The probability of cheating is 10% (similarly applicable for all exams, all students).  
+*Note*: These assumptions are purely hypothetical.
+
+#### Data simulation
+Normally, we don't know the so-called *true* distribution, but for the sake of learning the CLT, let's pretend we do to simulate data. Once we have created the data, we pretend (again) it's not us who create it. Yes, two activities we often do when we learn statistics are to imagine and to pretend we know or don't know things, depending on the questions.  
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+#This is the so-called truth
+nstudents = 360000
+nexam = 10
+prob_cheat = 0.1
+set.seed(802)
+pop = data.frame("studentID" = 1:nstudents,
+                 "cheat" = rbinom(nstudents, nexam, prob_cheat))
+```
+
+Anyway, now you have a so-called population data that includes 360,000 rows like these. Each row represents a student with his/her ID and number of exams he/she cheated. For example, student #1 cheated on `r paste(pop[1,2])`/10 exam(s), student #2 cheated on `r paste(pop[2,2])`/10 exam, student #3 cheated on `r paste(pop[3,2])`/10 exam(s), and so on. In case you're wondering, it's the same old binomial distribution.
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+#This is the so-called truth
+nstudents = 360000
+nexam = 10
+prob_cheat = 0.1
+set.seed(802)
+pop = data.frame("studentID" = 1:nstudents,
+                 "cheat" = rbinom(nstudents, nexam, prob_cheat))
+#Now forget the fact that we create this. Just imagine it is just... life!
+head(pop,10)
+```
+
+#### Sampling
+If we have tons of time and resourses, we can investigate each and every student to answer our research question. Unfortunately, we don't. No one does, most of the time. That's when sampling comes to our rescue.  
+```{r, echo=FALSE}
+sample_size = 30 #Number of students you draw out every time of investigation
+nrep = 50 #You do it nrep times
+```
+Now, we will randomly select `r sample_size` students from our population (i.e., our sample size N = `r sample_size`), investigate the number of exams they have cheated. We'll then have a report like this.
+
+```{r}
+#Taking samples from the population
+pop[sample(1:nstudents, size = sample_size, replace = FALSE),] 
+```
+Then, we calculate the mean of the cheated exams of these `r sample_size` students, which is:
+```{r}
+cat(mean(pop[sample(1:nstudents, size = sample_size, replace = FALSE),2]))
+```
+
+We repeat this process, say, `r nrep` times. Then we'll have `r nrep` means, right? We then plot these `r nrep` means in a histogram.
+```{r, out.width="50%", fig.align='center'}
+#Taking samples from the population
+sample_size = 30 #Number of students you draw out every time of investigation
+nrep = 50 #You do it nrep times
+
+sample_mean = rep(NA, nrep) #You don't need to learn to code this
+set.seed(802)
+for(i in 1:nrep) {
+  #Here you randomly draw a sample_size students to investigate their behavior
+  sample = pop[sample(1:nstudents, size = sample_size, replace = FALSE),] 
+  #then you compute the mean number of cheated exams (over nexam)
+  sample_mean[i] = mean(sample$cheat)
+}
+hist(sample_mean, main = "Histogram of the sample mean (N=30)",
+     xlab = expression(bar(X)))
+```
+
+```{r, echo = FALSE}
+#Taking samples from the population
+sample_size_100 = 100 #Number of students you draw out every time of investigation
+nrep_200 = 200 #You do it nrep times
+```
+
+Does it look somewhat familar to you? Hmm, not really. Let's try increasing the sample size to sample size = `r sample_size_100` and repeat it `r nrep_200` times. How about now? Ring any *bells*?
+
+```{r, out.width="50%", fig.align='center'}
+sample_mean = rep(NA, nrep_200) #You don't need to learn to code this
+for(i in 1:nrep_200) {
+  #Here you randomly draw a sample_size students to investigate their behavior
+  sample = pop[sample(1:nstudents, size = sample_size_100, replace = FALSE),] 
+  #then you compute the mean number of cheated exams (over nexam)
+  sample_mean[i] = mean(sample$cheat)
+}
+hist(sample_mean, 15, main = "Histogram of the sample mean (N=100)",
+     xlab = expression(bar(X)))
+```
+
+### Central limit theorem
+If it reminds you of the bell curve, you are absolutely right. <span style="color:Teal">__The Central Limit Theorem suggests that when we have a huge number of observations, the **sample mean** follows a normal distribution.__</span> Formally, when $n$ is large, $\bar{X_n} \sim N(\mu,\frac{\sigma^2}{n})$. Graphically, when when $n$ is large, the histogram will look more and more like the bell curve.
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+sample_size_500 = 500
+sample_mean = rep(NA, 2000) #You don't need to learn to code this
+for(i in 1:2000) {
+  #Here you randomly draw a sample_size students to investigate their behavior
+  sample = pop[sample(1:nstudents, size = sample_size_500 , replace = FALSE),] 
+  #then you compute the mean number of cheated exams (over nexam)
+  sample_mean[i] = mean(sample$cheat)
+}
+
+# Parameters of the approximated normal distribution suggested my the CLT
+mu = mean(pop$cheat) #population mean
+sigma_squared = var(pop$cheat) #population variance
+sigma_squared_clt = sigma_squared/sample_size_500 #variance as per the CLT formula
+
+{#visualization
+par(mfrow = c(1,2))
+hist(sample_mean, main = paste("Distribution of the sample mean (N=",sample_size_500,")", sep = ""), 30,
+     freq = F, ylab = "", xlab = expression(bar(X)))#, xlim = c(0,0.76))
+curve(dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
+      main = "CLT normal approximation", ylab = "", xlab = expression(bar(X)),
+      #from = 0, to = 0.76)
+      from = mu-4*sqrt(sigma_squared_clt),
+      to = mu+4*sqrt(sigma_squared_clt))
+}
+```
+
+Let's do another experiment. Suppose we now want to know the probability that a random student cheat more than 1 exam, ie $P(cheat>1)$. We now compute it using 2 ways, from our samples and from the CLT.
+```{r}
+prob_sample = sum(sample_mean < 1)/length(sample_mean)
+prob_clt = pnorm(1, mean = mu, sd = sqrt(sigma_squared_clt))
+```
+So, $P(cheat<1)$ from our samples is `r round(prob_sample, 2)` and from the CLT curve is `r round(prob_clt,2)`. Pretty close. Let's try another one, let's compute $P(0.92<cheat<1.08)$.
+```{r}
+prob_sample = sum(sample_mean > 0.92 & sample_mean < 1.08 )/length(sample_mean)
+prob_clt = pnorm(1.08, mean = mu, sd = sqrt(sigma_squared_clt)) - pnorm(0.92, mean = mu, sd = sqrt(sigma_squared_clt))
+```
+So, $P(0.92<cheat<1.08)$ from our samples is `r round(prob_sample, 2)` and from the CLT curve is `r round(prob_clt,2)`. Again, pretty close!
+
+### Key takeaways
+(i) Distribution of the random variable $X$ is **different from** the distribution of the sample mean $\bar{X}$. 
+(ii)  When the number of observations is large, the sampling distribution of the sample mean $\bar{X}$ converges (approximates) to the normal distribution $N(\mu,\frac{\sigma^2}{n})$, regardless of the distribution of $X$.
+
+| For example, the blue bars illustrate the number of cheated exams following binomial distribution, while the pink bars represent the **average** number of cheated exams (the **sample mean**), following normal distribution when the sample size is large.
+```{r, echo=FALSE, fig.width=10, fig.height=4.5, warning=FALSE}
+par(mfrow = c(1,2))
+barplot(table(pop$cheat), main = "Distribution of X", border = F, col = "lightblue3", xlab = "X")
+hist(sample_mean, main = "Distribution of X bar", 30, border = F, freq = F, col = "pink3", xlab = expression(bar(X)), ylab = "")
+curve(dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)), add = TRUE, col = "palevioletred4", lwd = 3,
+      main = "CLT normal approximation", ylab = "",
+      from = mu-4*sqrt(sigma_squared_clt),
+      to = mu+4*sqrt(sigma_squared_clt))
+```
+
+(iii)  In reality, we normally don't know the population distribution. Thanks to point (ii), we can infer the population mean $\mu$ from the sample mean $\bar{X}$.

@@ -1,0 +1,96 @@
+---
+title: "NDH802 - Assignment 2"
+author: "Group no."
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+Suppose we want to invetigate the cheating behaviors among the Swedish students in a school year. The variable of interest is binary, to cheat or not to cheat. Each student takes ten exams. The probability of cheating is 10% (similarly applicable for all exams, all students).
+
+Normally, we don't know the so-called true distribution, but for the sake of learning CLT, let's pretend we do to simulate data. Once you have created the data, you pretend you didn't know anything about it and try to "infer" it from your observations.
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+#This is the so-called truth
+nstudents = 360000
+nexam = 10
+prob_cheat = 0.1
+pop = data.frame("studentID" = 1:nstudents,
+                 "cheat" = rbinom(nstudents, nexam, prob_cheat))
+#Now forget the fact that we create this. Just imagine it is just... life!
+```
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+#Taking samples from the population
+sample_size = 500 #Number of students you draw out every time of investigation
+nrep = 100 #You do it nrep times
+
+sample_mean = rep(NA, nrep) #You don't need to learn to code this
+set.seed(802)
+for(i in 1:nrep) {
+  #Here you randomly draw a sample_size students to investigate their behavior
+  sample = pop[sample(1:nstudents, size = sample_size, replace = FALSE),] 
+  #then you compute the mean number of cheated exams (over nexam)
+  sample_mean[i] = mean(sample$cheat)
+}
+
+# Parameters of the approximated normal distribution suggested my the CLT
+mu = mean(pop$cheat) #population mean
+sigma_squared = var(pop$cheat) #population variance
+sigma_squared_clt = sigma_squared/sample_size #variance as per the CLT formula
+
+{#visualization
+par(mfrow = c(1,2))
+hist(sample_mean, main = "Distribution of the sample mean",
+     freq = F, ylab = "")#, xlim = c(0,0.76))
+curve(dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
+      main = "CLT normal approximation", ylab = "", xlab = expression(bar(X)),
+      #from = 0, to = 0.76)
+      from = mu-4*sqrt(sigma_squared_clt),
+      to = mu+4*sqrt(sigma_squared_clt))
+}
+```
+
+```{r}
+cutpoint = mu
+sum(sample_mean < cutpoint)/length(sample_mean)
+pnorm(cutpoint, mean = mu, sd = sqrt(sigma_squared_clt))
+```
+
+
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+# {#simulation set up
+# nrep = 1000
+# size = 200
+# 
+# #sample size number of customers from the whole data set, repeat nrep times
+# sample_mean = rep(NA, nrep)
+# for(i in 1:nrep){
+# sample <- inference_dataset[sample(1:nrow(inference_dataset),
+#                             size = size, replace = FALSE)]
+# sample_mean[i] = mean(sample$loyal)
+# }
+# 
+# # (Re)calculate the mean abd variance of the whole data set
+# mean_data <- mean(inference_dataset$loyal)
+# var_data <- var(inference_dataset$loyal)
+# var_CLT <- var_data/size #CLT formula
+# 
+# {#visualization
+# par(mfrow = c(1,2))
+# hist(sample_mean, main = "Distribution of the sample mean",
+#      freq = F, ylab = "")#, xlim = c(0,0.76))
+# # hist(rnorm(10000, mean = mean_data, sd = sqrt(var_CLT)),
+# #      breaks = 20, main = "Simulated X bar", xlab = "", freq = F)
+# curve(dnorm(x, mean = mean_data, sd = sqrt(var_CLT)),
+#       main = "CLT normal approximation", ylab = "", xlab = expression(bar(X)),
+#       #from = 0, to = 0.76)
+#       from = mean_data-4*sqrt(var_CLT), to = mean_data+4*sqrt(var_CLT))
+# }
+# }
+```
+
