@@ -2,53 +2,68 @@
 title: "NDH802 R Application - Live session 1"
 author: "Huong Nguyen"
 output: html_document
-
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# First thing first
+## First thing first
+
 ### Set your working directory
-...so you (and your files) don't get lost later. To do that, you either type 
+
+...so you (and your files) don't get lost later. To do that, you either type
+
 ```{r}
 setwd("/Users/hu.4622/Documents/GitHub/NDH802") #This is my WD, change it to yours!
 ```
+
 with the path to the folder you want to store your working files (e.g., R script, data tables, results). You can also do that by clicking Session/Set Working Directory. More on this in the live session.
 
 ### Try your code!
+
 Make sure your code chunk works before you go to the next chunk, or else you don't know since when it starts to go wrong and the diagnostic will be more challenging. Simply run your code every time you write!
 
 ### Clean your code!
-As a result of trying different code, your script can get messy and unreadable. Make some time to clean your code, i.e., delete the redundants and write comments on what you keep. You may not believe it now, but you will forget. Therefore, note down your thought process! Comment! By the way, you can select a code chunk then hit Shift + Ctrl (Cmd) + a to make it look neat(er)
+
+As a result of trying different code, your script can get messy and unreadable. Make some time to clean your code, i.e., delete the redundant and write comments on what you keep. You may not believe it now, but you will forget. Therefore, note down your thought process! Comment! By the way, you can select a code chunk then hit Shift + Ctrl (Cmd) + a to make it look neat(er)
 
 ### Save your work!
+
 Continuously hit Ctrl (or Cmd ) + S. Your future selves will thank you later! In case you forget (though I hope you don't), everything you've run (**not** typed) are stored in History. One more reason to run your code.
 
 ### It's perfectly fine to copy code...
+
 ... from the demos, books, articles, internet, but **not** your friends for the assignments. Make sure you understand the code you copy, or only copy the code you can make sense. Sometimes we simply want to make it work, but it's more important to understand why and/or when it works. Or else, you won't remember it or worse, you may misuse it the next time.
 
 ### When you don't know something,
-* First thing you can try is to ask R by typing in the console `?thecommand`, e.g., `?summary`. R Studio will show the command's description and usage in Help windows on your bottom right.
-* If you don't find that helpful, ask Google. For example, "summary() in R". You'll find plenty of explanations in various ways (e.g., R documentation, blog post, video). I hope you find at least one of them helpful. When you learn programming, people from [Stack Overflow](https://stackoverflow.com) are your best friends.
-* Reach out! Ask me, Emelie, your friends, anyone you think may have or can find the answers.
+
+-   First thing you can try is to ask R by typing in the console `?thecommand`, e.g., `?summary`. R Studio will show the command's description and usage in Help windows on your bottom right.
+-   If you don't find that helpful, ask Google. For example, "summary() in R". You'll find plenty of explanations in various ways (e.g., R documentation, blog post, video). I hope you find at least one of them helpful. When you learn programming, people from [Stack Overflow](https://stackoverflow.com) are your best friends.
+-   Reach out! Ask me, Emelie, your friends, anyone you think may have or can find the answers.
 
 You're here to learn statistics. R is supposed to be a helpful tool, don't let it be your obstacle. Having said that, it's perfectly fine to get stuck sometimes. Everyone does, even the experienced programmers. So, no worries, keep calm and code on!
 
 ### Practice makes perfect
-Unfortunately, there is no way to learn R (or any programing languages) without trying, failing, fixing up, learning from your mistakes, repeat. I hope I can make it less frustrating for you. To do that, I strongly encourage you to do the preparations before the live/Q&A sessions and ask if you have questions. Also, it would be nice that you try the assignments right after the live sessions when your memories are still fresh.
 
-# Working with data in R
+Unfortunately, there is no way to learn R (or any programming languages) without trying, failing, fixing up, learning from your mistakes, repeat. I hope I can make it less frustrating for you. To do that, I strongly encourage you to do the preparations before the live/Q&A sessions and ask if you have questions. Also, it would be nice that you try the assignments right after the live sessions when your memories are still fresh.
+
+## Working with data in R
+
 ### Load your data
+
 If you are familiar with Excel, this step is like opening a file. You can type in
+
 ```{r}
-salaries = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Preps/Before_Live_1/salaries.csv") #data stored on cloud
+salaries = read.csv("https://bit.ly/3r918BW") #data stored on cloud
 ```
+
 or click on Import Data set on the top right of your screen.
 
 ### Explore your data
-These commands give you a quick overview of your data. I recommend you to try and run them in Rstudio, but NOT to knit them. It's gonna be a bit messy. To mask a command, we make them a "comment" by placing # in front of the command. Things after # are not code and won't be executed.
+
+These commands give you a quick overview of your data. I recommend you to try and run them in Rstudio, but NOT to knit them. It's gonna be a bit messy. To mask a command, we make them a "comment" by placing \# in front of the command. Things after \# are not code and won't be executed.
+
 ```{r, results='hide'}
 #View(salaries) 
 head(salaries)
@@ -57,40 +72,53 @@ summary(salaries)
 #rename a column
 ```
 
-### Select columns from a dataframe
-There are numerious way to select a column. The three most basic way are:
+### Select columns from a data frame
+
+There are numerous way to select a column. The three most basic way are:
+
 ```{r, results='hide'}
+#here you refer to the column by the columns names
 salaries$sal_expected
-salaries[,"sal_expected"] #here you refer to the column by the columns names
-salaries[,1] #here you refer to the column by the column position from the left ie 1 is the first column from the left
+salaries[,"sal_expected"]
+
+#here you refer to the column by the column position from the left ie 1 is the first column from the left
+salaries[,1] 
 ```
 
-**When to use which?**  
+**When to use which?**\
 It's all about your personal preference. I introduce several ways to give you options, **not** to confuse you. You can totally explore and see which you're more comfortable with. This is also applicable for most of other commands.
 
 To select more than 1 column:
+
 ```{r, results='hide'}
-salaries[,c("sal_expected", "fairpay", "program")] #here you refer to the column by the columns names
-salaries[,c(1,3,10)]  #here you refer to the column by the column position from the left
+#here you refer to the column by the columns names
+salaries[,c("sal_expected", "fairpay", "program")] 
+
+#here you refer to the column by the column position from the left
+salaries[,c(1,3,10)]  
 ```
 
-### Select rows from a dataframe
-There are numerious way to select a row. The most basic way (with base R) are:
+### Select rows from a data frame
+
+There are numerous way to select a row. The most basic way (with base R) are:
+
 ```{r, results='hide'}
 salaries[salaries$program == "RM",]
 salaries[salaries$whatisyourgender1isfemale == 1,]
 ```
 
 ### Let's take a closer look
-Assume you want to explore the salary expectation from the students, which is the variable `sal_expected`.
-Two of my most frequent used methods are histogram and box plot.
 
-Let's first try plotting a **histogram**. If you're like "a histo what?", no worries, take a quick look [here](https://www.youtube.com/watch?v=qBigTkBLU6g), then come back.
+Assume you want to explore the salary expectation from the students, which is the variable `sal_expected`. Two of my most frequent used methods are histogram and box plot.
+
+Let's first try plotting a **histogram**. If you're like "a histo what?", take a quick look [here](https://www.youtube.com/watch?v=qBigTkBLU6g), then come back.
+
 ```{r}
 hist(salaries[,"sal_expected"]) #this in the assignment will get 0.5pt
 ```
 
 This looks neither aesthetically appealing nor informative, right? How do you think we can make it better?
+
 ```{r, echo=FALSE, results='hide'}
 # hist( #I expect something like this
 #   salaries[,"sal_expected"] / 1000,
@@ -103,6 +131,7 @@ This looks neither aesthetically appealing nor informative, right? How do you th
 ```
 
 Now let's try **box plot**. Similarly, if you need a quick understanding of box plot, take a look [here](https://www.youtube.com/watch?v=7UK2DK7rblw), then come back.
+
 ```{r, echo=FALSE}
 boxplot(salaries[,"sal_expected"]) #a plot like this in the assignment will get 0.5pt
 ```
@@ -117,13 +146,17 @@ This looks nothing like the video. Why do you think it is and can you help me fi
 # )
 ```
 
-# Means and standard deviation (SD)
+## Means and standard deviation (SD)
+
 ### Calculate the mean and SD of a variable
+
 Intuitively, you would type
+
 ```{r}
 mean(salaries[,"sal_expected"])
 sd(salaries[,"sal_expected"])
 ```
+
 but it doesn't work. why?
 
 ```{r}
@@ -132,44 +165,50 @@ but it doesn't work. why?
 ```
 
 ### Can I calculate the mean of salary expected of the RM, and the mean of salary expected of the BE students separately?
+
 ```{r}
 #mean(salaries[salaries$program == "BE","sal_expected"], na.rm = TRUE)
 #mean(salaries[salaries$program == "RM","sal_expected"], na.rm = TRUE)
 ```
 
 ### Can I calculate the mean of salary expected of the female RM student?
+
 ```{r}
 #mean(salaries[salaries$program == "BE" & salaries$whatisyourgender1isfemale == "1", "sal_expected"], na.rm = TRUE)
 ```
 
-# Probability theory
-Let $A$ be an event. To calculate $N_A$ in base R, the simpliest way is to use ` table() `. For example, assume we want to know the number of BE ($N_{BE}$) and RM ($N_{RM}$) students in our data, we can
+## Probability theory
+
+Let $A$ be an event. To calculate $N_A$ in base R, the simplest way is to use `table()`. For example, assume we want to know the number of BE ($N_{BE}$) and RM ($N_{RM}$) students in our data, we can
+
 ```{r}
 table(salaries[,"program"])
 ```
 
 Similarly, let's see how many male ($N_{male}$) and female ($N_{female}$) students we have in the data
+
 ```{r}
 table(salaries[,"whatisyourgender1isfemale"])
 ```
 
-We can do something similar to a pivot table with ` table() `
+We can do something similar to a pivot table with `table()`
+
 ```{r}
 table(salaries[,"program"], salaries[,"whatisyourgender1isfemale"])
 ```
 
 From the table above, can you tell
 
-* how many **RM female students** we have in the data?
-* if RM and BE are mutually **exclusive/collectively exaustive** events?
+-   how many **RM female students** we have in the data?
+-   if RM and BE are **mutually exclusive/collectively exhaustive** events?
 
 ## Your turn
-(1) Plot a histogram for `worktime`.
-(2) Make a boxplot for `idealpay`.
-(3) Make a boxplot for `idealpay`, for RM and BE students.
-(4) Compute the mean and variance of `fairpay`.
-(4) Compute the mean and variance of `fairpay` of the female students.
-(5) Compute the mean and variance of `fairpay` of the students who are female and belong to RM program.
-(6) How many male students and female students do we have in the data set? Formally, compute $N_{male}$ and $N_{female}$
-(7) How many *students who are female and belong to RM program* do we have in the data set? compute $N_{female \cap RM}$
 
+(1) Plot a histogram for `worktime`.
+(2) Make a box plot for `idealpay`.
+(3) Make a box plot for `idealpay`, for RM and BE students separately.
+(4) Compute the mean and variance of `fairpay`.
+(5) Compute the mean and variance of `fairpay` of the female students.
+(6) Compute the mean and variance of `fairpay` of the students who are female and belong to RM program.
+(7) How many male students and female students do we have in the data set? Formally, compute $N_{male}$ and $N_{female}$
+(8) How many *students who are female and belong to RM program* do we have in the data set? compute $N_{female \cap RM}$
