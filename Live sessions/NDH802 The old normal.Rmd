@@ -9,7 +9,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(asbio)
+if(!require(asbio)){
+    install.packages("asbio")
+    library(asbio)
+}
 ```
 
 ### Exercise 5.27
@@ -21,15 +24,42 @@ mu = 500000/1000
 sigma = 50000/1000
 ```
 
-**(a) What is the probability that the cost of building a home will be between \$460,000 and \$540,000? That is,** $P(460,000 < X < 540,000)$ where $X$ denotes the cost?\
-What we want to compute is the *blue* area. To do that in base R, one way is to compute the grey area (which is $F(b)$ in Emelie's lecture), then subtract the pink area (which is $F(a)$ in Emelie's lecture) from it.
+**(a) What is the probability that the cost of building a home will be between \$460,000 and \$540,000? That is, find** $P(460,000 < X < 540,000)$ **where** $X$ **denotes the cost?**\
+What we want to compute is the *blue* area. To do that in base R, one way is to compute the gray area, then subtract the pink area from it.
 
 ```{r, fig.height=7, fig.width=6, echo=FALSE, fig.align='center'}
-{#This is for illustration purpose only. You don't have to learn to code this.  
-par(mfrow = c(3,1))
-shade.norm(from = mu-4*sigma, to = 540,sigma=sigma,mu=mu,tail="middle", show.dist = F, show.p = F)
-shade.norm(from = mu-4*sigma, to = 460,sigma=sigma,mu=mu,tail="middle", show.dist = F, show.p = F, shade.col = "pink3")
-shade.norm(from = 460, to = 540,sigma=sigma,mu=mu,tail="middle", show.dist = F, show.p = F, shade.col = "lightblue3")
+{
+  #This is for illustration purpose only. You don't have to learn to code this.
+  par(mfrow = c(3, 1))
+  shade.norm(
+    from = mu - 4 * sigma,
+    to = 540,
+    sigma = sigma,
+    mu = mu,
+    tail = "middle",
+    show.dist = F,
+    show.p = F
+  )
+  shade.norm(
+    from = mu - 4 * sigma,
+    to = 460,
+    sigma = sigma,
+    mu = mu,
+    tail = "middle",
+    show.dist = F,
+    show.p = F,
+    shade.col = "pink3"
+  )
+  shade.norm(
+    from = 460,
+    to = 540,
+    sigma = sigma,
+    mu = mu,
+    tail = "middle",
+    show.dist = F,
+    show.p = F,
+    shade.col = "lightblue3"
+  )
 }
 ```
 
@@ -45,29 +75,40 @@ blue = grey - pink; cat(blue)
 Hint: The total area below the normal curve is 1 and `pnorm()` can compute the area from either tails. Try `?pnorm` and check out the argument `lower.tail`.
 
 ```{r}
-blue_alternative <- 1 - #total area below the curve
-  pnorm(460, mean = mu, sd = sigma) - #the white area on the left
-  pnorm(540, mean = mu, sd = sigma, lower.tail = FALSE) #the white area on the right
-cat(blue_alternative)
+# blue_alternative <- 1 - #total area below the curve
+#   pnorm(460, mean = mu, sd = sigma) - #the white area on the left
+#   pnorm(540, mean = mu, sd = sigma, lower.tail = FALSE) #the white area on the right
+# cat(blue_alternative)
 ```
 
-**(b) What probability is 0.2 that the cost of building will be less than what amount? That is, find** $a$ such that $P(X < a) = 0.2$?
+**(b) What probability is 0.2 that the cost of building will be less than what amount? That is, find** $a$ **such that** $P(X < a) = 0.2$**?**
 
 ```{r}
 a = qnorm(0.2, mean = mu, sd = sigma)
 cat(a)
 ```
 
-**(c) Find the shortest range such that the probability is 0.95 that the cost of a luxury home will fall in this range. That is, find** $b$ and $c$ such that $P(b < X < c) = 0.95$?\
-The graph is, again, for illustration purpose, you don't need to learn to code it.\
-Notice the lavendar area is 0.95.
+**(c) Find the shortest range such that the probability is 0.95 that the cost of a luxury home will fall in this range. That is, find** $b$ **and** $c$ **such that** $P(b < X < c) = 0.95$**?**\
+The graph is, again, for illustration purpose, you don't need to learn to code it. Notice the lavender area is 0.95.
 
 ```{r, fig.height=3, fig.width=6, fig.align='center'}
 b = qnorm(0.025, mean = mu, sd = sigma)
 c = qnorm(0.975, mean = mu, sd = sigma)
-shade.norm(from = b, to = c, sigma=sigma, mu=mu, tail="middle", show.dist = F, show.p = F, shade.col = "lavender")
+```
+
+```{r, echo = FALSE, fig.height=3, fig.width=6, fig.align='center'}
+shade.norm(
+  from = b,
+  to = c,
+  sigma = sigma,
+  mu = mu,
+  tail = "middle",
+  show.dist = F,
+  show.p = F,
+  shade.col = "lavender"
+)
 ```
 
 ***NOTE***\
-- In (a), we compute the **area** below the curve (the grey/pink/blue area) which characterizes the **probability**.\
+- In (a), we compute the **area** below the curve (the gray/pink/blue area) which characterizes the **probability**.\
 - In (b) and (c), we compute the **value** of $X$ (a point on the x-axis) which characterizes **the cost of building a home**.

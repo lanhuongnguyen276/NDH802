@@ -1,0 +1,39 @@
+---
+title: "NDH802 R Application - Live session 1"
+author: "Huong Nguyen"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load your data
+
+```{r}
+salaries = read.csv("https://bit.ly/3r918BW") #data stored on cloud
+```
+
+## Box plot part
+
+```{r, echo=FALSE}
+b = boxplot(salaries[,"sal_expected"]/1000, ylim = c(0, 100)) #a plot like this in the assignment will get 0.5pt
+```
+
+The below code give you the statistics of the box plot, in order
+
+1.  **the "minimum"**: Q1 -1.5\*IQR
+
+2.  **the first quartile (Q1/25th Percentile)**: the middle number between the smallest number (not the "minimum") and the median of the dataset.
+
+3.  **the median (Q2/50th Percentile)**: the middle value of the dataset.
+
+4.  **the third quartile (Q3/75th Percentile)**: the middle value between the median and the highest value (not the "maximum") of the dataset.
+
+5.  **the "maximum"**: Q3 + 1.5\*IQR
+
+    where **interquartile range (IQR)** is 25th to the 75th percentile.
+
+```{r}
+b$stats
+```
