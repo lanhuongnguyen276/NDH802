@@ -1,7 +1,7 @@
 ---
 title: "NDH802 - Assignment 2"
 author: "Group no."
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +15,7 @@ rm(list=ls())
 -   Question 1 is empirical (based on the data provided). Question 2 is purely theoretical (based on the assumption in the question).
 -   Submit your assignment via Canvas before 10:00 CET, April 27, 2021.
 -   Your submission should be an RMarkdown file with your solutions in words and/or R code. If you handwrite parts of your assignment, insert it as an image near the corresponding question(s). Name the file NDH802_Assignment2_GroupNumber.
--   You should work in groups andcontribute equally.
+-   You should work in groups and contribute equally.
 -   You can copy my code, but make sure you understand it.
 -   You should not have the exact solutions and/or results with other groups.
 -   Results without code/justifications will not be graded.
@@ -38,7 +38,6 @@ inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
 set.seed(1); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]
-
 rm(inference_dataset)
 ```
 
@@ -46,7 +45,7 @@ Please refer to Canvas, Hand-in 2 for more details about the data set.
 
 \newpage
 
-### Question 1. Discrete distribution
+### Question 1. Discrete probability distribution
 
 (a) What are the probabilities of loyal and not loyal customers in your data set?\
     Formally, compute $P(\text{loyal} = 1)$ and $P(\text{loyal} = 0)$. (1p)
@@ -55,13 +54,13 @@ Please refer to Canvas, Hand-in 2 for more details about the data set.
     Formally, compute $P(\text{loyal} = 1 \mid \text{channeltype} = \text{offlineonly})$. (1p)
 (d) What is the probability of shopping only offline, given the loyal customers?\
     Formally, compute $P(\text{channeltype} = \text{offlineonly}\mid \text{loyal} = 1)$. (1p)
-(e) What is the probability that a randomly chosen customer will be a loyal customer who only shop offline? Formally, compute $P(\text{channeltype} = \text{offlineonly}\cap \text{loyal} = 1)$. (1p)
-(f) Compare the results of (c), (d) and (e). Are they similar/different? Should they? Why/why not?\
-    You can use mathematical formula, words, venn diagrams or the combination of them, whichever expresses your rationales the best. If you find handwriting is more convenient, feel free to do so and attach a (readable) photo in the submission.(1p)
+(e) What is the probability that a randomly chosen customer will be a loyal customer who made at least one online purchase? (1p)
+(f) Compare the results of (c) and (d). Are they similar/different? Should they? Why?\
+    You can use mathematical formula, words, Venn diagrams or the combination of them, whichever expresses your rationales the best. If you find handwriting is more convenient, feel free to do so and attach a (readable) photo in the submission. (1p)
 
-### Question 2. Continuous distribution
+### Question 2. Continuous probability distribution
 
-Let $X$ (measured in cm) denote the height of all the Swedes in 2021. Assume $X \sim N(\mu = 175, \sigma^2 = 20)$.\
+Let $X$ (measured in cm) denote the height of all the Swedes in 2020. Assume $X \sim N(\mu = 175, \sigma^2 = 16)$.\
 Be careful, the argument `sd` in `pnorm()` is standard deviation. Standard deviation is *different* from variance.
 
 (a) What is the probability that a random Swede is shorter than 172cm? (0.5p)

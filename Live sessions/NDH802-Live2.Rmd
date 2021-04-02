@@ -35,21 +35,16 @@ Similarly, can you compute $P(male)$ and $P(female)$?
 
 ```
 
-Now let's spice things up a little bit. Assume we want to compute $P(RM \cap female)$, $P(RM \mid female)$ and $P(female\mid RM)$
+Now let's spice things up a little bit. Assume we want to compute $P(RM \cap female)$, $P(female\mid RM)$ and $P(RM \mid female)$
 
 ```{r}
+#margin = 1 means by row, margin = 2 means by column
+prop.table(table(salaries$program, salaries$whatisyourgender1isfemale))
 prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
            margin = 1)
 prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
            margin = 2)
-#margin = 1 means by row, margin = 2 means by column
 ```
-
-Now,
-
--   Can you tell which is $P(RM \mid female)$ and which is $P(female\mid RM)$?
-
--   Then, how do we compute $P(RM \cap female)$?
 
 ### Your turn:
 
