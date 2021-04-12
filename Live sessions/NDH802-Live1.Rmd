@@ -1,7 +1,7 @@
 ---
 title: "NDH802 R Application - Live session 1"
 author: "Huong Nguyen"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
