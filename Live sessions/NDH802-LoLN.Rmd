@@ -17,37 +17,58 @@ library(shiny)
 <br>
 
 ### Bernoulli distribution
+
 ```{r, echo=FALSE, out.width=0.1}
-sliderInput("p", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
-sliderInput("n", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
+sliderInput("p_bern", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
+sliderInput("n_bern", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
 
 set.seed(2706)
 renderPlot(barplot(
-  table(rbinom(input$n, 1, input$p)),
+  table(rbinom(input$n_bern, 1, input$p_bern)),
   main = paste(
     "Bernoulli distribution with",
-    input$n,
+    input$n_bern,
     "observation(s).",
     "Sample mean =",
-    round(mean(rbinom(input$n, 1, input$p)), digits = 5)
+    round(mean(rbinom(input$n_bern, 1, input$p_bern)), digits = 5)
   ),
   xlab = "", col = "lightblue3", border = F,
 ))
 ```
 
+### Binomial distribution
+
+```{r, echo=FALSE, out.width=0.1}
+sliderInput("p_bin", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
+sliderInput("n_bin", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
+
+set.seed(2706)
+renderPlot(barplot(
+  table(rbinom(input$n_bin, 100, input$p_bin)),
+  main = paste(
+    "Binomial distribution with 100 trials and",
+    input$n_bin,
+    "observation(s).",
+    "Sample mean =",
+    round(mean(rbinom(input$n_bin, 100, input$p_bin)), digits = 5)
+  ),
+  xlab = "", col = "darkseagreen", border = F,
+))
+```
 
 ### Standard normal distribution
+
 ```{r, echo=FALSE}
-sliderInput("n1", label = "Number of observations:", min = 1, max = 10000, value = 1000, step = 1)
+sliderInput("n_norm", label = "Number of observations:", min = 1, max = 10000, value = 1000, step = 1)
 
 renderPlot(hist(
-  rnorm(input$n1), breaks = 25,
+  rnorm(input$n_norm), breaks = 50,
   main = paste(
     "Standard normal distribution with",
     input$n1,
     "observation(s).",
     "Sample mean =",
-    round(mean(rnorm(input$n1)), digits = 5)
+    round(mean(rnorm(input$n_norm)), digits = 5)
   ), xlab = "", col = "pink3", border = F,
 ))
 ```
