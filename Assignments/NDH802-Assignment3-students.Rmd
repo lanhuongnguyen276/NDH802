@@ -38,6 +38,7 @@ set.seed(1); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]
 rm(inference_dataset)
+sample_mean = runif(1, 50, 60)
 ```
 
 Please refer to Canvas, Hand-in 3 for more details about the data set.
@@ -46,12 +47,30 @@ Please refer to Canvas, Hand-in 3 for more details about the data set.
 
 ### Question 1. Sampling theory
 
-Let $X$ (measured in cm) denote the height of all the Swedes in 2021. Assume $X \sim N( \mu = 175, \sigma^2 = 20)$.
+The maximum score for the course NDH802 is 70. Suppose you read an (imaginary) report that says the scores are normally distributed with the standard deviation of 12. Unfortunately, the population (so-called the *true*) mean score is not readable.
 
-(a) Assume you randomly meet a Swede in the street. What is the probability that he/she is from 173cm to 177cm? (1p)
-(b) Assume you randomly meet 2 Swedes in the street. What is the probability that *both of them* are from 173cm to 177cm tall? (1p)
-(c) Assume you randomly meet 3 Swedes in the street. What is the probability that *your sample mean* is from 173cm to 177cm? (1p)
-(d) Assume you randomly meet 30 Swedes in the street. What is the probability that *your sample mean* is from 173cm to 177cm? (1p)
+(a) You talk to a random sample of 36 students from previous years and their scores are recorded in the following `sample`. Please fill in your group number and run the whole following code chunk to see the scores.
+
+    ```{r, echo=FALSE}
+    #please fill in your group number in set.seed()
+    set.seed(8); sample = round(rnorm(36, 55, 12),0)
+    cat(sample)
+    ```
+
+    Find the 90% confidence interval for the population mean score (0.5p). How would you interpret the 90% confidence interval, in general and in this case? (0.5p)
+
+(b) Assume that you want to increase the confidence level to 99%, but you do not want the confidence interval to be longer. What would you do? Please illustrate your answer with empirical evidence(s). For example, if you propose to decrease or increase something, also indicate why and by/to how much. (1p)
+
+    ```{r}
+    sigma = 12
+    n = 36
+    x_bar = mean(sample)
+
+    ucl = x_bar + 1.645*sigma/sqrt(n)
+    lcl = x_bar - 1.645*sigma/sqrt(n)
+
+    ((2.58*sigma)/(ucl-x_bar))^2
+    ```
 
 ### Question 2. Hypothesis testing
 

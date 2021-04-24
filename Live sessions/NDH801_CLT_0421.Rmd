@@ -1,0 +1,158 @@
+---
+title: "Central limit theorem simply explained"
+author: "NDH802 - Spring 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+### The research question
+
+Suppose we want to investigate the cheating behaviors among the Swedish students in a school year. We assume 2 outcomes, to cheat or not to cheat. Each student takes ten exams. The probability of cheating is 10% (similarly applicable for all exams, all students). To make it fancier, we write it in statistical language. Let $X$ denote the cheated exams, $X \sim Bin(10, 0.1)$.
+
+Kindly note that these assumptions are purely hypothetical.
+
+### Data simulation
+
+Normally, we don't know the so-called *true* distribution, but for the sake of learning the CLT, let's pretend we do to simulate some data. In the Rmd file you'll find the data simulation process. It is, however, not the focus of this illustration.
+
+```{r data sim, echo = FALSE, fig.width=10, fig.height=5}
+#This is the so-called truth
+nstudents = 360000
+nexam = 10
+prob_cheat = 0.1
+set.seed(80221)
+pop = data.frame(
+  "studentID" = 1:nstudents,
+  "cheat" = rbinom(nstudents, nexam, prob_cheat)
+)#Now forget the fact that we create this. 
+```
+
+Now we have a so-called **population** data that includes `r paste(nstudents)` rows like these. Each row represents a student with his/her ID and number of exams he/she cheated. For example, student \#1 cheated on `r paste(pop[1,2])`/10 exam(s), student \#2 cheated on `r paste(pop[2,2])`/10 exam, student \#3 cheated on `r paste(pop[3,2])`/10 exam(s), and so on.
+
+```{r, echo=FALSE}
+head(pop,10)
+```
+
+Once we have created the data, we pretend (again) it has nothing to do with us. Two activities we often do when we learn statistics are to imagine and to pretend we know or don't know things, depending on the questions.
+
+Back to our research question. If we had unlimited time and resources, we would investigate each and every student and record his/her cheating behavior. Unfortunately, we don't. That's when sampling comes to our rescue.
+
+### Sampling
+
+```{r, echo=FALSE}
+#Taking samples from the population
+sample_size = 30 #Number of students you draw out every time of investigation
+nrep = 10000 #You do it nrep times
+```
+
+Still, let's imagine we have a huge budget. We draw a sample of `r paste(sample_size)` students to investigate, and record the sample mean of the cheated exams. We call it $\bar{X_1}$. We repeat it, say `r paste(nrep)` times. We finally have `r paste(nrep)` values of $\bar{X_1},\ldots,\bar{X}_{10000}$. We put them together and call it (vector) $\bar{X}$. The distribution of $\bar{X}$ is plotted in the histogram below (left hand side).
+
+```{r, echo = FALSE, fig.width=10, fig.height=5}
+sample_mean = rep(NA, nrep) #You don't need to learn to code this
+set.seed(276)
+for (i in 1:nrep) {
+  #Here you randomly draw a sample_size students to investigate their behavior
+  sample = pop[sample(1:nstudents, size = sample_size, replace = FALSE), ]
+  #then you compute the mean number of cheated exams (over nexam)
+  sample_mean[i] = mean(sample$cheat)
+}
+
+# Parameters of the approximated normal distribution suggested by the CLT
+mu = mean(pop$cheat) #population mean
+sigma_squared = var(pop$cheat) #population variance
+sigma_squared_clt = sigma_squared / sample_size #variance as per the CLT formula
+
+{ #visualization
+  par(mfrow = c(1, 2))
+  hist(#the histogram
+    sample_mean,
+    main = "Distribution of the sample mean",
+    freq = F,
+    ylab = "",
+    xlab = expression(bar(X)),
+    col = "pink3",
+    border = F
+  )#, xlim = c(0,0.76))
+  curve(#the CLT bell curve
+    dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
+    main = "CLT normal approximation",
+    ylab = "",
+    xlab = expression(bar(X)),
+    from = mu - 4 * sqrt(sigma_squared_clt),
+    to = mu + 4 * sqrt(sigma_squared_clt)
+  )
+}
+```
+
+Now, let's stop imagining. We usually work with tight budget. We are therefore grateful to the statistician who laid out one of the most powerful foundations of statistics. [**The Central Limit Theorem (CLT) suggests that when we have a huge number of observations, the sample mean** **follows a normal distribution**.]{style="color:FireBrick"} Formally, when the sample size $n$ is large, $\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$. This curve is plotted above (right hand side). (*Small note:* Here is what I think the trickiest part. Previously when we learn to compute $\bar{X}$, it's a number. When we discuss the CLT, we consider $\bar{X}$ a random variable.)
+
+Let's compute and compare some probabilities, one with the imaginary data we collected, one with the normal approximation. For example, we would like to know the probability that the averaged number of cheated exams is more than 1, or $P(\bar{X}>1)$.
+
+```{r}
+cut_point = 1
+
+#If we had data, we simply count the number of observations that satisfy the condition (e.g., >1) and divide it by the total number of observations
+data_prob = sum(sample_mean > cut_point) / length(sample_mean)
+
+#This we practised serveral times when we learn about the normal distribution
+clt_prob = pnorm(
+  cut_point,
+  mean = mu,
+  sd = sqrt(sigma_squared_clt),
+  lower.tail = F
+)
+
+#Print out the results
+data.frame(data_prob, clt_prob)
+```
+
+Pretty close right? We are computing this with sample size $n=$ `r paste(sample_size)`. When the sample size gets larger, the results would get closer.
+
+Last time we pose an interesting question, **how large is large and how close is close?** The answer is beautifully captured in the variance of the normal approximation $\frac{\sigma^2}{n}$. Technically, when $n$ tends to $\infty$, the variance tends to 0. In real life, it means when $n$ gets larger and larger, the variance get smaller and smaller, i.e., we are more and more certain about the $\mu$.
+
+*If you'd like, you can try modifying the sample size in the Rmd file to get a better hang of "converging". In human-friendly language, it's like getting closer and closer to something but, in general, never reaching it. For example, last time in the Law of large number demo, we see that the sample mean converges to the population mean when the sample size is large, i.e., the sample mean gets closer and closer to the population mean when the sample size increases, but the sample mean is never equal to the population mean.*
+
+## Key takeaways
+
+(i) Distribution of the random variable $X$ is **different from** the distribution of the sample mean $\bar{X}$.
+(ii) When the number of observations is large, the sampling distribution of the sample mean $\bar{X}$ converges (approximates) to **the normal distribution** $N(\mu,\frac{\sigma^2}{n})$, **regardless** of the distribution of $X$.
+
+| For example, the blue bars illustrate the number of cheated exams following binomial distribution, while the pink bars represent the **average** number of cheated exams (the **sample mean**), following normal distribution when the sample size is large.
+
+```{r, echo=FALSE, fig.width=10, fig.height=4.5, warning=FALSE}
+par(mfrow = c(1, 2))
+barplot(#the blue bars
+  table(pop$cheat),
+  main = bquote("Distribution of " * X * " (binomial)"),
+  border = F,
+  col = "lightblue3",
+  xlab = "X"
+)
+hist(#the pink bars
+  sample_mean,
+  main = bquote("Distribution of " * bar(X) * " (normal)"),
+  border = F,
+  freq = F,
+  col = "pink3",
+  xlab = expression(bar(X)),
+  ylab = "",
+)
+curve(#the curve
+  dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
+  add = TRUE,
+  col = "palevioletred4",
+  lwd = 3,
+  main = "CLT normal approximation",
+  ylab = "",
+  from = mu - 4 * sqrt(sigma_squared_clt),
+  to = mu + 4 * sqrt(sigma_squared_clt)
+)
+```
+
+That's pretty much it. We hope you had fun learning about the CLT and understand its importance. If you have questions and/or need further explanation, feel free to start a discussion on Canvas. Until next time!
+
+*Huong*

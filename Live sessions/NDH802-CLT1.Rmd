@@ -1,7 +1,7 @@
 ---
-title: "NDH802 - Assignment 2"
-author: "Group no."
-output: pdf_document
+title: "NDH802 - CLT"
+author: "Huong"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -9,25 +9,34 @@ knitr::opts_chunk$set(echo = TRUE)
 rm(list=ls())
 ```
 
-Suppose we want to invetigate the cheating behaviors among the Swedish students in a school year. The variable of interest is binary, to cheat or not to cheat. Each student takes ten exams. The probability of cheating is 10% (similarly applicable for all exams, all students).
+### Key takeaways
 
-Normally, we don't know the so-called true distribution, but for the sake of learning CLT, let's pretend we do to simulate data. Once you have created the data, you pretend you didn't know anything about it and try to "infer" it from your observations.
+-   Distribution of the random variable $X$ is **different from** the distribution of the sample mean $\bar{X}$.
+-   When number of observations is large, the the distribution of the sample mean $\bar{X}$ converges (approximates) to the normal distribution $N(\mu,\frac{\sigma^2}{n})$
+
+### Illustration
+
+Suppose we want to investigate the cheating behaviors among the Swedish students in a school year. We assume 2 outcomes, to cheat or not to cheat. Each student takes ten exams. The probability of cheating is 10% (similarly applicable for all exams, all students). To make it fancier, we write it in statistical language. Let $X$ denote the cheated exams, $X \sim Bin(10, 0.1)$
 
 ```{r, echo = FALSE, fig.width=10, fig.height=5}
+#Normally, we don't know the so-called true distribution, but for the sake of learning CLT, let's pretend we do to simulate data. Once you have created the data, you pretend you didn't know anything about it and try to "infer" it from your observations.
+
 #This is the so-called truth
 nstudents = 360000
 nexam = 10
 prob_cheat = 0.1
 pop = data.frame("studentID" = 1:nstudents,
                  "cheat" = rbinom(nstudents, nexam, prob_cheat))
-#Now forget the fact that we create this. Just imagine it is just... life!
+#Now forget the fact that we create this. 
+
+#Taking samples from the population
+sample_size = 100 #Number of students you draw out every time of investigation
+nrep = 5000 #You do it nrep times
 ```
 
-```{r, echo = FALSE, fig.width=10, fig.height=5}
-#Taking samples from the population
-sample_size = 500 #Number of students you draw out every time of investigation
-nrep = 100 #You do it nrep times
+Let's say we have big budget. We draw a sample of `r paste(sample_size)` students to investigate, and record the sample mean of the cheated exams. We call it $\bar{X_i}$. We repeat it `r paste(nrep)` times, i.e, we finally have `r paste(nrep)` values of $\bar{X_i}$. We put them together and call them $\bar{X}$. The distribution of $\bar{X}$ is plotted in the histogram below.
 
+```{r, echo = FALSE, fig.width=10, fig.height=5}
 sample_mean = rep(NA, nrep) #You don't need to learn to code this
 set.seed(802)
 for(i in 1:nrep) {
@@ -54,13 +63,13 @@ curve(dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
 }
 ```
 
-```{r}
+The great statisticians before us know that researchers usually work with tight budget. They suggest a theorem to approximate the distribution of sample mean to the normal distribution.[**The Central Limit Theorem suggests that when we have a huge number of observations (the number of realities in our case), these means** follow a normal distribution.]{style="color:FireBrick"} Formally, when $n$ is large, $\bar{X_n} \sim N(\mu,\frac{\sigma^2}{n})$.
+
+```{r, echo=FALSE}
 cutpoint = mu
 sum(sample_mean < cutpoint)/length(sample_mean)
 pnorm(cutpoint, mean = mu, sd = sqrt(sigma_squared_clt))
 ```
-
-
 
 ```{r, echo = FALSE, fig.width=10, fig.height=5}
 # {#simulation set up
@@ -93,4 +102,3 @@ pnorm(cutpoint, mean = mu, sd = sqrt(sigma_squared_clt))
 # }
 # }
 ```
-

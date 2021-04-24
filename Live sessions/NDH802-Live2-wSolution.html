@@ -227,7 +227,8 @@ summary {
 a = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale))
 sum(a) #all of them add up to 1</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>As some of you asked, you can write like this in the assignment. <span class="math inline">\(P(RM \cap female)\)</span> is</p>
+<p>As some of you asked, you can write like this in the assignment.</p>
+<p><span class="math inline">\(P(RM \cap female)\)</span> is</p>
 <pre><code>## [1] 0.184</code></pre>
 <pre class="r"><code>#If you put margin =1, we change the sample space to the variable in the rows (in this case, the program BE/RM)
 b = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
@@ -313,7 +314,7 @@ R_and_loveit = prop.table(table(survey$Q1, survey$Q2))[2,2] #because R and love 
 <p><span class="math inline">\(P(Q2 = \text{R}\cap Q1 = \text{Crying} \cup \text{Meh})\)</span></p>
 <pre class="r"><code>as.numeric(R) - R_and_loveit</code></pre>
 <pre><code>## [1] 0.3636364</code></pre>
-<pre class="r"><code>#I&#39;ll let you think about why :) But you cannot do it to me in the assignments. Please explain why, it&#39;s the most exciting part.</code></pre>
+<pre class="r"><code>#I&#39;ll let you think about why :) But please don&#39;t do it to me in the assignments. Do explain why, it&#39;s the most exciting part.</code></pre>
 </div>
 </div>
 </div>

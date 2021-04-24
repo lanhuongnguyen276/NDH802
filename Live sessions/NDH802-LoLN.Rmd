@@ -1,5 +1,5 @@
 ---
-title: "Law of large number examples"
+title: "Law of large number at a glance"
 author: "NDH802 R Application"
 output: html_document
 runtime: shiny
@@ -7,22 +7,40 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r, echo=FALSE, message=FALSE}
-setwd("~/Documents/GitHub/NDH802")
-library(shiny)
+#setwd("~/Documents/GitHub/NDH802")
+if(!require(shiny)){
+    install.packages("shiny")
+    library(shiny)
+}
 ```
 
 <br>
 
+## Visual Illustrations
+
+Below are some demos of some of the distributions we have learned in this course. You can adjust the parameters and sample size and observe the changes in the sample mean and the probability distribution.
+
 ### Bernoulli distribution
 
-```{r, echo=FALSE, out.width=0.1}
-sliderInput("p_bern", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
-sliderInput("n_bern", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
+```{r bern, echo=FALSE, out.width=0.1}
+sliderInput(
+  "p_bern",
+  label = "Parameter p:",
+  min = 0,
+  max = 1,
+  value = 0.5,
+  step = 0.01
+)
+sliderInput(
+  "n_bern",
+  label = "Number of observations:",
+  min = 1,
+  max = 10000,
+  value = 100,
+  step = 1
+)
 
-set.seed(2706)
+#set.seed(2706)
 renderPlot(barplot(
   table(rbinom(input$n_bern, 1, input$p_bern)),
   main = paste(
@@ -38,11 +56,27 @@ renderPlot(barplot(
 
 ### Binomial distribution
 
-```{r, echo=FALSE, out.width=0.1}
-sliderInput("p_bin", label = "Parameter p:", min = 0, max = 1, value = 0.5, step = 0.01)
-sliderInput("n_bin", label = "Number of observations:", min = 1, max = 10000, value = 100, step = 1)
+Note: For illustration purpose, number of trials is fixed at 100.
 
-set.seed(2706)
+```{r bin, echo=FALSE, out.width=0.1}
+sliderInput(
+  "p_bin",
+  label = "Parameter p:",
+  min = 0,
+  max = 1,
+  value = 0.5,
+  step = 0.01
+)
+sliderInput(
+  "n_bin",
+  label = "Number of observations:",
+  min = 1,
+  max = 10000,
+  value = 100,
+  step = 1
+)
+
+#set.seed(2706)
 renderPlot(barplot(
   table(rbinom(input$n_bin, 100, input$p_bin)),
   main = paste(
@@ -58,14 +92,21 @@ renderPlot(barplot(
 
 ### Standard normal distribution
 
-```{r, echo=FALSE}
-sliderInput("n_norm", label = "Number of observations:", min = 1, max = 10000, value = 1000, step = 1)
+```{r norm, echo=FALSE}
+sliderInput(
+  "n_norm",
+  label = "Number of observations:",
+  min = 1,
+  max = 10000,
+  value = 1000,
+  step = 1
+)
 
 renderPlot(hist(
   rnorm(input$n_norm), breaks = 50,
   main = paste(
     "Standard normal distribution with",
-    input$n1,
+    input$n_norm,
     "observation(s).",
     "Sample mean =",
     round(mean(rnorm(input$n_norm)), digits = 5)
@@ -73,4 +114,10 @@ renderPlot(hist(
 ))
 ```
 
-Notice that sample mean $\bar{X}$ gets closer and closer to the population mean when the number of observation $n$ increases. However, it will *never* be equal to the $\mu$.
+## Key takeaways:
+
+**Notice that sample mean** $\bar{X}$ **gets closer and closer to the population mean when the number of observation** $n$ **increases.** **However,** $\bar{X}$ **will *never* be equal to** $\mu$**.** If you're wondering how large is *large* and how close is *close*, check out the the Central Limit Theorem.
+
+*Huong*
+
+Ps: We hope the code didn't freak you out. No worries, they are not parts of this course :)

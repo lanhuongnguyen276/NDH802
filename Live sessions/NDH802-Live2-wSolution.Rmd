@@ -1,0 +1,171 @@
+---
+title: "NDH802 R Application - Live session 2"
+author: "Huong Nguyen"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Live session
+
+```{r}
+salaries = read.csv("https://bit.ly/3r918BW")
+```
+
+## Probability of an event
+
+From the data you have, what is the probability of RM/BE student? More formally, compute $P(RM)$ and $P(BE)$.
+
+```{r}
+table(salaries$program)/nrow(salaries)
+prop.table(table(salaries$program))
+#these two commands give the same results
+```
+
+Similarly, can you compute $P(male)$ and $P(female)$?
+
+```{r}
+table(salaries$whatisyourgender1isfemale)/nrow(salaries) #including NA
+```
+
+```{r}
+prop.table(table(salaries$whatisyourgender1isfemale)) #without NA observations
+```
+
+## Joint and conditional probability
+
+Now let's spice things up a little bit. Assume we want to compute $P(RM \cap female)$, $P(female\mid RM)$ and $P(RM \mid female)$
+
+```{r}
+#If we don't put anything, the sample space is all of the observations included in our table
+a = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale))
+sum(a) #all of them add up to 1
+```
+
+As some of you asked, you can write like this in the assignment.
+
+$P(RM \cap female)$ is
+
+```{r, echo=FALSE}
+print(a[1,1]) 
+```
+
+```{r}
+#If you put margin =1, we change the sample space to the variable in the rows (in this case, the program BE/RM)
+b = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
+           margin = 1)
+sum(b[1,]) #the probabilities in each row add up to 1
+sum(b[2,]) #the probabilities in each row add up to 1
+```
+
+```{r}
+#If you put margin =2, we change the sample space to the variable in the columns (in this case, the gender female/male)
+c = prop.table(table(salaries$program, salaries$whatisyourgender1isfemale),
+           margin = 2)
+sum(c[,1]) #the probabilities in each column add up to 1
+sum(c[,2]) #the probabilities in each column add up to 1
+```
+
+# Your turn:
+
+```{r}
+survey = read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Live%20sessions/NDH802survey.csv")[,-1]
+```
+
+## Probability of an event
+
+$P(Q2 = \text{R})$
+
+```{r}
+#We learn this in the morning session
+prop.table(table(survey$Q2))
+
+#If you want to "extract" a number from your prop.table
+R = prop.table(table(survey$Q2))[2] #because R is the second element
+```
+
+$P(Q1 = \text{Love it})$
+
+```{r}
+#We learn this in the morning session
+prop.table(table(survey$Q1))
+
+#If you want to "extract" a number from your prop.table
+loveit = prop.table(table(survey$Q1))[2] #because loveit is the second element
+```
+
+$P(Q1 = \text{Crying} \cup \text{Meh})$
+
+Formally, we learn that $P(Crying \cup Meh) = P(Crying) + P(Meh) - P(Crying \cap Meh)$. We know that Crying and Meh are mutually exclusive i.e. $P(Crying \cap Meh) = 0$. Therefore, $P(Crying \cup Meh) = P(Crying) + P(Meh)$
+
+```{r}
+crying = prop.table(table(survey$Q1))[1]
+meh = prop.table(table(survey$Q1))[3]
+crying_union_meh = as.numeric(crying) + as.numeric(meh) #as crying and meh are not numbers, we "force" them to be numbers with as.numeric
+```
+
+We also know that Q1 has only 3 outcomes (Love it, Meh and Crying) therefore they are collectively exhaustive (and by construction, they are mutually exclusive). Therefore, $P(Crying) + P(Love it) + P(Meh) = 1$
+
+```{r}
+#Another way to calculate crying_union_meh
+crying_union_meh_2 = 1 - as.numeric(loveit) #notice that it gives you the same results as before
+```
+
+## Conditional probability
+
+$P(Q2 = \text{R}\mid Q1 = \text{Love it})$
+
+```{r}
+#This code gives you the prop.table
+prop.table(table(survey$Q1, survey$Q2), margin = 1)
+
+#Then you can extract speciic values from your prop.table
+R_given_loveit = prop.table(table(survey$Q1, survey$Q2), margin = 1)[2,2] #because R|love it is second row/second colum
+```
+
+$P(Q2 = \text{Excel}\mid Q1 = \text{Love it})$
+
+```{r}
+Excel_given_loveit = prop.table(table(survey$Q1, survey$Q2), margin = 1)[2,1] #because R given love it is second row/second colum
+```
+
+Notice that $P(Q2 = \text{R}\mid Q1 = \text{Love it}) + P(Q2 = \text{Excel}\mid Q1 = \text{Love it}) = 1$
+
+```{r}
+R_given_loveit + Excel_given_loveit
+```
+
+### Joint probability
+
+$P(Q2 = \text{R}\cap Q1 = \text{Love it})$
+
+```{r}
+#This code gives you the prop.table
+prop.table(table(survey$Q1, survey$Q2))
+
+#Then you can extract speciic values from your prop.table
+R_and_loveit = prop.table(table(survey$Q1, survey$Q2))[2,2] #because R and love it is second row/second colum
+```
+
+$P(Q2 = \text{Excel}\cap Q1 = \text{Love it})$
+
+```{r}
+Excel_and_loveit = prop.table(table(survey$Q1, survey$Q2))[2,1] #because Excel and love it is second row/first colum
+```
+
+Notice that $P(Q2 = \text{Excel}\cap Q1 = \text{Love it}) + P(Q2 = \text{R}\cap Q1 = \text{Love it}) = P(Q1 = \text{Love it})$
+
+```{r}
+print(paste(loveit, R_and_loveit + Excel_and_loveit))
+#you don't need to learn to code print() and paste(). It is for illustration purpose only
+```
+
+$P(Q2 = \text{R}\cap Q1 = \text{Crying} \cup \text{Meh})$
+
+```{r}
+as.numeric(R) - R_and_loveit
+#I'll let you think about why :) But please don't do it to me in the assignments. Do explain why, it's the most exciting part.
+```
