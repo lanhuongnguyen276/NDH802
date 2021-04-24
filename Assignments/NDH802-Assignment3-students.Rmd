@@ -29,45 +29,44 @@ Set your working directory
 #setwd("")
 ```
 
-Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. \textcolor{red}{Fill in your group number within `set.seed()`.} For example, if you are group 3, make it `set.seed(3)`. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.\
-*Note*. If you make the wrong seed, your assignment will **not** be graded.
+Run this code chunk to load data into your R Environment. Fill in your group number next to `our_group_number`. For example, if you are group 3, make it `our_group_number = 3`. Hereby each and every group should have a unique `sample` for questions 1 and a unique `df` for question 2. Accordingly, your results should be different from other groups' and you should not be comparing them.\
+*Note*. If you fill in the wrong group, your assignment will **not** be graded.
 
 ```{r}
-inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
-set.seed(1); df <- inference_dataset[sample(1:nrow(inference_dataset),
-                           size = 1000000,
-                           replace = FALSE), -1]
-rm(inference_dataset)
-sample_mean = runif(1, 50, 60)
-```
+our_group_number = 10
 
-Please refer to Canvas, Hand-in 3 for more details about the data set.
+inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
+set.seed(our_group_number); df <- inference_dataset[sample(1:nrow(inference_dataset),
+                           size = 1000000,
+                           replace = FALSE), -1]; rm(inference_dataset)
+sample = read.csv("https://bit.ly/3ngaGL8")[,our_group_number]
+```
 
 \newpage
 
 ### Question 1. Sampling theory
 
-The maximum score for the course NDH802 is 70. Suppose you read an (imaginary) report that says the scores are normally distributed with the standard deviation of 12. Unfortunately, the population (so-called the *true*) mean score is not readable.
+The maximum score for the course NDH802 is 70. Out of curiosity, you talk to a random sample of 25 students from previous years to learn about the scores and record them in the `sample`.
 
-(a) You talk to a random sample of 36 students from previous years and their scores are recorded in the following `sample`. Please fill in your group number and run the whole following code chunk to see the scores.
+```{r}
+sample
+t.test(sample, conf.level = 0.9)
+```
 
-    ```{r, echo=FALSE}
-    #please fill in your group number in set.seed()
-    set.seed(8); sample = round(rnorm(36, 55, 12),0)
-    cat(sample)
-    ```
+(a) Based on the data you collected, what is the 90% confidence interval for the population mean? (0.5p) How would you interpret the 90% confidence interval, in general and in this case? (0.5p)
 
-    Find the 90% confidence interval for the population mean score (0.5p). How would you interpret the 90% confidence interval, in general and in this case? (0.5p)
+(b) You now find an (imaginary) report that says the scores are normally distributed with the standard deviation of 18. With this new information, what is the 90% confidence interval for the population mean? (0.5p) (Why) Is this confidence interval different from what you got from (a)? (0.5p)
 
-(b) Assume that you want to increase the confidence level to 99%, but you do not want the confidence interval to be longer. What would you do? Please illustrate your answer with empirical evidence(s). For example, if you propose to decrease or increase something, also indicate why and by/to how much. (1p)
+(c) Assume that you want to increase the confidence level to 99%, but you do not want the confidence interval to be longer. What would you do? Please illustrate your answer with empirical evidence(s). For example, if you propose to adjust something, also indicate why and by/to how much. (1p)
 
     ```{r}
-    sigma = 12
+    sigma = 10
     n = 36
     x_bar = mean(sample)
 
     ucl = x_bar + 1.645*sigma/sqrt(n)
     lcl = x_bar - 1.645*sigma/sqrt(n)
+    ucl; lcl
 
     ((2.58*sigma)/(ucl-x_bar))^2
     ```
