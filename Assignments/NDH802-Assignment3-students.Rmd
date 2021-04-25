@@ -12,7 +12,7 @@ rm(list=ls())
 ------------------------------------------------------------------------
 
 -   The assignment includes 3 questions, 4 points each.
--   Question 1 is purely theoretical (no data). Question 2 and 3 are empirical (based on the data provided).
+-   Question 1 is based on `sample`. Question 2 and 3 are based on `df`.
 -   Your submission should be an RMarkdown file with your solutions in words and/or R code. If you handwrite parts of your assignment, insert it as an image near the corresponding question(s). Name the files NDH802_Assignment1_GroupNumber.
 -   You should work in groups and contribute equally.
 -   You can copy my code, but make sure you understand it.
@@ -29,7 +29,7 @@ Set your working directory
 #setwd("")
 ```
 
-Run this code chunk to load data into your R Environment. Fill in your group number next to `our_group_number`. For example, if you are group 3, make it `our_group_number = 3`. Hereby each and every group should have a unique `sample` for questions 1 and a unique `df` for question 2. Accordingly, your results should be different from other groups' and you should not be comparing them.\
+Run this code chunk to load data into your R Environment. [Fill in your group number next to `our_group_number =`. For example, if you are group 3, make it `our_group_number = 3`]{.ul}. Hereby each and every group should have a unique `sample` for questions 1 and a unique `df` for question 2 and 3. Accordingly, your results should be different from other groups' and you should not be comparing them.\
 *Note*. If you fill in the wrong group, your assignment will **not** be graded.
 
 ```{r}
@@ -39,41 +39,38 @@ inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
 set.seed(our_group_number); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]; rm(inference_dataset)
-sample = read.csv("https://bit.ly/3ngaGL8")[,our_group_number]
+sample = read.csv("https://bit.ly/3dLzoju")[,our_group_number]
 ```
 
 \newpage
 
-### Question 1. Sampling theory
+### Question 1. Sampling theory and confidence intervals
 
-The maximum score for the course NDH802 is 70. Out of curiosity, you talk to a random sample of 25 students from previous years to learn about the scores and record them in the `sample`.
+The maximum score for the course NDH802 exam is 70. Out of curiosity, you talk to a random sample of 25 students from previous years to learn about the scores and record them in the `sample`.
 
 ```{r}
 sample
-t.test(sample, conf.level = 0.9)
 ```
 
-(a) Based on the data you collected, what is the 90% confidence interval for the population mean? (0.5p) How would you interpret the 90% confidence interval, in general and in this case? (0.5p)
+(a) Based on your `sample`, what is the 90% confidence interval (CI) for the population mean? (0.5p) How would you interpret the 90% CI, in general and in this case? (0.5p)
 
-(b) You now find an (imaginary) report that says the scores are normally distributed with the standard deviation of 18. With this new information, what is the 90% confidence interval for the population mean? (0.5p) (Why) Is this confidence interval different from what you got from (a)? (0.5p)
+(b) Your `sample` stay unchanged. What is the 90% CI for the population mean in the following 2 cases? (0.5p)
 
-(c) Assume that you want to increase the confidence level to 99%, but you do not want the confidence interval to be longer. What would you do? Please illustrate your answer with empirical evidence(s). For example, if you propose to adjust something, also indicate why and by/to how much. (1p)
+-   *Case 1*: the total number of students who have ever taken NDH802 exam is 1,000
 
-    ```{r}
-    sigma = 10
-    n = 36
-    x_bar = mean(sample)
+-   *Case 2*: the total number of students who have ever taken NDH802 exam is 10,000
 
-    ucl = x_bar + 1.645*sigma/sqrt(n)
-    lcl = x_bar - 1.645*sigma/sqrt(n)
-    ucl; lcl
+    Is this CI different from the one you got from (a)? Why/why not? (0.5p)
 
-    ((2.58*sigma)/(ucl-x_bar))^2
-    ```
+(c) You find an (imaginary) report that says the exam scores are normally distributed with the standard deviation of 12. With this new information, what is the 90% CI for the population mean? (0.5p) Is this CI different from the one you got from (a)? Why/why not? (0.5p)
+
+(d) Assume that you want to increase the confidence level to 99%, but you do not want the CI to be wider, i.e., you want the same CI that you found in (c). What would you do? Justify your answer with empirical evidence(s). For example, if you propose to adjust something, please indicate why and by/to how much. (1p)
+
+*Note*: All assumptions in this question are hypothetical.
 
 ### Question 2. Hypothesis testing
 
-(a) Imagine you are the customer relationship manager. One of your colleagues argues that **the average `value` of the customers is 4150**. Do you reject this claim at 95% confidence level based on your sample data (i.e., `df`)? Justify your answer. (1p)
+(a) Imagine you are the customer relationship manager. One of your colleagues argues that **the average `value` of the customers is 4150**. Do you reject this claim at 95% confidence level based on your sample data `df`? Justify your answer. (1p)
 (b) Now you want to investigate only the customers who return more than 30 items. Your colleague argues that **their average `value` is less than 40000**. Do you reject this claim at 95% confidence level based on your sample data (i.e., `df`)? Justify your answer. (1p)
 (c) Consider these two groups of customers:
 
