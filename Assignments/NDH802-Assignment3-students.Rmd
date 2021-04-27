@@ -49,12 +49,12 @@ sample = read.csv("https://bit.ly/3dLzoju")[,our_group_number]
 The maximum score for the course NDH802 exam is 70. Out of curiosity, you talk to a random sample of 25 students from previous years to learn about the scores and record them in the `sample`.
 
 ```{r}
-sample
+#sample
 ```
 
 (a) Based on your `sample`, what is the 90% confidence interval (CI) for the population mean? (0.5p) How would you interpret the 90% CI, in general and in this case? (0.5p)
 
-(b) Your `sample` stay unchanged. What is the 90% CI for the population mean in the following 2 cases? (0.5p)
+(b) Your `sample` stay unchanged. What are the 90% CIs for the population mean in the following 2 cases? (0.5p)
 
 -   *Case 1*: the total number of students who have ever taken NDH802 exam is 1,000
 
@@ -74,15 +74,15 @@ sample
 (b) Now you want to investigate only the customers who return more than 30 items. Your colleague argues that **their average `value` is less than 40000**. Do you reject this claim at 95% confidence level based on your sample data (i.e., `df`)? Justify your answer. (1p)
 (c) Consider these two groups of customers:
 
--   Group 1: Loyal customers whose points are lower than 6500
--   Group 2: Not loyal customers whose points are higher than 1000
+-   *Group 1*: Loyal customers whose points are lower than 6500
+-   *Group 2*: Not loyal customers whose points are higher than 1000
 
 Which group is more valuable (based on their `value`)?\
 Perform the test at 99% confidence level (1p) and justify your choice (1p).
 
 ### Question 3. Correlation and regression
 
-(a) Your objective for 2021 is to increase the customer `value`. In order to do that, you first aim to understand which factors (variables) are the most influential. Write your own linear regression equation (modify the one below), perform the estimation, print out the model estimation. $$ value = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \epsilon $$ You are free to include any variables in `df` (other than `channeltype`) as your dependent variables. (1p)
+(a) Your objective for 2021 is to increase the customer `value`. In order to do that, you first aim to understand which factors (variables) are the most influential. Write your own linear regression equation (modify the one below), perform the estimation, print out the model estimation. $$ value = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \epsilon $$ You are free to include any variables in `df` as your dependent variables. `channeltype` is categorical variable, which is a little more difficult to work with (1p)
 
 (b) You need to explain the results from (a) to your boss who has not taken the course "Data analytics". How would you do that? (1p)
 
@@ -92,7 +92,7 @@ Perform the test at 99% confidence level (1p) and justify your choice (1p).
 read.csv("https://bit.ly/30tIXfp")[,-1]
 ```
 
-Based on your linear regression model, which customer (choose one) do you think is the most valuable? Justify your choice. (1p)
+Based on your linear regression model, which customer (choose one) do you think is the most valuable and why?(1p)
 
 (d) Looking at the figure below, your colleague suggests that you should give the customers more `points` to increase their `value`. What do you think? (1p)
 
