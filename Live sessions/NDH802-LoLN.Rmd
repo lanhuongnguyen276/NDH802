@@ -20,6 +20,8 @@ if(!require(shiny)){
 
 Below are some demos of some of the distributions we have learned in this course. You can adjust the parameters and sample size and observe the changes in the sample mean and the probability distribution.
 
+*Note*: Don't freak out, the code is not part of this course. Just hit Run Document (where the Knit button usually is) and have fun with the interactive html doc!
+
 ### Bernoulli distribution
 
 ```{r bern, echo=FALSE, out.width=0.1}
@@ -114,10 +116,25 @@ renderPlot(hist(
 ))
 ```
 
-## Key takeaways:
+## Key takeaways
 
-**Notice that sample mean** $\bar{X}$ **gets closer and closer to the population mean when the number of observation** $n$ **increases.** **However,** $\bar{X}$ **will *never* be equal to** $\mu$**.** If you're wondering how large is *large* and how close is *close*, check out the the Central Limit Theorem.
+**Notice that sample mean** $\bar{X}$ **gets closer and closer to the population mean when the number of observation** $n$ **increases.** **However,** $\bar{X}$ **will *never* be equal to** $\mu$**.** If you're wondering how large is *large* and how close is *close*, check out the Central Limit Theorem.
+
+## Why do we care?
+
+The Law of Large numbers and the Central Limit Theorem are the foundations of statistics. One application is that they help us to say something about the population (which is normally unknown) through the sample data.
+
+If you're not a fan of technical terms, let us consider a simple real life example. Imagine you go to a casino and place bet. The bet is 50 kr. The dealer then flips a coin. If it is head, you win (additionally) 25kr, if it is tail, you lose the bet. The probability of getting a head is 60%. The probability of winning is higher than losing, then it seems like the game is in our favor, right? Let us give it a second thought and calculate the expected value:
+
+$$
+E(X) = \text{wining value}*P(\text{you win}) + \text{losing value}*P(\text{you lose})
+ = 25*0.6+(-50)*0.4 = -5 
+$$
+
+**What does this negative value mean?** It means if the player places the bet many many times, (s)he is going to lose. Luckily for the player, unless (s)he plays many many times (which is highly unlikely), the LLN won't apply to the single player.
+
+**Then?** The LLN, however, applies to the casino, as there are a lot of players (i.e., the big sample size $n$ we discussed). If a player loses 5kr, it means the casino makes 5kr. If there are, say 1,000,000 players, the casino makes 5,000,000 kr, easy peasy.
+
+**Will knowing the LLN certainly prevent you, as a player, from losing money?** Nope, gambling is probabilistic, and the best you can do is to increase/decrease the chance that you win/lose. But at least now you know you can't outsmart the casinos, in the long run 😪.
 
 *Huong*
-
-Ps: We hope the code didn't freak you out. No worries, they are not parts of this course :)

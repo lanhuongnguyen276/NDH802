@@ -17,7 +17,7 @@ Kindly note that these assumptions are purely hypothetical.
 
 ### Data simulation
 
-Normally, we don't know the so-called *true* distribution, but for the sake of learning the CLT, let's pretend we do to simulate some data. In the Rmd file you'll find the data simulation process. It is, however, not the focus of this illustration.
+Normally, we don't know the so-called *true* distribution, but for the sake of learning the CLT, let's pretend we do (for a moment), to simulate some data. In the Rmd file you'll find the data simulation process. It is, however, not the focus of this illustration.
 
 ```{r data sim, echo = FALSE, fig.width=10, fig.height=5}
 #This is the so-called truth
@@ -37,7 +37,7 @@ Now we have a so-called **population** data that includes `r paste(nstudents)` r
 head(pop,10)
 ```
 
-Once we have created the data, we pretend (again) it has nothing to do with us. Two activities we often do when we learn statistics are to imagine and to pretend we know or don't know things, depending on the questions.
+Once we have created the data, we pretend (again) it has nothing to do with us. Two activities we often do when we learn statistics are to imagine and to pretend we know or don't know things, depending on the questions. I personally find it the most confusing thing, but hang in there, you will be used to it before you know.
 
 Back to our research question. If we had unlimited time and resources, we would investigate each and every student and record his/her cheating behavior. Unfortunately, we don't. That's when sampling comes to our rescue.
 
@@ -88,9 +88,9 @@ sigma_squared_clt = sigma_squared / sample_size #variance as per the CLT formula
 }
 ```
 
-Now, let's stop imagining. We usually work with tight budget. We are therefore grateful to the statistician who laid out one of the most powerful foundations of statistics. [**The Central Limit Theorem (CLT) suggests that when we have a huge number of observations, the sample mean** **follows a normal distribution**.]{style="color:FireBrick"} Formally, when the sample size $n$ is large, $\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$. This curve is plotted above (right hand side). (*Small note:* Here is what I think the trickiest part. Previously when we learn to compute $\bar{X}$, it's a number. When we discuss the CLT, we consider $\bar{X}$ a random variable.)
+Now, let's stop imagining. We usually work with tight budget. We are therefore grateful to the statistician who laid out one of the most powerful foundations of statistics. [**The Central Limit Theorem (CLT) suggests that when we have a huge number of observations, the sample mean** **follows a normal distribution**.]{style="color:FireBrick"} Formally, when the sample size $n$ is large, $\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$. This curve is plotted above (right hand side). (*Small note:* Here is what I think the trickiest part. Previously when we learn to compute $\bar{X}$, it's a tangible number. When we discuss the CLT, we consider $\bar{X}$ a random variable.)
 
-Let's compute and compare some probabilities, one with the imaginary data we collected, one with the normal approximation. For example, we would like to know the probability that the averaged number of cheated exams is more than 1, or $P(\bar{X}>1)$.
+Let's compute and compare some probabilities, one with the imaginary data we collected, one with the normal approximation. For example, we would like to know the probability that the **averaged** number of cheated exams is more than 1, or $P(\bar{X}>1)$.
 
 ```{r}
 cut_point = 1
@@ -153,6 +153,12 @@ curve(#the curve
 )
 ```
 
-That's pretty much it. We hope you had fun learning about the CLT and understand its importance. If you have questions and/or need further explanation, feel free to start a discussion on Canvas. Until next time!
+## Why do we care?
+
+In real life, we normally (i) don't know the population distribution and (ii) have limited resources. The CLT allows us to "guess" the population mean from the sample mean with some confidence. How, you may ask? We'll find out in the Confidence Intervals module.
+
+### That's pretty much it.
+
+We hope you had fun learning about the CLT. It would be nice that you recall the fancy name of the theorem, yet the focus here is getting you to understand the key takeaways and why it matters. If you have questions and/or need further explanation, feel free to start a discussion on Canvas. Until next time!
 
 *Huong*
