@@ -1,0 +1,37 @@
+---
+title: "NDH802 - Hypothesis testing"
+author: "Huong"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Imagine you receive a random email from a person who claims to be an expert in online stock trading. (S)he says that she can correctly predict if the stock price of company H increases or decreases the next day. The first 10 guesses are free. If (s)he correctly predict at least 9 times out of 10, starting the 11th guess, you have to pay 1,000 kr.
+
+You think to yourselves, the probability of arbitrarily guessing it right 9 out of 10 is very very low. Specifically,
+
+```{r}
+#try it!
+```
+
+You agree to receive the first 10 guesses. Every day you receive the guess if the price increases or decreases the next day and cross check it with the actual price. After 10 days, it was right 9 out of 10 times. It is mind blowing!!!
+
+You just learned about hypothesis testing and you want to give it a try. The null hypothesis is that s/he arbitrarily guesses, the alternative hypothesis is that s/he actually has some intel that increases the probability of guessing right.
+
+H0: p= 0.5
+
+H1: p\>0.5
+
+```{r}
+data = c(1,1,1,1,1,1,1,1,1,0)
+t.test(data, mu = 0.5, alternative = "greater", conf.level = 0.99)
+```
+
+The p-value is so small, you fail to reject reject the null hypothesis, even at 99% confidence level. You believe this person really have something. You pay for the 11th guess, unfortunately, it is wrong.
+
+# HOW COME???

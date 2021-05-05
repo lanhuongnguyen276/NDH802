@@ -1,0 +1,179 @@
+---
+title: "NDH802 Solutions to rec. exercises Chap 7"
+author: "Huong"
+date: "5/2/2021"
+output: pdf_document
+  # prettydoc::html_pretty:
+  #   theme: hpstr
+  #   highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 7.14
+
+*It is known that the standard deviation in the volumes of 20-ounce (591-millliliter) bottles of natural spring water bottled by a particular company is 5 millliliters. One hundred bottles are randomly sampled and measured.*
+
+```{r}
+#Fist thing first, summarize the assumptions
+sigma = 5
+n = 100
+```
+
+(a) *Calculate the standard error of the mean*
+
+    The formula to find the standard error SE:
+
+$$
+SE = \frac{\sigma}{\sqrt{n}}
+$$
+
+```{r}
+standard_error = sigma/sqrt(n)
+#by hand, it is exactly the same. the square root of 100 is 10, therefore
+standard_error_byhand = 5/10
+```
+
+(b) *Find the margin of error of a 90% confidence interval estimate for the population mean volume. From the question, we know the population standard deviation. We therefore use the z-score to calculate the confidence interval.*
+
+    The formula to find the margin of error ME
+
+$$
+ME = z_{\alpha/2} \frac{\sigma}{\sqrt{n}} = z_{\alpha/2} * \text{SE}
+$$We first define $\alpha$, which is 1-CI=1-0.9=0.1. To find the z-score in R, we use `qnorm()` with $p=\alpha/2 = 0.1/2 = 0.05$. To get the positive z-score, we add `lower.tail = F`.
+
+```{r}
+z_score_90 = qnorm(0.05, lower.tail = F)
+```
+
+Otherwise, you can look up the z table if that suits you better. Now we know that the z score is `r z_score_90`, we just need to plug it in the formula.
+
+```{r, results='markup'}
+ME_90 = z_score_90*sigma/sqrt(n)
+#alternatively
+ME_90_2 = z_score_90*standard_error
+```
+
+The margin of error of a 90% confidence interval estimate for the population mean volume is `r ME_90`
+
+(c) *Calculate the width for a 98% confidence interval for the population mean volume*
+
+    Similar to b, we first find the z score corresponding to CI = 98%. In this case, $p=\alpha/2 = 0.02/2 = 0.01$. Then we find the ME:
+
+```{r}
+z_score_98 = qnorm(0.01, lower.tail = F)
+ME_98 = z_score_98*sigma/sqrt(n)
+```
+
+The width is twice the ME.
+
+```{r}
+width_98 = 2*ME_98
+```
+
+The z score is `r z_score_98`, ME is `r ME_98`, and the width is `r width_98`
+
+## 7.21
+
+*A random sample of 16 tires was tested to estimate the average life of this type of tire under normal driving conditions. The sample mean and sample standard deviation were found to be 47,500 miles and 4,200 miles, respectively.*
+
+```{r}
+#Fist thing first, summarize the assumptions
+n = 16
+x_bar = 47500
+s = 4200
+```
+
+(a) *Calculate the margin of error for a 95% confidence interval estimate of the mean lifetime of this type of tire if driven under normal driving conditions.*
+
+    The formula to find the ME when population variance is unknown.
+
+    $$
+    ME = t_{\alpha/2} \frac{s}{\sqrt{n}}
+    $$
+
+    We first ask R (or the t-table) the t-score.
+
+    ```{r}
+    t_score_95 = qt(0.025, df = n-1, lower.tail = F)
+    pt(t_score_95, df = n-1, lower.tail = F)
+    ```
+
+    Now that we have t_score = `r t_score_95`, we plug in the formula
+
+    ```{r}
+    ME_95 = t_score_95*s/sqrt(n)
+    ```
+
+    The ME is `r round(ME_95,0)`.
+
+(b) *Find the UCL and the LCL of a 90% confidence interval estimate of the mean lifetime of this type of tire if driven under normal driving conditions.*
+
+    We first find the ME at 90% confidence level. As you already know the drill, we'll go fast.
+
+    ```{r}
+    t_score_90 = qt(0.05, df = n-1, lower.tail = F)
+    ME_90 = t_score_90*s/sqrt(n)
+    ```
+
+    Theoretically, $CI = \bar{x}\pm ME$. We already know $\bar{x}$ and ME, we just need to plug them in. The LCL and UCL are then `r paste(round(x_bar - ME_90, 2))` and `r paste(round(x_bar + ME_90, 2))`, respectively.
+
+## 7.85
+
+*A random sample of 174 college students was asked to indicate the number of hours per week that they surf the Internet for either personal information or material for a class assignment. The sample mean response was 6.06 hours and the sample standard deviation was 1.43 hours. Based on these results, a confidence interval extending from 5.96 to 6.16 was calculated for the population mean. Find the confidence level of this interval*
+
+```{r}
+#Fist thing first, summarize the assumptions
+n = 174
+x_bar = 6.06
+s = 1.43
+lcl = 5.96
+ucl = 6.16
+```
+
+Recall the formula
+
+$$
+LCL = \bar{x} - t_{\alpha/2} \frac{s}{\sqrt{n}} \text{  and   }
+UCL = \bar{x} + t_{\alpha/2} \frac{s}{\sqrt{n}}
+$$
+
+Equivalently,
+
+$$
+LCL = \bar{x} - t_{\alpha/2}*SE \text{  and   }
+UCL = \bar{x} + t_{\alpha/2}*SE
+$$
+
+In this case, we already know everything and we want to find $t_{\alpha/2}$. With a little transformation,
+
+$$
+t_{\alpha/2} = \frac{\bar{x} - LCL}{SE} = \frac{UCL - \bar{x}}{SE} 
+$$
+
+The rest are just plugging in numbers
+
+```{r}
+SE = s/sqrt(n)
+t_score = (x_bar-lcl)/SE
+#t_score = (ucl-x_bar)/SE
+```
+
+Now that we know the t-score, we can ask R the corresponding probability using `pt()`, which gives us $\frac{\alpha}{2}$.
+
+```{r}
+half_alpha = pt(t_score, df = n-1, lower.tail = F)
+CL = 1-2*half_alpha
+```
+
+The confidence level is then `r round(100*CL,2)`%.
+
+### Key takeaways
+
+Theoretically,
+
+-   When population variance/SD is known, we use z-distribution. To find z-score in R, `qnorm(p=alpha/2, lower.tail = F)`
+
+-   When population variance/SD is unknown, we use t-distribution. To find t-score in R, `qt(p=alpha/2, df=n-1, lower.tail = F)`

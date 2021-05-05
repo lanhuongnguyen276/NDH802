@@ -1,7 +1,10 @@
 ---
 title: "Central limit theorem simply explained"
 author: "NDH802 - Spring 2021"
-output: html_document
+output:
+  prettydoc::html_pretty:
+     theme: hpstr
+     highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -74,7 +77,7 @@ sigma_squared_clt = sigma_squared / sample_size #variance as per the CLT formula
     freq = F,
     ylab = "",
     xlab = expression(bar(X)),
-    col = "pink3",
+    col = "plum3",
     border = F
   )#, xlim = c(0,0.76))
   curve(#the CLT bell curve
@@ -88,9 +91,11 @@ sigma_squared_clt = sigma_squared / sample_size #variance as per the CLT formula
 }
 ```
 
-Now, let's stop imagining. We usually work with tight budget. We are therefore grateful to the statistician who laid out one of the most powerful foundations of statistics. [**The Central Limit Theorem (CLT) suggests that when we have a huge number of observations, the sample mean** **follows a normal distribution**.]{style="color:FireBrick"} Formally, when the sample size $n$ is large, $\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$. This curve is plotted above (right hand side). (*Small note:* Here is what I think the trickiest part. Previously when we learn to compute $\bar{X}$, it's a tangible number. When we discuss the CLT, we consider $\bar{X}$ a random variable.)
+Now, let's stop imagining. We usually work with tight budget. We are therefore grateful to the statistician who laid out one of the most powerful foundations of statistics. [**The Central Limit Theorem (CLT) suggests that when we have a huge number of observations, the sample mean** **follows a normal distribution**.]{style="color:DarkCyan"} Formally, when the sample size $n$ is large, $\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$. This curve is plotted above (right hand side).
 
-Let's compute and compare some probabilities, one with the imaginary data we collected, one with the normal approximation. For example, we would like to know the probability that the **averaged** number of cheated exams is more than 1, or $P(\bar{X}>1)$.
+*Small note:* Here is what I think the trickiest part. Previously when we learn to compute $\bar{X}$, it's a tangible number. When we discuss the CLT, we consider $\bar{X}$ a random variable.
+
+Now, let's compute and compare some probabilities, one with the imaginary data we collected, one with the normal approximation. For example, we would like to know the probability that the **averaged** number of cheated exams is more than 1, or $P(\bar{X}>1)$.
 
 ```{r}
 cut_point = 1
@@ -129,7 +134,7 @@ barplot(#the blue bars
   table(pop$cheat),
   main = bquote("Distribution of " * X * " (binomial)"),
   border = F,
-  col = "lightblue3",
+  col = "cadetblue3",
   xlab = "X"
 )
 hist(#the pink bars
@@ -137,14 +142,14 @@ hist(#the pink bars
   main = bquote("Distribution of " * bar(X) * " (normal)"),
   border = F,
   freq = F,
-  col = "pink3",
+  col = "plum3",
   xlab = expression(bar(X)),
   ylab = "",
 )
 curve(#the curve
   dnorm(x, mean = mu, sd = sqrt(sigma_squared_clt)),
   add = TRUE,
-  col = "palevioletred4",
+  col = "plum4",
   lwd = 3,
   main = "CLT normal approximation",
   ylab = "",
