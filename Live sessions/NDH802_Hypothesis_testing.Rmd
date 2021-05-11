@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 *28 57 42 35 61 39 55 46 49 38*
 
-*Assume that the population distribution is normal.*
+\$\$*Assume that the population distribution is normal.*
 
 a.  Find the sample mean and standard deviation.
 
@@ -41,7 +41,7 @@ ttest = t.test(sample, mu = 40, alternative = "greater")
 ttest$p.value
 ```
 
-Because the p-value is higher than 0.05, we fail to reject the null hypothesis.
+Because the p-value is higher than $\alpha =$ 0.05, we fail to reject the null hypothesis.
 
 [By hand:]{.ul}
 
@@ -54,3 +54,21 @@ t_score = qt(p = 0.95, df = n-1) #use the t-table as you prefer
 ```
 
 Because `t_score` is higher than `t`, we fail to reject the null hypothesis.
+
+## 10.4
+
+```{=tex}
+\begin{align*}
+H_o: \mu_1 < \mu_2 \\
+H_1: \mu_1 \ge \mu_2
+\end{align*}
+```
+```{r}
+#load data into your Global environment
+library(readxl)
+price <- read_excel("Documents/GitHub/NDH802/Exercises/HouseSellingPrice.xlsx")
+
+t.test(price$`Sale 1 Price`, price$`Sale 2 Price`, paired = TRUE, alternative = "")
+```
+
+## 

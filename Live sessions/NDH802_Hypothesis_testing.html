@@ -149,7 +149,7 @@ a.sourceLine {
 <h2>9.55</h2>
 <p><em>A random sample of 10 students contains the following observations, in hours, for time spent studying in the week before final exams:</em></p>
 <p><em>28 57 42 35 61 39 55 46 49 38</em></p>
-<p><em>Assume that the population distribution is normal.</em></p>
+<p>$$<em>Assume that the population distribution is normal.</em></p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Find the sample mean and standard deviation.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">28</span>,<span class="dv">57</span>,<span class="dv">42</span>,<span class="dv">35</span>,<span class="dv">61</span>,<span class="dv">39</span>,<span class="dv">55</span>,<span class="dv">46</span>,<span class="dv">49</span>,<span class="dv">38</span>) <span class="co">#input the assumptions</span></span>
@@ -165,7 +165,7 @@ H_1: \mu&gt;40
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ttest <span class="ot">=</span> <span class="fu">t.test</span>(sample, <span class="at">mu =</span> <span class="dv">40</span>, <span class="at">alternative =</span> <span class="st">&quot;greater&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ttest<span class="sc">$</span>p.value</span></code></pre></div>
 <pre><code>## [1] 0.08392533</code></pre>
-<p>Because the p-value is higher than 0.05, we fail to reject the null hypothesis.</p>
+<p>Because the p-value is higher than <span class="math inline">\(\alpha =\)</span> 0.05, we fail to reject the null hypothesis.</p>
 <p><u>By hand:</u></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">40</span></span>
@@ -173,6 +173,12 @@ H_1: \mu&gt;40
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> (mu_0 <span class="sc">-</span> mu)<span class="sc">/</span>(sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co">#just plug in the numbers</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>t_score <span class="ot">=</span> <span class="fu">qt</span>(<span class="at">p =</span> <span class="fl">0.95</span>, <span class="at">df =</span> n<span class="dv">-1</span>) <span class="co">#use the t-table as you prefer</span></span></code></pre></div>
 <p>Because <code>t_score</code> is higher than <code>t</code>, we fail to reject the null hypothesis.</p>
+</div>
+<div id="section-1" class="section level2">
+<h2>10.4</h2>
+</div>
+<div id="section-2" class="section level2">
+<h2></h2>
 </div>
 </div><!-- /.entry-content -->
 </article>
