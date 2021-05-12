@@ -172,10 +172,47 @@ H_1: \mu&gt;40
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> (mu_0 <span class="sc">-</span> mu)<span class="sc">/</span>(sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co">#just plug in the numbers</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>t_score <span class="ot">=</span> <span class="fu">qt</span>(<span class="at">p =</span> <span class="fl">0.95</span>, <span class="at">df =</span> n<span class="dv">-1</span>) <span class="co">#use the t-table as you prefer</span></span></code></pre></div>
-<p>Because <code>t_score</code> is higher than <code>t</code>, we fail to reject the null hypothesis.</p>
+<p>Because <code>t_score</code> = 1.8331129 is higher than <code>t</code> = 1.5, we fail to reject the null hypothesis.</p>
 </div>
 <div id="section-1" class="section level2">
 <h2>10.4</h2>
+<span class="math display">\[\begin{align*}
+H_o: \mu_1 &lt; \mu_2 \\
+H_1: \mu_1 \ge \mu_2
+\end{align*}\]</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load data into your Global environment</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>price <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/House_Selling_Price.csv&quot;</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#t.test on all data</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(price<span class="sc">$</span>Sale.<span class="fl">1.</span>Price,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       price<span class="sc">$</span>Sale.<span class="fl">2.</span>Price,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">alternative =</span> <span class="st">&quot;g&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  price$Sale.1.Price and price$Sale.2.Price
+## t = -53.675, df = 3999, p-value = 1
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  -22943.87       Inf
+## sample estimates:
+## mean of the differences 
+##               -22261.52</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#t.test on Atlanta data</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(price[price<span class="sc">$</span>Atlanta <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Sale.1.Price&quot;</span>],</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>       price[price<span class="sc">$</span>Atlanta <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;Sale.2.Price&quot;</span>],</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">alternative =</span> <span class="st">&quot;g&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  price[price$Atlanta == 1, &quot;Sale.1.Price&quot;] and price[price$Atlanta == 1, &quot;Sale.2.Price&quot;]
+## t = -31.439, df = 999, p-value = 1
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  -17431.42       Inf
+## sample estimates:
+## mean of the differences 
+##                  -16564</code></pre>
 </div>
 <div id="section-2" class="section level2">
 <h2></h2>

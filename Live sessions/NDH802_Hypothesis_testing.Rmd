@@ -53,7 +53,7 @@ t = (mu_0 - mu)/(sd/sqrt(n)) #just plug in the numbers
 t_score = qt(p = 0.95, df = n-1) #use the t-table as you prefer
 ```
 
-Because `t_score` is higher than `t`, we fail to reject the null hypothesis.
+Because `t_score` = `r t_score` is higher than `t` = `r t`, we fail to reject the null hypothesis.
 
 ## 10.4
 
@@ -65,10 +65,17 @@ H_1: \mu_1 \ge \mu_2
 ```
 ```{r}
 #load data into your Global environment
-library(readxl)
-price <- read_excel("Documents/GitHub/NDH802/Exercises/HouseSellingPrice.xlsx")
+price <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/House_Selling_Price.csv")[, -1]
 
-t.test(price$`Sale 1 Price`, price$`Sale 2 Price`, paired = TRUE, alternative = "")
+#t.test on all data
+t.test(price$Sale.1.Price,
+       price$Sale.2.Price,
+       paired = TRUE, alternative = "g")
+
+#t.test on Atlanta data
+t.test(price[price$Atlanta == 1, "Sale.1.Price"],
+       price[price$Atlanta == 1, "Sale.2.Price"],
+       paired = TRUE, alternative = "g")
 ```
 
 ## 
