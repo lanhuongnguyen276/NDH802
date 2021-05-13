@@ -215,7 +215,108 @@ H_1: \mu_1 \ge \mu_2
 ##                  -16564</code></pre>
 </div>
 <div id="section-2" class="section level2">
-<h2></h2>
+<h2>10.34</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nutrition <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Food_Nutrition_Atlas.csv&quot;</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nutrition)</span></code></pre></div>
+<pre><code>##     STATE              COUNTY              GROCPC       SNAPStoresPERTHO
+##  Length:3140        Length:3140        Min.   :0.0150   Min.   :0.0420  
+##  Class :character   Class :character   1st Qu.:0.1640   1st Qu.:0.5220  
+##  Mode  :character   Mode  :character   Median :0.2270   Median :0.7220  
+##                                        Mean   :0.2929   Mean   :0.8107  
+##                                        3rd Qu.:0.3340   3rd Qu.:0.9950  
+##                                        Max.   :3.2730   Max.   :7.1920  
+##                                        NA&#39;s   :57       NA&#39;s   :25      
+##    SNAPRedemp       AMB_PAR06       PCT_FREE_LUNCH  PCT_REDUCED_LUNCH
+##  Min.   :   427   Min.   :  27.00   Min.   : 0.40   Min.   : 0.100   
+##  1st Qu.: 79186   1st Qu.:  81.00   1st Qu.:23.90   1st Qu.: 7.500   
+##  Median :143766   Median :  87.00   Median :33.50   Median : 9.300   
+##  Mean   :145653   Mean   :  89.07   Mean   :36.03   Mean   : 9.522   
+##  3rd Qu.:199170   3rd Qu.:  93.00   3rd Qu.:45.40   3rd Qu.:11.300   
+##  Max.   :625655   Max.   :1044.00   Max.   :99.70   Max.   :54.700   
+##  NA&#39;s   :25       NA&#39;s   :106       NA&#39;s   :11      NA&#39;s   :29       
+##    PC_FRUVEG       PC_SNACKS        PC_SODA         PC_MEAT      
+##  Min.   :143.0   Min.   : 93.0   Min.   :49.00   Min.   : 31.00  
+##  1st Qu.:161.0   1st Qu.:106.0   1st Qu.:63.00   1st Qu.: 62.00  
+##  Median :171.0   Median :117.0   Median :66.00   Median : 69.00  
+##  Mean   :172.8   Mean   :114.1   Mean   :66.81   Mean   : 70.38  
+##  3rd Qu.:185.0   3rd Qu.:122.0   3rd Qu.:71.00   3rd Qu.: 72.00  
+##  Max.   :252.0   Max.   :138.0   Max.   :89.00   Max.   :120.00  
+##  NA&#39;s   :32      NA&#39;s   :32      NA&#39;s   :32      NA&#39;s   :32      
+##     PC_FATS        PC_PREPFOO      MILK_PRICE       SODA_PRICE    
+##  Min.   :13.00   Min.   :229.0   Min.   :0.7300   Min.   :0.8800  
+##  1st Qu.:17.00   1st Qu.:283.0   1st Qu.:0.8800   1st Qu.:0.9600  
+##  Median :18.00   Median :298.0   Median :0.9400   Median :0.9800  
+##  Mean   :18.65   Mean   :295.9   Mean   :0.9617   Mean   :0.9907  
+##  3rd Qu.:21.00   3rd Qu.:310.0   3rd Qu.:1.0600   3rd Qu.:1.0000  
+##  Max.   :24.00   Max.   :347.0   Max.   :1.2800   Max.   :1.2400  
+##  NA&#39;s   :32      NA&#39;s   :32      NA&#39;s   :32       NA&#39;s   :32      
+##    PCT_DIABET     PCT_OBESE_ADULTS PCT_Child_OBESITY   PctNHWhite   
+##  Min.   : 3.200   Min.   :12.50    Min.   : 2.10     Min.   : 2.00  
+##  1st Qu.: 8.300   1st Qu.:26.70    1st Qu.:11.85     1st Qu.:68.40  
+##  Median : 9.500   Median :28.50    Median :14.00     Median :86.70  
+##  Mean   : 9.619   Mean   :28.29    Mean   :14.19     Mean   :79.21  
+##  3rd Qu.:10.900   3rd Qu.:30.20    3rd Qu.:16.30     3rd Qu.:94.60  
+##  Max.   :17.400   Max.   :43.50    Max.   :39.70     Max.   :99.40  
+##                                    NA&#39;s   :449       NA&#39;s   :1      
+##    PctNHBlack       PctHisp08        PctNHAsian       PctNHNA08     
+##  Min.   : 0.100   Min.   : 0.100   Min.   : 0.100   Min.   : 0.100  
+##  1st Qu.: 0.600   1st Qu.: 1.400   1st Qu.: 0.300   1st Qu.: 0.200  
+##  Median : 2.300   Median : 2.800   Median : 0.500   Median : 0.300  
+##  Mean   : 9.149   Mean   : 7.686   Mean   : 1.088   Mean   : 1.878  
+##  3rd Qu.:10.600   3rd Qu.: 7.500   3rd Qu.: 1.000   3rd Qu.: 0.700  
+##  Max.   :85.500   Max.   :97.300   Max.   :43.900   Max.   :89.300  
+##  NA&#39;s   :79       NA&#39;s   :1        NA&#39;s   :80       NA&#39;s   :18      
+##    Median_Inc     Percent_Poverty     metro       
+##  Min.   : 19182   Min.   : 3.10   Min.   :0.0000  
+##  1st Qu.: 36518   1st Qu.:10.90   1st Qu.:0.0000  
+##  Median : 42398   Median :14.30   Median :0.0000  
+##  Mean   : 44161   Mean   :15.24   Mean   :0.3468  
+##  3rd Qu.: 49240   3rd Qu.:18.30   3rd Qu.:1.0000  
+##  Max.   :111582   Max.   :54.40   Max.   :1.0000  
+##  NA&#39;s   :2        NA&#39;s   :2</code></pre>
+<span class="math display">\[\begin{align*}
+H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
+H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+\end{align*}\]</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>adult_metro <span class="ot">=</span> nutrition[nutrition<span class="sc">$</span>metro <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;PCT_OBESE_ADULTS&quot;</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>adult_nonmetro <span class="ot">=</span> nutrition[nutrition<span class="sc">$</span>metro <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;PCT_OBESE_ADULTS&quot;</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(adult_metro, adult_nonmetro)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  adult_metro and adult_nonmetro
+## t = -6.8361, df = 2192.3, p-value = 1.051e-11
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.1920048 -0.6605671
+## sample estimates:
+## mean of x mean of y 
+##  27.68356  28.60985</code></pre>
+<span class="math display">\[\begin{align*}
+H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
+H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+\end{align*}\]</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>child_metro <span class="ot">=</span> nutrition[nutrition<span class="sc">$</span>metro <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;PCT_Child_OBESITY&quot;</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>child_nonmetro <span class="ot">=</span> nutrition[nutrition<span class="sc">$</span>metro <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;PCT_Child_OBESITY&quot;</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(child_metro, child_nonmetro)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  child_metro and child_nonmetro
+## t = 0.89226, df = 2300.1, p-value = 0.3723
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.1542429  0.4117915
+## sample estimates:
+## mean of x mean of y 
+##  14.26857  14.13980</code></pre>
+</div>
+<div id="section-3" class="section level2">
+<h2>10.48</h2>
+<span class="math display">\[\begin{align*}
+H_o: \mu_{SalesO} = \mu_{SalesC}\\
+H_1: \mu_{SalesO} \ge \mu_{SalesO}
+\end{align*}\]</span>
 </div>
 </div><!-- /.entry-content -->
 </article>

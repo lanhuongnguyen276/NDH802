@@ -149,26 +149,29 @@ a.sourceLine {
 <p>You think to yourselves, the probability of arbitrarily guessing it right 9 out of 10 is very very low. Specifically,</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#try it!</span></span></code></pre></div>
 <p>You agree to receive the first 10 guesses. Every day you receive the guess if the price increases or decreases the next day and cross check it with the actual price. After 10 days, it was right 9 out of 10 times. It is mind blowing!!!</p>
-<p>You just learned about hypothesis testing and you want to give it a try. The null hypothesis is that s/he arbitrarily guesses, the alternative hypothesis is that s/he actually has some intel that increases the probability of guessing right.</p>
-<p>H0: p= 0.5</p>
-<p>H1: p&gt;0.5</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(data, <span class="at">mu =</span> <span class="fl">0.5</span>, <span class="at">alternative =</span> <span class="st">&quot;greater&quot;</span>, <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code></pre></div>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  data
-## t = 4, df = 9, p-value = 0.001555
-## alternative hypothesis: true mean is greater than 0.5
-## 99 percent confidence interval:
-##  0.6178562       Inf
-## sample estimates:
-## mean of x 
-##       0.9</code></pre>
-<p>The p-value is so small, you fail to reject reject the null hypothesis, even at 99% confidence level. You believe this person really have something. You pay for the 11th guess, unfortunately, it is wrong.</p>
-<div id="how-come" class="section level1">
-<h1>HOW COME???</h1>
-</div>
+<p>You just learned about hypothesis testing and you want to give it a try.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(p)){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;ROOM&quot;</span>, i))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;H_0: p =&quot;</span>, p[i] , <span class="st">&quot;; H_1: p &gt;&quot;</span>, p[i]))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;---------------------------------------------------------------------&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;ROOM 1&quot;
+## [1] &quot;H_0: p = 0.5 ; H_1: p &gt; 0.5&quot;
+## [1] &quot;---------------------------------------------------------------------&quot;
+## [1] &quot;ROOM 2&quot;
+## [1] &quot;H_0: p = 0.6 ; H_1: p &gt; 0.6&quot;
+## [1] &quot;---------------------------------------------------------------------&quot;
+## [1] &quot;ROOM 3&quot;
+## [1] &quot;H_0: p = 0.7 ; H_1: p &gt; 0.7&quot;
+## [1] &quot;---------------------------------------------------------------------&quot;
+## [1] &quot;ROOM 4&quot;
+## [1] &quot;H_0: p = 0.8 ; H_1: p &gt; 0.8&quot;
+## [1] &quot;---------------------------------------------------------------------&quot;
+## [1] &quot;ROOM 5&quot;
+## [1] &quot;H_0: p = 0.9 ; H_1: p &gt; 0.9&quot;
+## [1] &quot;---------------------------------------------------------------------&quot;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
 </div><!-- /.entry-content -->
 </article>
 </div><!-- /#main -->

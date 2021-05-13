@@ -78,4 +78,42 @@ t.test(price[price$Atlanta == 1, "Sale.1.Price"],
        paired = TRUE, alternative = "g")
 ```
 
-## 
+## 10.34
+
+```{r}
+nutrition <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Food_Nutrition_Atlas.csv")[, -1]
+summary(nutrition)
+```
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
+H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+\end{align*}
+```
+```{r}
+adult_metro = nutrition[nutrition$metro == 1, "PCT_OBESE_ADULTS"]
+adult_nonmetro = nutrition[nutrition$metro == 0, "PCT_OBESE_ADULTS"]
+t.test(adult_metro, adult_nonmetro)
+```
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
+H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+\end{align*}
+```
+```{r}
+child_metro = nutrition[nutrition$metro == 1, "PCT_Child_OBESITY"]
+child_nonmetro = nutrition[nutrition$metro == 0, "PCT_Child_OBESITY"]
+t.test(child_metro, child_nonmetro)
+```
+
+## 10.48
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{SalesO} = \mu_{SalesC}\\
+H_1: \mu_{SalesO} \ge \mu_{SalesO}
+\end{align*}
+```

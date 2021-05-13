@@ -21,17 +21,18 @@ You think to yourselves, the probability of arbitrarily guessing it right 9 out 
 
 You agree to receive the first 10 guesses. Every day you receive the guess if the price increases or decreases the next day and cross check it with the actual price. After 10 days, it was right 9 out of 10 times. It is mind blowing!!!
 
-You just learned about hypothesis testing and you want to give it a try. The null hypothesis is that s/he arbitrarily guesses, the alternative hypothesis is that s/he actually has some intel that increases the probability of guessing right.
+You just learned about hypothesis testing and you want to give it a try.
 
-H0: p= 0.5
-
-H1: p\>0.5
+```{r}
+p = c(0.5, 0.6, 0.7, 0.8, 0.9)
+for (i in 1:length(p)){
+  print(paste("ROOM", i))
+  print(paste("H_0: p =", p[i] , "; H_1: p >", p[i]))
+  print("---------------------------------------------------------------------")
+}
+```
 
 ```{r}
 data = c(1,1,1,1,1,1,1,1,1,0)
-t.test(data, mu = 0.5, alternative = "greater", conf.level = 0.99)
 ```
 
-The p-value is so small, you fail to reject reject the null hypothesis, even at 99% confidence level. You believe this person really have something. You pay for the 11th guess, unfortunately, it is wrong.
-
-# HOW COME???
