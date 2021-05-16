@@ -1,0 +1,88 @@
+---
+title: "NDH802 - Regression"
+author: "Chapter 11 and 12"
+output: 
+ prettydoc::html_pretty:
+   theme: hpstr
+   highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+> *We assign the computation to computers---our tasks are to think, analyze, and make recommendations*" (Newbold, 2016, p. 429).
+
+## 11.5
+
+```{r}
+#data input
+x = c(2,4,3,6,3,5,6,2)
+y = c(5,10,8,18,6,15,20,4)
+
+#a. scatter plot
+plot(x, y)
+
+#b. calculating the regression coefficients by the book.
+b1 = cov(x, y)/(sd(x)^2)
+b0 = mean(y) - b1 * mean(x)
+
+#b. calculating the regression coefficients with R shortcut
+mod = lm(y ~ x)
+
+#for fun, we plot the line
+plot(x, y, col = "blue"); abline(mod)
+
+#we'll interprete the result together in class.
+```
+
+## 11.97
+
+To investigate the relationship between the HEI score and the daily cost, we estimate this linear model:
+
+$HEI = \beta_0 + \beta_1*DailyCost + \varepsilon$
+
+```{r}
+#data prep
+hei <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/HEI.csv")[, -1]
+
+x1 = hei[hei$daycode == 1, "daily_cost"] #daily cost, first interview
+y1 = hei[hei$daycode == 1, "HEI2005"] #HEI score, first interview
+x2 = hei[hei$daycode == 2, "daily_cost"] #daily cost, second interview
+y2 = hei[hei$daycode == 2, "HEI2005"] #HEI score, second interview
+
+#Build the regression based on the first interview data
+mod1 = lm(y1 ~ x1)
+summary(mod1)
+plot(x1, y1, xlab = "daily cost", ylab = "HEI score", main = "First interview"); abline(mod1, col = "red", lwd = 2)
+
+#Build the regression based on the second interview data
+mod2 = lm(y2 ~ x2)
+summary(mod2)
+plot(x2, y2, xlab = "daily cost", ylab = "HEI score", main = "Second interview"); abline(mod2, col = "blue", lwd = 2)
+```
+
+## 10.56
+
+Let $f_1, f_2$ denote the daily cost of women in the first and second interview; $m_1, m_2$ denote the daily cost of men in the first and second interview.
+
+Here are the hypotheses we want to test for the first interview. You can try the second interview yourself.
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{f1} \ge \mu_{m1} \\
+H_1: \mu_{f1} < \mu_{m1}
+\end{align*}
+```
+```{r}
+#data prep
+f1 = hei[hei$female == 1 & hei$daycode == 1, "daily_cost"]
+m1 = hei[hei$female == 0 & hei$daycode == 1, "daily_cost"]
+f2 = hei[hei$female == 1 & hei$daycode == 2, "daily_cost"]
+m2 = hei[hei$female == 0 & hei$daycode == 2, "daily_cost"]
+
+#difference in daily cost from the first interview
+t.test(x = f1, y = m1, alternative = "less")
+#difference in daily cost from the seond interview
+t.test(x = f2, y = m2, alternative = "less")
+```

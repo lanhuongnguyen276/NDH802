@@ -1,9 +1,10 @@
 ---
 title: "NDH802 - Hypothesis testing"
-author: "Huong"
-output:
-  prettydoc::html_pretty:
-    theme: hpstr
+author: "Chapter 9 and 10"
+output: 
+ prettydoc::html_pretty:
+   theme: hpstr
+   highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 *28 57 42 35 61 39 55 46 49 38*
 
-\$\$*Assume that the population distribution is normal.*
+*Assume that the population distribution is normal.*
 
 a.  Find the sample mean and standard deviation.
 
@@ -30,8 +31,8 @@ b.  Test, at the 5% significance level, the null hypothesis that the population 
 
 ```{=tex}
 \begin{align*}
-H_o: \mu =40\\
-H_1: \mu>40
+H_o: \mu = 40\\
+H_1: \mu > 40
 \end{align*}
 ```
 [R shortcuts:]{.ul}
@@ -55,12 +56,55 @@ t_score = qt(p = 0.95, df = n-1) #use the t-table as you prefer
 
 Because `t_score` = `r t_score` is higher than `t` = `r t`, we fail to reject the null hypothesis.
 
+## 9.37
+
+The probability of type II error is:
+
+$\beta = P(\bar{x}\le 5.041|\mu = \text{each of the mu given in the sub-questions})$
+
+$\text{power} = 1 - \beta$.
+
+```{r}
+#we calculate this similarly to the way we solve exercises in previous chapters
+beta_a = pnorm(q = 5.041, mean = 5.1, sd = 0.1/sqrt(16))
+power_a = 1 - beta_a
+
+beta_b = pnorm(q = 5.041, mean = 5.03, sd = 0.1/sqrt(16))
+power_b = 1 - beta_b
+
+beta_c = pnorm(q = 5.041, mean = 5.15, sd = 0.1/sqrt(16))
+power_c = 1 - beta_c
+
+beta_d = pnorm(q = 5.041, mean = 5.07, sd = 0.1/sqrt(16))
+power_d = 1 - beta_d
+```
+
+## 9.65
+
+```{=tex}
+\begin{align*}
+H_o: \mu \le 40 \\
+H_1: \mu > 40
+\end{align*}
+```
+```{r}
+#summrize the assumption
+n_965 = 125
+xbar_965 = 40.9
+s_squared_965 = 65
+
+t_965 = (xbar_965 - 40)/sqrt(s_squared_965/n_965)
+pvalue_965 = pt(q = t_965, df = n_965-1, lower.tail = FALSE)
+```
+
+p-value = `r pvalue_965` is not very small, hence the claim is not very strong.
+
 ## 10.4
 
 ```{=tex}
 \begin{align*}
-H_o: \mu_1 < \mu_2 \\
-H_1: \mu_1 \ge \mu_2
+H_o: \mu_1 = \mu_2 \\
+H_1: \mu_1 > \mu_2
 \end{align*}
 ```
 ```{r}
@@ -68,21 +112,28 @@ H_1: \mu_1 \ge \mu_2
 price <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/House_Selling_Price.csv")[, -1]
 
 #t.test on all data
-t.test(price$Sale.1.Price,
-       price$Sale.2.Price,
-       paired = TRUE, alternative = "g")
+t.test(x = price$Sale.1.Price, 
+       y = price$Sale.2.Price,
+       #here we specify paired = TRUE because we want to do matched t-test
+       paired = TRUE,
+       #here we specify alternative = "greater" because that is our H1
+       alternative = "greater")
 
 #t.test on Atlanta data
-t.test(price[price$Atlanta == 1, "Sale.1.Price"],
-       price[price$Atlanta == 1, "Sale.2.Price"],
-       paired = TRUE, alternative = "g")
+t.test(x = price[price$Atlanta == 1, "Sale.1.Price"],
+       y = price[price$Atlanta == 1, "Sale.2.Price"],
+       paired = TRUE, alternative = "greater")
 ```
+
+p-value in both cases are higher than the alpha we normally specify, therefore we fail to reject the null hypotheses.
 
 ## 10.34
 
+Here I chose $\alpha = 0.05$ for example, feel free to choose other $\alpha$ as you reason.
+
 ```{r}
 nutrition <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Food_Nutrition_Atlas.csv")[, -1]
-summary(nutrition)
+#summary(nutrition)
 ```
 
 ```{=tex}
@@ -92,28 +143,118 @@ H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
 \end{align*}
 ```
 ```{r}
+#The following code is simply data manipulation
+#"PCT_OBESE_ADULTS" of adults living in metro cities
 adult_metro = nutrition[nutrition$metro == 1, "PCT_OBESE_ADULTS"]
+#"PCT_OBESE_ADULTS" of adults living in non-metro cities
 adult_nonmetro = nutrition[nutrition$metro == 0, "PCT_OBESE_ADULTS"]
-t.test(adult_metro, adult_nonmetro)
+#perform the t test
+t.test(x = adult_metro,
+       y = adult_nonmetro,
+       #we specify alternative = "two.sided" because H1 is "not equal"
+       alternative = "two.sided")
 ```
+
+p-value is smaller than alpha, we reject the null hypothesis.
 
 ```{=tex}
 \begin{align*}
-H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
-H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+H_o: \mu_{child-metro} = \mu_{child-nonmetro}\\
+H_1: \mu_{child-metro} \ne \mu_{child-nonmetro}
 \end{align*}
 ```
 ```{r}
+#This is similar, but on the children
 child_metro = nutrition[nutrition$metro == 1, "PCT_Child_OBESITY"]
 child_nonmetro = nutrition[nutrition$metro == 0, "PCT_Child_OBESITY"]
 t.test(child_metro, child_nonmetro)
 ```
 
+p-value is higher than alpha, we fail to reject the null hypothesis.
+
 ## 10.48
+
+$\alpha = 0.01$
 
 ```{=tex}
 \begin{align*}
 H_o: \mu_{SalesO} = \mu_{SalesC}\\
 H_1: \mu_{SalesO} \ge \mu_{SalesO}
 \end{align*}
+```
+```{r}
+ole <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Ole.csv")[, -1]
+
+t.test(x = ole$Olesales,
+       y = ole$Carlsale,
+       alternative = "greater")
+```
+
+p-value \< alpha, we reject the null hypothesis.
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{PriceO} = \mu_{PriceC}\\
+H_1: \mu_{PriceO} \ne \mu_{PriceO}
+\end{align*}
+```
+```{r}
+t.test(x = ole$Oleprice,
+       y = ole$Carlpric,
+       alternative = "two.sided")
+```
+
+p-value \> alpha, we fail to reject the null hypothesis.
+
+## 10.52
+
+Let $x_1, x_2$ denote the diets of the immigrants in the first and second interview; $y_1, y_2$ denote the diets of the non-immigrants in the first and second interview.
+
+Here are the hypotheses we want to test for the first interview. You can try the second interview yourself.
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{x1} \le \mu_{y1}\\
+H_1: \mu_{x1} > \mu_{y1}
+\end{align*}
+```
+```{r}
+#data prep
+hei <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/HEI.csv")[, -1]
+
+x1 = hei[hei$immigrant == 1 & hei$daycode == 1, "HEI2005"]
+y1 = hei[hei$immigrant == 0 & hei$daycode == 1, "HEI2005"]
+x2 = hei[hei$immigrant == 1 & hei$daycode == 2, "HEI2005"]
+y2 = hei[hei$immigrant == 0 & hei$daycode == 2, "HEI2005"]
+
+#difference in diet from the first interview
+t.test(x = x1, y = y1, alternative = "greater")
+
+#difference in diet from the second interview
+t.test(x = x2, y = y2, alternative = "greater")
+```
+
+## 10.56
+
+Let $f_1, f_2$ denote the daily cost of women in the first and second interview; $m_1, m_2$ denote the daily cost of men in the first and second interview.
+
+Here are the hypotheses we want to test for the first interview. You can try the second interview yourself.
+
+```{=tex}
+\begin{align*}
+H_o: \mu_{f1} \ge \mu_{m1} \\
+H_1: \mu_{f1} < \mu_{m1}
+\end{align*}
+```
+```{r}
+#data prep
+f1 = hei[hei$female == 1 & hei$daycode == 1, "daily_cost"]
+m1 = hei[hei$female == 0 & hei$daycode == 1, "daily_cost"]
+f2 = hei[hei$female == 1 & hei$daycode == 2, "daily_cost"]
+m2 = hei[hei$female == 0 & hei$daycode == 2, "daily_cost"]
+
+#difference in daily cost from the first interview
+t.test(x = f1, y = m1, alternative = "less")
+#difference in daily cost from the seond interview
+t.test(x = f2, y = m2, alternative = "less")
 ```
