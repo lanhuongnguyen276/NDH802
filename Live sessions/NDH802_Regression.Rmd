@@ -29,6 +29,7 @@ b0 = mean(y) - b1 * mean(x)
 
 #b. calculating the regression coefficients with R shortcut
 mod = lm(y ~ x)
+summary(mod)
 
 #for fun, we plot the line
 plot(x, y, col = "blue"); abline(mod)
@@ -36,11 +37,27 @@ plot(x, y, col = "blue"); abline(mod)
 #we'll interprete the result together in class.
 ```
 
+For learning purpose, we can try calculating some of the components by hand using the formula provided in the lecture slides. `lm()` automatically calculates and report them in the model summary.
+
+```{r}
+SSE = sum(mod$residuals^2)
+SST=sum((y-mean(y))^2)
+n = length(y)
+df = mod$df.residual
+
+Residuals = summary(mod$residuals)
+Residual_SE = sqrt(SSE/mod$df.residual)
+R_squared = 1-SSE/SST
+Adjusted_R_squared = 1-(SSE/SST)*(n-1)/df
+```
+
 ## 11.97
+
+Data description:
 
 To investigate the relationship between the HEI score and the daily cost, we estimate this linear model:
 
-$HEI = \beta_0 + \beta_1*DailyCost + \varepsilon$
+$HEI = b_0 + b_1*DailyCost$
 
 ```{r}
 #data prep
@@ -62,27 +79,71 @@ summary(mod2)
 plot(x2, y2, xlab = "daily cost", ylab = "HEI score", main = "Second interview"); abline(mod2, col = "blue", lwd = 2)
 ```
 
-## 10.56
+Alternatively, we can do as follows. Please understand that it is just another way of coding, not thinking. The best way is the way you feel most comfortable with.
 
-Let $f_1, f_2$ denote the daily cost of women in the first and second interview; $m_1, m_2$ denote the daily cost of men in the first and second interview.
-
-Here are the hypotheses we want to test for the first interview. You can try the second interview yourself.
-
-```{=tex}
-\begin{align*}
-H_o: \mu_{f1} \ge \mu_{m1} \\
-H_1: \mu_{f1} < \mu_{m1}
-\end{align*}
+```{r}
+#afterloading the data, we go straight into fitting the model.
+mod1.1 = lm(hei[hei$daycode == 1, "HEI2005"] ~ hei[hei$daycode == 1, "daily_cost"],
+            data = hei)
+mod2.1 = lm(hei[hei$daycode == 2, "HEI2005"] ~ hei[hei$daycode == 2, "daily_cost"],
+            data = hei)
 ```
+
+## 12.114
+
+a\. We are asked to fit the linear model:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode$
+
+```{r}
+mod_a = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode, data = hei)
+summary(mod_a)
+```
+
+b\. We add one more IV, immigrant:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*immigrant$
+
+```{r}
+mod_b = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + immigrant, data = hei)
+summary(mod_b)
+```
+
+c\. We add one more IV, single:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*single$
+
+```{r}
+mod_c = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + single, data = hei)
+summary(mod_c)
+```
+
+c\. We add one more IV, fsp:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*fsp$
+
+```{r}
+mod_d = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + fsp, data = hei)
+summary(mod_d)
+```
+
+## 12.107
+
+Data description:
+
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Exercises/salary.png?raw=true){width="532"}
+
 ```{r}
 #data prep
-f1 = hei[hei$female == 1 & hei$daycode == 1, "daily_cost"]
-m1 = hei[hei$female == 0 & hei$daycode == 1, "daily_cost"]
-f2 = hei[hei$female == 1 & hei$daycode == 2, "daily_cost"]
-m2 = hei[hei$female == 0 & hei$daycode == 2, "daily_cost"]
+salary <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Salary_Study.csv")[, -1]
 
-#difference in daily cost from the first interview
-t.test(x = f1, y = m1, alternative = "less")
-#difference in daily cost from the seond interview
-t.test(x = f2, y = m2, alternative = "less")
+cor(salary)
+
+#This is an example. Adjust it as you reason
+mod.12107 = lm(Salary ~ Experience + Gender, data = salary)
+summary(mod.12107)
 ```
