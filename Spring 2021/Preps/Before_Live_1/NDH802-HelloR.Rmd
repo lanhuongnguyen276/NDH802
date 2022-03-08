@@ -69,26 +69,18 @@ my_variance = ((9-my_mean)^2 + (10-my_mean)^2 + (7-my_mean)^2)/(my_n-1)
 ```
 
 Here, I just type in the exact formula in Canvas. The mean of my assignments points is `r my_mean`. The variance of my assignments points is `r my_variance`.
-```{r}
-Evelinas_n = 5
-Evelinas_mean = (10+20+30+40+50)/Evelinas_n
-Evelinas_variance = ((10-Evelinas_mean)^2+(20-Evelinas_mean)^2+(30-Evelinas_mean)^2+(40-Evelinas_mean)^2+(50-Evelinas_mean)^2)/(Evelinas_n-1)
-Evelinas_mean
-Evelinas_variance
-```
 
+```{r}
+
+```
 
 **Your turn.** Compute the **mean** and **variance** of *the number of hearts/likes* you get from the most 5 recent Intagram/Facebook posts (or all of your posts if you have less than 5). If you want to keep it a secret, you can compute the **mean** and **variance** of *the number of hearts* @centerforretailing get from the most 5 recent Instagram posts.
 
 ```{r}
-Evelinas_n = 5
-Evelinas_mean = (10+20+30+40+50)/Evelinas_n
-Evelinas_variance = ((10-Evelinas_mean)^2+(20-Evelinas_mean)^2+(30-Evelinas_mean)^2+(40-Evelinas_mean)^2+(50-Evelinas_mean)^2)/(Evelinas_n-1)
-Evelinas_mean
-Evelinas_variance
+
 ```
 
-If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. Fair point. In the live session, we will learn how to do it the more time- and energy-efficient way. Plus, when you need to work with 1,000,000 rows of data , your calculator is no longer your best friend. Case in point, your upcoming assignments.
+If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. Fair point. In the seminar, we will learn how to do it the more time- and energy-efficient way. Plus, when you need to work with 1,000,000 rows of data , your calculator is no longer your best friend. Case in point, your upcoming assignments.
 
 ### R the data manager
 
@@ -114,6 +106,6 @@ summary(salaries)
 ## Phew,
 
 You made it. How do you feel?\
-If you're still here, thank you very much for your effort. It will pay off. If you have questions, please bring them to the class, or start a discussion on Canvas, or shoot me a message, or send me an email. The more you ask at the early stage, the less you do later.
+If you're still here, thank you very much for your effort. It will pay off. If you have questions, please bring them to the class, or start a discussion on Canvas. The more you ask at the early stage, the less you do later.
 
 Huong

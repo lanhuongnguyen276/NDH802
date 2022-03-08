@@ -1,0 +1,146 @@
+---
+title: "Hello R!"
+author: "NDH802 student"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Quick recall
+
+You are strongly encouraged to go through the highly recommended reads on Canvas before hand. As a quick recap, in RMarkdown, there are generally four components.
+
+-   **The YAML**: where you set the general format of your document (e.g., title, author, output). Within the scope of this course, you'll be working (mostly) with html as document outputs. Now, make it *your* report by changing "NDH802 student" in line 3 to "your name" (make sure you put "your name" in quotation marks).
+-   **The text**: where you write generally everything that is not the other three components, like what you're reading. You can format the text, e.g., *italics* and *italics* , **bold** and **bold**, superscript^2^, ~~strikethrough~~. With visual editor mode, **What You See Is What You Mean**.
+-   **The code chunks**: where the magic happens in RMarkdown. (Much) More on this later.
+-   **Inline code**: you can use inline code to refer to some values and it changes when your values change, for example `r Sys.Date()`. Notice what you see in the RMarkdown file, and what you'll see in the final document. In this case, `Sys.Date()` prints the date you run the code, i.e., if you run this file in different dates, it prints out different values. This can come in handy when you write up your assignments or other reports.
+
+## About the assignments
+
+We will have 3 group assignments, 10 points each. Please refer to Canvas for more details. You will be asked to use RMarkdown to write up your assignments because:
+
+-   you can write your thoughts in words, code, print out the results, visualize your data, all in one place
+-   you don't have to copy your results from Excel and paste them into Word. Why do you do manual labor when you can automate things?
+-   you don't have to worry about formatting your document. RMarkdown will take care of that, so you can focus on "data analytics", which is why you are here
+-   I really hope it helps developing a new habit and forever enhance your workflow.
+
+This can also happen. When your code cannot run or it produce errors because of, e.g., what I consider a typo, but I can see your (correct) thought process in there, you will get full score. It's because (1) your understanding is what matters most and (2) I am nice, in general. However, it doesn't work the other way around. That is, the results without code/justifications (even if your results are right) won't be graded.
+
+## Some notes before we start...
+
+### Set your working directory
+
+...so you (and your files) don't get lost later. To do that, you either type
+
+```{r}
+setwd("/Users/hu.4622/Documents/GitHub/NDH802") #This is my WD, change it to yours!
+```
+
+with the path to the folder you want to store your working files (e.g., R script, data tables, results). You can also do that by clicking Session/Set Working Directory. More on this in the seminar.
+
+### Try your code!
+
+Make sure your code chunk works before you go to the next chunk, or else you don't know since when it starts to go wrong and the diagnostic will be more challenging. Simply run your code every time you write!
+
+### Clean your code!
+
+As a result of trying different code, your script can get messy and unreadable. Make some time to clean your code, i.e., delete the redundant and write comments on what you keep. You may not believe it now, but you will forget. Therefore, note down your thought process! Comment! By the way, you can select a code chunk then hit Shift + Ctrl (Cmd) + a to make it look neat(er)
+
+### Save your work!
+
+Continuously hit Ctrl (or Cmd ) + S. Your future selves will thank you later! In case you forget (though I hope you don't), everything you've run (**not** typed) are stored in History. One more reason to run your code.
+
+### It's perfectly fine to copy code...
+
+... from the demos, books, articles, internet, but **not** your friends for the assignments. Make sure you understand the code you copy, or only copy the code you can make sense. Sometimes we simply want to make it work, but it's more important to understand why and/or when it works. Or else, you won't remember it or worse, you may misuse it the next time.
+
+### When you don't know something,
+
+-   First thing you can try is to ask R by typing in the console `?thecommand`, e.g., `?summary`. R Studio will show the command's description and usage in Help windows on your bottom right.
+-   If you don't find that helpful, ask Google. For example, "summary() in R". You'll find plenty of explanations in various ways (e.g., R documentation, blog post, video). I hope you find at least one of them helpful. When you learn programming, people from [Stack Overflow](https://stackoverflow.com) are your best friends.
+-   Reach out! Ask me, Emelie, your friends, anyone you think may have or can find the answers.
+
+You're here to learn statistics. R is supposed to be a helpful tool, don't let it be your obstacle. Having said that, it's perfectly fine to get stuck sometimes. Everyone does, even the experienced programmers. So, no worries, keep calm and code on!
+
+### Practice makes progress
+
+Unfortunately, there is no way to learn R (or any programming languages) without trying, failing, fixing up, learning from your mistakes, repeat. I hope I can make it less frustrating for you. To do that, I strongly encourage you to do the preparations before the live/Q&A sessions and ask if you have questions. Also, it would be nice that you try the assignments right after the seminars when your memories are still fresh.
+
+## Now the fun begins
+
+### Creating code chunk
+
+Below, inside `{r}`, the shady zone, is a code chunk
+
+```{r}
+
+```
+
+Put your cursor at the end of this line and try Ctrl + Alt + I (OS X: Cmd + Option + I). What do you see?\
+***Little tips:*** if you're a shortcut fan (like I am), try `Tools -> Keyboard Shortcuts Help` to learn what works in **your** computer. You can even modify/create your own shortcuts. For now, I suggest you go with the currently available ones.
+
+### R the calculator
+
+Inside the chunk, type 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?\
+Now let's create another chunk. You already know how right?
+
+Now, type in x = 2+2, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? No, you're not mistaken, nothing new appears this time.\
+Now, start a new line (press Enter) in the code chunk above, type x and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see? Also, observe the change(s) in the Global Environment on your top right.
+
+You're starting to get a hang of it, right? When you press Ctrl(Windows)/Cmd(Mac) + Enter, you tell R to run the code on the same row with your cursor. I suggest you do it everytime you type in new code, make sure it works before you write the new ones.
+
+#### Your turn
+
+Try to use R to compute what you have learnt in the first lecture(s). Nothing fancy (yet), just use it as your calculator.
+
+For example, assume Huong gets 9 pt on Assignment 1, 10 pt on Assignment 2 (😎), and 7 pt on Assignment 3. The mean points of Huong's three assignment is:
+
+```{r}
+my_n = 3
+my_mean = (9+10+7)/my_n
+```
+
+Easy peasy right? Now I'll compute the variance:
+
+```{r}
+my_variance = ((9-my_mean)^2 + (10-my_mean)^2 + (7-my_mean)^2)/(my_n-1)
+```
+
+Here, I just type in the exact formula in Canvas. The mean of my assignments points is `r my_mean`. The variance of my assignments points is `r my_variance`.
+
+**Your turn.** Compute the **mean** and **variance** of *the number of hearts/likes* you get from the most 5 recent Instagram/Facebook posts (or all of your posts if you have less than 5). Alternatively, you can compute the **mean** and **variance** of *the number of hearts* @centerforretailing get from the most 5 recent Instagram posts.
+
+```{r}
+
+```
+
+If you are like, *"Why do I have to do this while it's equally easy to do it with a calculator?"*. Fair point. In the seminar, we will learn how to do it the more time- and energy-efficient way. Plus, when you need to work with 1,000,000 rows of data, your calculator is no longer your best friend. Case in point, your upcoming assignments.
+
+### R the data manager
+
+#### Load your data
+
+Now let's create another chunk, copy and paste this `read.csv("https://bit.ly/3r918BW")` into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://bit.ly/3r918BW")`
+
+This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries`, R will understand you refer to the above data.
+
+#### Explore your data
+
+These commands give you a quick overview of your data. Try each of them, by putting your cursor in each of the three rows and press Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+
+```{r}
+head(salaries)
+tail(salaries)
+summary(salaries)
+```
+
+## Phew,
+
+You made it. How do you feel?\
+If you're still here, thank you very much for your effort. It will pay off. If you have questions, please bring them to the class, or start a discussion on Canvas. The more you ask at the early stage, the less you do later.
+
+*Huong*

@@ -138,8 +138,3 @@ $$
 **Will knowing the LLN certainly prevent you, as a player, from losing money?** Nope, gambling is probabilistic, and the best you can do is to increase/decrease the chance that you win/lose. But at least now you know you can't outsmart the casinos, in the long run 😪.
 
 *Huong*
-
-```{r}
-dbinom(10,10,0.5)
-(2^30)
-```

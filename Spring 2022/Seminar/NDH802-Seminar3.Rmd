@@ -1,0 +1,132 @@
+---
+title: "NDH802 R Application - Seminar #3"
+author: "Huong Nguyen"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the data in
+
+```{r}
+salaries = read.csv("https://bit.ly/3r918BW")
+```
+
+Let $A$ be an event. There are several ways to calculate $N_A$ in base R, today we learn 3 ways. For example, assume we want to know the number of BE ($N_{BE}$) and RM ($N_{RM}$) students in our data, we can
+
+1.  Count the number of rows that contain BE and RM students.
+
+    ```{r}
+    N_RM = nrow(salaries[salaries$program == "RM",])
+    N_BE = nrow(salaries[salaries$program == "BE",])
+    ```
+
+2.  Use logic, seeing if the program is RM or BE.
+
+    ```{r}
+    N_RM = sum(salaries$program == "RM")
+    N_BE = sum(salaries$program == "BE")
+    ```
+
+3.  To compute several events at the same time, `table()` can be handy.
+
+    ```{r}
+    table(salaries[,"program"])
+    ```
+
+    We can do something similar to a pivot table with `table()`
+
+    ```{r}
+    table(salaries[,"program"], salaries[,"whatisyourgender1isfemale"])
+    ```
+
+    However, it could be a bit messy when the number of events is large. For example:
+
+    ```{r}
+    table(salaries[,"worktime"])
+    ```
+
+### Your turn:
+
+(1) How many male students and female students do we have in the data set? Formally, compute $N_{male}$ and $N_{female}$
+
+(2) How many *students who are female and belong to RM program* do we have in the data set? compute $N_{female \cap RM}$
+
+    ```{r}
+    N_RM_fem = sum(salaries$program == "RM" & salaries$whatisyourgender1isfemale == 1, na.rm = T)
+    ```
+
+## Probability of an event
+
+Recall from the lecture,
+
+$$
+P(A) = \frac{N_A}{N}
+$$
+
+From the data you have, what is the probability of RM/BE student? More formally, compute $P(RM)$ and $P(BE)$.
+
+$$
+P(RM) = \frac{N_{RM}}{N}; P(BE) = \frac{N_{BE}}{N}
+$$
+
+As we are going to use $N$ repeatedly, it's better to ask R to remember it.
+
+```{r}
+N <- nrow(salaries)
+```
+
+Now, to calculate $P(RM)$, we also need $N_{RM}$, which we already had. Then
+
+```{r}
+P_RM = N_RM/N
+```
+
+Similarly,
+
+```{r}
+P_BE = N_BE/N
+```
+
+We can also do like this:
+
+```{r}
+table(salaries$program)/nrow(salaries)
+prop.table(table(salaries$program))
+#these two commands give the same results
+```
+
+### Your turn:
+
+Can you compute $P(male)$ and $P(female)$?
+
+## Joint and conditional probability
+
+Now let's spice things up a little bit. Assume we want to compute $P(RM \cap female)$, $P(female\mid RM)$ and $P(RM \mid female)$. Similarly,
+
+$$
+P(RM \cap female) = \frac{N_{RM \cap female}}{N}
+$$
+
+By this formula, we first need to calculate $N_{RM \cap female}$, using any ways discussed earlier.
+
+```{r}
+
+```
+
+$$
+P(RM \mid female) = \frac{P(RM \cap female)}{P(female)} = \frac{N_{RM \cap female}/N}{N_{female}/N} = \frac{N_{RM \cap female}}{N_{female}} 
+$$
+
+```{r}
+
+```
+
+### Your turn:
+
+1.  Compute $P(RM \mid female)$
+2.  Compute $P(RM \cup female)$
+3.  Why is $P(RM \mid female)$ different from $P(female \mid RM)$?

@@ -15,6 +15,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 11.5
 
+We fit the linear regression
+
+$y = b_0 + b_1x$
+
 ```{r}
 #data input
 x = c(2,4,3,6,3,5,6,2)
@@ -33,8 +37,6 @@ summary(mod)
 
 #for fun, we plot the line
 plot(x, y, col = "blue"); abline(mod)
-
-#we'll interprete the result together in class.
 ```
 
 For learning purpose, we can try calculating some of the components by hand using the formula provided in the lecture slides. `lm()` automatically calculates and report them in the model summary.
@@ -51,9 +53,38 @@ R_squared = 1-SSE/SST
 Adjusted_R_squared = 1-(SSE/SST)*(n-1)/df
 ```
 
+For interpretation of b0 and b1, please refer to the last video on this [page.](https://sse.instructure.com/courses/425/pages/may-17-regression?module_item_id=6183)
+
+#### Prediction
+
+After fitting the model, we can write it as:
+
+$y = -3.5695 + 3.6954*x$
+
+Prediction (in this course) is simply plugging in the new x to the model to find the new y.
+
+```{r}
+#the more systematic way. normally, we fit the model many times, and we may want to automatize the process like this
+b0 = as.numeric(mod$coefficients[1])
+b1 = as.numeric(mod$coefficients[2])
+
+#the simplier way, you copy an paste it from the summary(mod)
+b0 = -3.5695
+b1 = 3.6954
+
+#For example, we have a new x = 5
+newx = 5
+#We plug the new x in the model
+yPred = b0 + b1 * newx
+```
+
 ## 11.97
 
 Data description:
+
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Exercises/hei1.png?raw=true)
+
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Exercises/hei2.png?raw=true)
 
 To investigate the relationship between the HEI score and the daily cost, we estimate this linear model:
 
@@ -71,11 +102,13 @@ y2 = hei[hei$daycode == 2, "HEI2005"] #HEI score, second interview
 #Build the regression based on the first interview data
 mod1 = lm(y1 ~ x1)
 summary(mod1)
+#plot the data with the fitted line
 plot(x1, y1, xlab = "daily cost", ylab = "HEI score", main = "First interview"); abline(mod1, col = "red", lwd = 2)
 
 #Build the regression based on the second interview data
 mod2 = lm(y2 ~ x2)
 summary(mod2)
+#plot the data with the fitted line
 plot(x2, y2, xlab = "daily cost", ylab = "HEI score", main = "Second interview"); abline(mod2, col = "blue", lwd = 2)
 ```
 
@@ -91,7 +124,25 @@ mod2.1 = lm(hei[hei$daycode == 2, "HEI2005"] ~ hei[hei$daycode == 2, "daily_cost
 
 ## 12.114
 
-a\. We are asked to fit the linear model:
+This is the example we did in class (which is not part of the question from the book).
+
+$HEI = b_0 + b_1*female + b_2*age$
+
+```{r}
+mod_ex = lm(HEI2005 ~ female + age, data = hei)
+summary(mod_ex)
+
+#we extract the coefficients
+b0_ex = 43.557988
+b1_ex = 2.940651
+b2_ex = 0.159183
+
+#In class, we take an example that we want to predict the HEI of a new person,
+#who is male (0*b1_ex) and 20 years old (20*b2_ex)
+yPred_ex = b0_ex + 0*b1_ex + 20*b2_ex
+```
+
+a\. Here we are asked to fit the basic linear model:
 
 $HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode$
 
@@ -135,15 +186,21 @@ summary(mod_d)
 
 Data description:
 
-![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Exercises/salary.png?raw=true){width="532"}
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Exercises/salary.png?raw=true){width="634"}
 
 ```{r}
 #data prep
 salary <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/Salary_Study.csv")[, -1]
 
+#It is important to learn what we should include in the model
+#It is equally important to learn what we should NOT include in the model
+
+#we may not want to include the IVs that are highly correlated (multicollinearity)
+#for example, age and Experience
 cor(salary)
+#If you want to learn more about multicollinearity -> Newbold chapter 13.
 
 #This is an example. Adjust it as you reason
-mod.12107 = lm(Salary ~ Experience + Gender, data = salary)
+mod.12107 = lm(Salary ~ Gender + Experience + Market, data = salary)
 summary(mod.12107)
 ```
