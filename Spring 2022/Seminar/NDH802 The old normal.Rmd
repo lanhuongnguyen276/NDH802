@@ -1,11 +1,12 @@
 ---
 title: "The old normal"
-author: "NDH802 - Spring 2021"
+author: "NDH802 - Spring 2022"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -17,11 +18,10 @@ if(!require(asbio)){
 
 ### Exercise 5.27
 
-First, type in the assumptions from the question. Here I divide the $\mu$ and $\sigma$ by 1000 for presentation purpose only. Therefore I will work on '000 SEK going forward, i.e., when you see 500, it means 500,000 SEK. You can totally skip this step if you want to.
-
+First, type in the assumptions from the question.
 ```{r}
-mu = 500000/1000
-sigma = 50000/1000
+mu = 500000
+sigma = 50000
 ```
 
 **(a) What is the probability that the cost of building a home will be between \$460,000 and \$540,000? That is, find** $P(460,000 < X < 540,000)$ **where** $X$ **denotes the cost?**\
@@ -33,7 +33,7 @@ What we want to compute is the *blue* area. To do that in base R, one way is to 
   par(mfrow = c(3, 1))
   shade.norm(
     from = mu - 4 * sigma,
-    to = 540,
+    to = 540000,
     sigma = sigma,
     mu = mu,
     tail = "middle",
@@ -42,7 +42,7 @@ What we want to compute is the *blue* area. To do that in base R, one way is to 
   )
   shade.norm(
     from = mu - 4 * sigma,
-    to = 460,
+    to = 460000,
     sigma = sigma,
     mu = mu,
     tail = "middle",
@@ -51,8 +51,8 @@ What we want to compute is the *blue* area. To do that in base R, one way is to 
     shade.col = "pink3"
   )
   shade.norm(
-    from = 460,
-    to = 540,
+    from = 460000,
+    to = 540000,
     sigma = sigma,
     mu = mu,
     tail = "middle",
@@ -66,8 +66,8 @@ What we want to compute is the *blue* area. To do that in base R, one way is to 
 To compute the area below the normal curve, we use `pnorm()`.
 
 ```{r}
-grey = pnorm(540, mean = mu, sd = sigma)
-pink = pnorm(460, mean = mu, sd = sigma)
+grey = pnorm(540000, mean = mu, sd = sigma)
+pink = pnorm(460000, mean = mu, sd = sigma)
 blue = grey - pink; cat(blue)
 ```
 
@@ -76,8 +76,8 @@ Hint: The total area below the normal curve is 1 and `pnorm()` can compute the a
 
 ```{r}
 # blue_alternative <- 1 - #total area below the curve
-#   pnorm(460, mean = mu, sd = sigma) - #the white area on the left
-#   pnorm(540, mean = mu, sd = sigma, lower.tail = FALSE) #the white area on the right
+#   pnorm(460000, mean = mu, sd = sigma) - #the white area on the left
+#   pnorm(540000, mean = mu, sd = sigma, lower.tail = FALSE) #the white area on the right
 # cat(blue_alternative)
 ```
 
@@ -110,5 +110,5 @@ shade.norm(
 ```
 
 ***NOTE***\
-- In (a), we compute the **area** below the curve (the gray/pink/blue area) which characterizes the **probability**.\
+- In (a), we compute the **area** under the curve (the gray/pink/blue area) which characterizes the **probability**.\
 - In (b) and (c), we compute the **value** of $X$ (a point on the x-axis) which characterizes **the cost of building a home**.

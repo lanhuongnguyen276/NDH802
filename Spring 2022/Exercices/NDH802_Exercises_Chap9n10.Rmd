@@ -109,7 +109,9 @@ H_1: \mu_1 > \mu_2
 ```
 ```{r}
 #load data into your Global environment
-price <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Exercises/House_Selling_Price.csv")[, -1]
+price <- read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Spring%202021/Exercises/HouseSellingPrice.csv")[, -1]
+
+
 
 #t.test on all data
 t.test(x = price$Sale.1.Price, 

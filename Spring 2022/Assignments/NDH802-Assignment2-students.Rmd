@@ -24,7 +24,7 @@ rm(list=ls())
 
 ### Set things up
 
-SetSet your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
+Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
 
 ```{r}
 #setwd("")
@@ -34,11 +34,10 @@ our_group <- 27
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
 
 ```{r}
-inference_dataset <- read.csv("https://cda.hhs.se/inference_dataset.csv")
-set.seed(1); df <- inference_dataset[sample(1:nrow(inference_dataset),
+inference_dataset <- read.csv("https://cda.hhs.se/NDH802data.csv")
+set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
-                           replace = FALSE), -1]
-rm(inference_dataset)
+                           replace = FALSE), -1]; rm(inference_dataset)
 ```
 
 \newpage
