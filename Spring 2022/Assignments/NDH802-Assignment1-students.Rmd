@@ -33,7 +33,7 @@ our_group <- 27
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
 
 ```{r, echo=FALSE}
-inference_dataset <- read.csv("https://cda.hhs.se/NDH802data.csv")
+inference_dataset <- read.csv("https://cda.hhs.se/NDH802data2022.csv")
 set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]; rm(inference_dataset)
@@ -66,7 +66,7 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 +-------------------+------------------------------------------------------------------------------------------------------------+
 | points            | Total loyalty points the customer accumulates since they become a member deducted by points they have used |
 +-------------------+------------------------------------------------------------------------------------------------------------+
-| main.store        | The format in which the customer made the most transactions in year 2021                                   |
+| main.format        | The format in which the customer made the most transactions in year 2021                                   |
 +-------------------+------------------------------------------------------------------------------------------------------------+
 
 \newpage

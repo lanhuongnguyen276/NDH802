@@ -54,7 +54,7 @@ To investigate the average value of online baskets, you sample some online baske
 
 (b) Based on `sample_B`, what is the 90% confidence interval (CI) for the population mean? (0.5p) Why does this CI different from what you found in (a)? (0.5p)
 
-(c) If we repeatedly and independently draw 25 customers from the population, would 90% of the population means fall into the CI you found in (b)? Why/why not? (1p)
+(c) If we repeatedly and independently draw 25 customers from the population, would 90% of the population means fall into the CI you found in (a)? Why/why not? (1p)
 
 (d) Assuming sample standard deviation stay unchanged, what are the possible ways to reduce the margin of error? Justify your answer and discuss the pros and cons of each of the ways. (1p)
 
@@ -65,15 +65,15 @@ In order to get full score for this question, you need to formulate the null and
 (a) Imagine you are the customer relationship manager. One of your colleagues argues that the average `store.spend` of the customers is 58080. Based on your sample data `df`, would you reject this claim at 95% confidence level? (1p)
 (b) Suppose you want to know if there is strong evidence that the average `store.spend` is higher than the average `online.spend`. How would you test it and what would you conclude? (1p)
 (c) Suppose you want to know if there is strong evidence that the customers whose `main.format` is offline live nearer to the store as compared with the customers whose `main.format` is online. How would you test it and what would you conclude? (1p)
-(d) What is Type I error in general and in the test you perform in (b)? What can we do to reduce Type I and what are the consequences? (1p)
+(d) What does Type I error signify, in general and in the test you perform in (b)? What can we do to reduce Type I error and what are the consequences? (1p)
 
 \newpage
 
 ### Question 3. Correlation and regression
 
-(a) Your objective for 2022 is to increase the customer `total.spend`. In order to do that, you first aim to understand which factors (independent variables - IVs) are the most influential. Write your own linear regression equation (modify the one below), explain your choice of IVs \footnote{You are free to include any variables in `df` as your IVs}, perform the estimation, print out the model estimation. $$ value = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \varepsilon $$ *Heads up:*
+(a) Your objective for 2022 is to increase the customer `total.spend`. In order to do that, you first aim to understand which factors (independent variables - IVs) are the most influential. Write your own linear regression equation (modify the one below), explain your choice of IVs \footnote{You are free to include any variables in `df` as your IVs}, perform the estimation, print out the model estimation. $$ total.spend = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \varepsilon $$ *Heads up:*
 
--   `main.format` and `member.since` are categorical variable, which is a little more difficult to work with.
+-   `main.format` and `member.since` are categorical variable, hence a little more difficult to work with.
 -   The more IVs do not not always guarantee the better model.
 
 (b) Interpret the results, in both statistical and business language. (0.5p)\
