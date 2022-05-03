@@ -1,6 +1,6 @@
 ---
 title: "NDH802 - Assignment 1"
-author: "Group no. "
+author: " Group: 16                                                                              Students: 50784, 50818, 50791, 50815, 50826"
 output: pdf_document
 ---
 
@@ -26,15 +26,15 @@ rm(list=ls())
 Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
 
 ```{r}
-#setwd("")
-our_group <- 27
+#setwd("/Users/ebbaandersson/Downloads")
+our_group <- 16
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
 
 ```{r, echo=FALSE}
 inference_dataset <- read.csv("https://cda.hhs.se/NDH802data2022.csv")
-set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
+set.seed(our_group <- 16); data <- inference_dataset[sample(1:nrow(inference_dataset),
                            size = 1000000,
                            replace = FALSE), -1]; rm(inference_dataset)
 ```
@@ -75,23 +75,67 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
+```{r}
+sum(data["total.spend"])
+```
 
-    ```{r}
-    hist()
-    ```
+```{r}
+hist(data$total.spend/1000, 
+     
+#Characteristics
+     breaks=100, 
+     xlim = c(0,320), 
+     
+#Styling
+     main="Total Spend, 2021", 
+     ylab="Amount of customers", 
+     xlab="Amount spent in kSEK")
+```
+
+The peak of the histogram represents the most frequent interval of the data. In this case, the peak convey that most customers spend slightly below 50 thousand SEK in 2021.
+
+\newpage
 
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
-```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+```{r, fig.height=6, fig.width=6}
+ boxplot(total.spend/1000 ~ main.format,
+ 
+#Characteristics
+    data = data,
+    ylim = c(0, 320),
+ 
+ #Syling
+    main = "Distribution of purchases",
+    ylab = "Total spend, kSEK",
+    xlab = "Purchase format")
+    
+ 
 ```
 
-(c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+We would not conclude that online purchases contribute the most to the total spend since the box plot shows how data is distributed rather than the sum which would be needed to determine what purchase format contributes the most to total spend. The only thing that we can conclude is that when a customers main format is online, the average order value is higher and that the spread is greater.
+
+\newpage
+
+(c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenience store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+```{r}
+mean(data[data$main.format == "Convenience store","distance.to.store"], na.rm = TRUE)
+mean(data[data$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+```
+
+Here we can see that the mean of distance for the convenience store is lower than the supermarket, which is expected since supermarkets are often larger and located more remote than convenience stores.
+
+```{r}
+var(data[data$main.format == "Convenience store","distance.to.store"], na.rm = TRUE)
+var(data[data$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+```
+
+The variance is telling us that that the customers visiting convenience stores usually do not have a big variability in distribution, while the supermarket-visitors have a larger variability in distribution.
+
+The difference between the variances is also expected due to the scarcity of supermarkets resulting in very long distances for some contrary to convenience stores aiming to be near everyone.
+
+\newpage
 
 ### Question 2. Probability theory
 
@@ -103,15 +147,84 @@ Consider the following events:
 
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
+$P(A)$:
+
+```{r}
+prop.table(table(data$store.trans != 0))
+P_A <- 1
+
+```
+
+Given that P=1, all customers have made at least one offline (store) transaction.
+
+$P(B)$:
+
+```{r}
+prop.table(table(data$online.trans != 0))
+
+P_B <- 0.959995
+
+```
+
+There is a 96% chance that a randomly chosen customer have made at least one online transaction.
+
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
 
-(c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+```{r}
+prop.table(table(data$online.trans == 0))
 
-(d) Are $A$ and $B$ independent events? Why/why not? (1p)
+#or:
 
-(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+  1-P_B
+```
+
+1.  $P(\bar{B})$ = 0.040005\
+    $\bar{B}$ is the complement of event B, formally defined as all events in which B is not true. $P(\bar{B})$ is thus given by taking all possible outcomes - P(B).
+
+c\. Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+
+$P(B \cap A)$ = 0,9599
+
+$P(B \mid A)$ = 0,9599
+
+```{r}
+P_A*P_B
+
+```
+
+Since we know that P(A)=1, we can only multiply this with P(B) to find the probability of their intersections and conditional probability.
+
+d\. Are $A$ and $B$ independent events? Why/why not? (1p)
+
+Yes, they are statistically independent because $P(B \cap A)$ = P(B) \* P(A) - thus they do not influence each other.
+
+e\. Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+The probability of $P(B)$ tells us about the probability of the single event B occurring. $P(B \cap A)$ is the intersection of events B and A. It tells us the probability of event B and A occurring. $P(B \mid A)$ is conditional probability and tells us about the probability of B occurring given that A has occurred.
+
+$P(B \mid A)$= $P(B \cap A)$/$P(A)$
+
+The conditional probability of B is calculated by dividing the probability of the intersection of the two events with the probability of A.
+
+Since P(A) is equal to 1 in this case, $P(B \mid A)$ = $P(B \cap A)$
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Fantastic!
+
+Q1ab. Concise and correct. Love your answers! 4p
+
+Q1c. Correct calculation. However, I would like you to understand that the mean of distance from customers whose main format is supermarket is higher than the mean of distance from customers whose main format is convenient store is irrelevant of the fact that the supermarkets are remote. It can only implies that those customers whose main format is supermarket on average live nearer to the store as compared with those whose main format is convenient store. Same go for the variances. 1p
+
+Q2a. Correct. 1p
+
+Q2b. Hmmm you have not really defined $\bar{B}$ in this case, which is made no online transaction. 0.5p
+
+Q2c. In order to use the formula you used, you first need to prove that A and B are independent (which you have not until the next question). 0.5p
+
+Q2d. Correct. 1p
+
+Q2e. You successfully proved $P(B \mid A)$ = $P(B \cap A)$, great job! You have not prove either of them is equal to $P(B)$ 1p

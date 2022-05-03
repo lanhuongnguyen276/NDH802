@@ -1,0 +1,309 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={NDH802 Solutions to rec. exercises Chap 2 and 3},
+  pdfauthor={Huong},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{NDH802 Solutions to rec. exercises Chap 2 and 3}
+\author{Huong}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{section}{%
+\subsection{1.4}\label{section}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Data}
+\NormalTok{price }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{104}\NormalTok{, }\DecValTok{135}\NormalTok{, }\DecValTok{80}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DecValTok{98}\NormalTok{, }\DecValTok{206}\NormalTok{, }\DecValTok{141}\NormalTok{, }\DecValTok{109}\NormalTok{)}
+\NormalTok{no.apt }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{220}\NormalTok{, }\DecValTok{380}\NormalTok{,}\DecValTok{350}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{440}\NormalTok{, }\DecValTok{185}\NormalTok{, }\DecValTok{250}\NormalTok{, }\DecValTok{120}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(price, no.apt)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{NDH802_Exercises_Chap2n3_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\hypertarget{section-1}{%
+\subsection{2.4}\label{section-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_q2}\FloatTok{.4} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{2.51}\NormalTok{, }\FloatTok{3.74}\NormalTok{, }\FloatTok{4.15}\NormalTok{, }\FloatTok{5.33}\NormalTok{, }\FloatTok{6.18}\NormalTok{, }\FloatTok{6.65}\NormalTok{, }\FloatTok{6.92}\NormalTok{, }\FloatTok{6.95}\NormalTok{, }\FloatTok{7.18}\NormalTok{, }\FloatTok{7.54}\NormalTok{)}
+\FunctionTok{mean}\NormalTok{(data\_q2}\FloatTok{.4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.715
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{median}\NormalTok{(data\_q2}\FloatTok{.4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6.415
+\end{verbatim}
+
+\hypertarget{section-2}{%
+\subsection{2.12}\label{section-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_q2}\FloatTok{.12} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{14}\NormalTok{)}
+\FunctionTok{var}\NormalTok{(data\_q2}\FloatTok{.12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 14.66667
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{(data\_q2}\FloatTok{.12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.829708
+\end{verbatim}
+
+\hypertarget{section-3}{%
+\subsection{2.20}\label{section-3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{eur\_usd }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{1.1410}\NormalTok{, }\FloatTok{1.1363}\NormalTok{, }\FloatTok{1.1351}\NormalTok{, }\FloatTok{1.1324}\NormalTok{, }\FloatTok{1.1276}\NormalTok{, }\FloatTok{1.1332}\NormalTok{, }\FloatTok{1.1266}\NormalTok{)}
+\NormalTok{usd\_jyp }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{109.95}\NormalTok{, }\FloatTok{109.96}\NormalTok{, }\FloatTok{109.80}\NormalTok{, }\FloatTok{109.77}\NormalTok{, }\FloatTok{110.41}\NormalTok{, }\FloatTok{110.48}\NormalTok{, }\FloatTok{110.00}\NormalTok{)}
+\FunctionTok{mean}\NormalTok{(eur\_usd) }\SpecialCharTok{\textless{}} \FunctionTok{mean}\NormalTok{(usd\_jyp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{(eur\_usd) }\SpecialCharTok{\textless{}} \FunctionTok{sd}\NormalTok{(usd\_jyp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\hypertarget{section-4}{%
+\subsection{3.7}\label{section-4}}
+
+a.
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+Pairs & & & & \\
+\midrule
+\endhead
+1. M1,M2 & 5. M2,M1 & 9. M3,M1 & 13. T1,M1 & 17. T2,M1 \\
+2. M1,M3 & 6. M2,M3 & 10.M3,M2 & 14. T1,M2 & 18. T2,M2 \\
+3. M1,T1 & 7.~ M2,T1 & 11. M3,T1 & 15. T1,M3 & 19. T2,M3 \\
+4. M1,T2 & 8.~ M2,T2 & 12. M3,T2 & 16. T1,T2 & 20. T2,T1 \\
+\bottomrule
+\end{longtable}
+
+b. Event A is that at least one of the two cars selected is a Toyota.
+Outcomes 3, 4, 7, 8, 11-20.
+
+c. Event B is that the two cars selected are of the same model. Outcomes
+1, 2, 5, 6, 9, 10, 16, 20.
+
+d. The complement of A is the event that the customers do not select at
+least one Toyota. That is, no one chose Toyota. Equivalently, both of
+them chose Mercedes. Outcomes 1, 2, 5, 6, 9, 10.
+
+e. \((A \cap B) \cup (\bar{A} \cap B) = (A \cup \bar{A}) \cap B = B\).
+Alternatively, we can see:
+
+\begin{itemize}
+\item
+  \((A \cap B)\): Outcomes 16, 20.
+\item
+  \((\bar{A} \cap B)\): Outcomes 1, 2, 5, 6, 9, 10.
+\item
+  \((A \cap B) \cup (\bar{A} \cap B)\): Outcomes 1, 2, 5, 6, 9, 10, 16,
+  or 20; which is event B.
+\end{itemize}
+
+d.
+\(A \cup (\bar{A} \cap B) = (A \cup \bar{A}) \cap (A \cup B) = A \cup B\).
+Alternatively, we can see:
+
+\begin{itemize}
+\item
+  \((\bar{A} \cap B)\): Outcomes 1, 2, 5, 6, 9, 10.
+\item
+  \(A \cup (\bar{A} \cap B)\): Outcomes 1-20, which is \(A \cup B\).
+\end{itemize}
+
+\hypertarget{section-5}{%
+\subsection{3.19}\label{section-5}}
+
+\[\begin{align*}
+P( A \cap B) &= P(A) + P(B) - P(A \cup B) \\ &= 0.3 + 0.7 - 0.9 = 0.1
+\end{align*}\]
+
+\hypertarget{section-6}{%
+\subsection{3.98}\label{section-6}}
+
+Assumptions: \(P(MBA) = 0.35\), \(P(\>35 yo+) = 0.4\),
+\(P(35yo+ \mid MBA) = 0.3\)
+
+a. \(P(MBA \cap 35yo+)\).
+
+b. \(P(MBA \mid 35yo+)\).
+
+c. \(P(MBA \cup 35yo+)\).
+
+d. \(P(\bar{MBA} \mid 35yo+)\).
+
+e. Are the events MBA and over age 35 independent?
+
+f. Are the events MBA and over age 35 mutually exclusive?
+
+g. Are the events MBA and over age 35 collectively exhaustive?
+
+\hypertarget{section-7}{%
+\subsection{3.108}\label{section-7}}
+
+Let A be the event where the passengers are carrying more liquor than is
+allowed and B be the event where the TPS identifies it. We have
+\(P(A) = 0.2, P(B \mid A) = 0.8\) and \(P(B|\bar{A}) = 0.2\). By Bayes's
+theorem:
+
+\[\begin{align*}
+P(A \mid B)
+& = \frac{P(B \mid A) * P(A)}{P(B)} \\
+& = \frac{P(B \mid A)*P(A)}{P(B \mid A)*P(A) + P(B \mid \bar{A})*P(\bar{A})} \\
+& = \frac{0.8*0.2}{0.8*0.2 + 0.2*0.8} = 0.5
+\end{align*}\] In case you wonder, this is normally called the law of
+total probability, which is quite handy:
+
+\[\begin{align*}
+P(B) & = P(A \cap B) + P(\bar{A} \cap B) \quad \text{(See Exercise 3.7e)}\\
+& = P(B \mid A)*P(A) + P(B \mid \bar{A})*P(\bar{A})
+\end{align*}\]
+
+\end{document}

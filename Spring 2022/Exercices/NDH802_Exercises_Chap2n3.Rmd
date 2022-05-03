@@ -1,9 +1,8 @@
 ---
 title: "NDH802 Solutions to rec. exercises Chap 2 and 3"
 author: "Huong"
-geometry: margin=4cm
-output: pdf_document
-  # prettydoc::html_pretty:
+output: 
+  prettydoc::html_pretty:
   # theme: hpstr
   # highlight: github
 ---
@@ -79,28 +78,63 @@ d\. $A \cup (\bar{A} \cap B) = (A \cup \bar{A}) \cap (A \cup B) = A \cup B$. Alt
 
 ## 3.19
 
-```{=tex}
-\begin{align*}
-P( A \cap B) & = P(A) + P(B) - P(A \cup B) \\ & = 0.3 + 0.7 - 0.9 = 0.1
-\end{align*}
+$$\begin{align*}
+P( A \cap B) &= P(A) + P(B) - P(A \cup B) \\ &= 0.3 + 0.7 - 0.9 = 0.1
+\end{align*}$$
+
+## 3.98
+
+Assumptions: $P(MBA) = 0.35$, $P(\>35 yo+) = 0.4$, $P(35yo+ \mid MBA) = 0.3$.
+
+```{r}
+P_MBA = 0.35
+#for simplicity, let's use this to denote probability of staff who are older than 35
+P_35yo = 0.4 
+P_35yo_given_MBA = 0.3
 ```
+
+a\. $P(MBA \cap 35yo+) = P(35yo+ \mid MBA) * P(MBA)$
+
+```{r}
+P_MBA_intersect_35yo = P_35yo_given_MBA * P_MBA
+```
+
+b\. $P(MBA \mid 35yo+) = \frac{P(MBA \cap 35yo+)}{P(35yo+)}$
+
+```{r}
+P_MBA_given_35yo = P_MBA_intersect_35yo/P_35yo
+```
+
+c\. $P(MBA \cup 35yo+) = P(MBA) + P(35yo+) - P(MBA\cap35yo+)$
+
+```{r}
+P_MBA_union_35yo = P_MBA + P_35yo - P_MBA_intersect_35yo
+```
+
+d\. $P(\bar{MBA} \mid 35yo+) = 1 - P(MBA\mid35yo+)$
+
+```{r}
+P_not_MBA_given_35yo = 1 - P_MBA_given_35yo
+```
+
+e\. Are the events MBA and over age 35 independent? No, because $P(MBA\cap35yo+) \ne P(MBA)*P(35yo+)$.
+
+f\. Are the events MBA and over age 35 mutually exclusive? No, because $P(MBA\cap35yo+) \ne 0$
+
+g\. Are the events MBA and over age 35 collectively exhaustive? No, because $P(MBA \cup 35yo+) \$
+
 ## 3.108
 
 Let A be the event where the passengers are carrying more liquor than is allowed and B be the event where the TPS identifies it. We have $P(A) = 0.2, P(B \mid A) = 0.8$ and $P(B|\bar{A}) = 0.2$. By Bayes's theorem:
 
-```{=tex}
-\begin{align*}
+$$\begin{align*}
 P(A \mid B)
 & = \frac{P(B \mid A) * P(A)}{P(B)} \\
 & = \frac{P(B \mid A)*P(A)}{P(B \mid A)*P(A) + P(B \mid \bar{A})*P(\bar{A})} \\
 & = \frac{0.8*0.2}{0.8*0.2 + 0.2*0.8} = 0.5
-\end{align*}
-```
-In case you wonder, this is normally called the law of total probability, which is quite handy:
+\end{align*}$$ In case you wonder, this is normally called the law of total probability, which is quite handy:
 
-```{=tex}
-\begin{align*}
+$$\begin{align*}
 P(B) & = P(A \cap B) + P(\bar{A} \cap B) \quad \text{(See Exercise 3.7e)}\\
 & = P(B \mid A)*P(A) + P(B \mid \bar{A})*P(\bar{A})
-\end{align*}
-```
+\end{align*}$$

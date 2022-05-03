@@ -1,8 +1,9 @@
 ---
 title: "NDH802 R Application - Seminar #2"
 author: "Huong Nguyen"
-output:
-  html_document: default
+output: 
+  prettydoc::html_pretty:
+  theme: HPSTR
 ---
 
 ```{r setup, include=FALSE}
@@ -11,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Load the data in
 
-```{r}
-salaries = read.csv("https://bit.ly/3r918BW")
+```{r, echo=TRUE}
+salaries = read.csv("https://tinyurl.com/NHD802salaries")
 ```
 
 Let $A$ be an event. There are several ways to calculate $N_A$ in base R, today we learn 3 ways. For example, assume we want to know the number of BE ($N_{BE}$) and RM ($N_{RM}$) students in our data, we can
@@ -53,7 +54,23 @@ Let $A$ be an event. There are several ways to calculate $N_A$ in base R, today 
 
 (1) How many male students and female students do we have in the data set? Formally, compute $N_{male}$ and $N_{female}$
 
+    ```{r}
+    #these two should give you the same result
+    N_fem = sum(salaries$whatisyourgender1isfemale == 1, na.rm = TRUE)
+    N_fem = nrow(salaries[salaries$whatisyourgender1isfemale==1 & !is.na(salaries$whatisyourgender1isfemale),])
+
+    #these two should give you the same result
+    N_male = sum(salaries$whatisyourgender1isfemale == 2, na.rm = TRUE)
+    N_male = nrow(salaries[salaries$whatisyourgender1isfemale==2 & !is.na(salaries$whatisyourgender1isfemale),])
+    ```
+
 (2) How many *students who are female and belong to RM program* do we have in the data set? compute $N_{female \cap RM}$
+
+    ```{r}
+    #these two should give you the same result
+    N_RM_fem = sum(salaries$program == "RM" & salaries$whatisyourgender1isfemale == 1, na.rm = TRUE)
+    N_RM_fem = nrow(salaries[salaries$program == "RM" & salaries$whatisyourgender1isfemale==1 & !is.na(salaries$whatisyourgender1isfemale),])
+    ```
 
 ## Probability of an event
 
@@ -99,6 +116,11 @@ prop.table(table(salaries$program))
 
 Can you compute $P(male)$ and $P(female)$?
 
+```{r}
+P_male = N_male/N
+P_fem = N_fem/N
+```
+
 ## Joint and conditional probability
 
 Now let's spice things up a little bit. Assume we want to compute $P(RM \cap female)$, $P(female\mid RM)$ and $P(RM \mid female)$. Similarly,
@@ -110,7 +132,7 @@ $$
 By this formula, we first need to calculate $N_{RM \cap female}$, using any ways discussed earlier.
 
 ```{r}
-
+P_RM_intersect_fem = N_RM_fem/N
 ```
 
 $$
@@ -118,11 +140,53 @@ P(RM \mid female) = \frac{P(RM \cap female)}{P(female)} = \frac{N_{RM \cap femal
 $$
 
 ```{r}
-
+P_RM_given_fem = N_RM_fem/N_fem
 ```
 
 ### Your turn:
 
-1.  Compute $P(RM \mid female)$
+1.  Compute $P(female\mid RM)$.
+
+    ```{r}
+    P_fem_given_RM = N_RM_fem/N_RM
+    ```
+
 2.  Compute $P(RM \cup female)$
+
+    ```{r}
+    P_fem_union_RM = P_fem + P_RM - P_RM_intersect_fem
+    ```
+
 3.  Why is $P(RM \mid female)$ different from $P(female \mid RM)$?
+
+    I cannot give you the answer for the assignment :) From the interaction in the class, I trust you can manage this.
+
+### Some thing else we discussed in class.
+
+-   To denote "and" in R, we use &. You may have seen in it in previous code. To denote "or" in R, we use \|. For example,
+
+    ```{r}
+    N_fem_or_RM = sum(salaries$program == "RM" | salaries$whatisyourgender1isfemale == 1, na.rm = TRUE)
+    ```
+
+-   To compare, we have the followings. Those are simply example, use them as per your goals.
+
+    ```{r}
+    #equal. Note: TWO equal signs next to each other. Eg
+    master_1 = salaries$masters == 1
+
+    #not equal. Eg
+    master_not_1 = salaries$masters != 1
+
+    #greater
+    master_greater_than_1 = salaries$masters > 1
+
+    #greater or equal to 1
+    master_greater_or_equal_1 = salaries$masters >= 1
+
+    #less than 1
+    master_less_than_1 = salaries$masters < 1
+
+    #greater or equal to 1
+    master_less_or_equal_1 = salaries$masters <= 1
+    ```

@@ -1,0 +1,165 @@
+---
+title: "NDH802 Solutions to rec. exercises Chap 4 and 5"
+author: "Huong"
+output: 
+   prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 4.13
+
+The number of computers sold per day at Dan's Computer Works is defined by the following probability distribution:
+
+| x    | 0    | 1    | 2    | 3    | 4    | 5    | 6    |
+|------|------|------|------|------|------|------|------|
+| P(x) | 0.03 | 0.11 | 0.15 | 0.22 | 0.19 | 0.26 | 0.04 |
+
+a\. $P(3 \le X < 6) = P(X=3) + P(X=4) + P(X=5) = 0.22 + 0.19 + 0.26$
+
+b\. $P(X \ge 3) = P(X=3) + P(X=4) + P(X=5) + P(X=6) = 0.22 + 0.19 + 0.26 + 0.04$
+
+c\. $P(X \le 4) = 1 - P(X=5) - P(X=6) = 1 - 0.26 - 0.04$
+
+d\. $P(2 < X \le 5) = P(3 \le X < 6) = P(X=3) + P(X=4) + P(X=5) = 0.22 + 0.19 + 0.26$
+
+## 4.29
+
+An investor is considering three strategies for a \$1,200 investment. The probable returns are estimated as follows:
+
+-   Strategy 1: A certain profit of \$200. That is, $E(X_1) = 200$, $Var(X_1) = 0$.
+
+-   Strategy 2: A profit of \$12,000 with probability 0.15 and a loss of \$1,200 with probability 0.85.
+
+    That is,
+
+$$
+    \begin{align*}
+    E(X_2) &= 12000*0.15 - 1200 * 0.85 = 780 \\
+    Var(X_2) &= 12000^2*0.15 + (-1200)^2*0.85 - 780^2 = 22,215,600
+    \end{align*}
+$$
+
+-   Strategy 3: A profit of \$500 with probability 0.50, a profit of \$250 with probability 0.30 and a loss of \$250 with probability 0.20. That is,
+
+$$
+\begin{align*}
+    E(X_3) &= 500*0.5 + 250*0.3 - 250 * 0.2 = 275 \\
+    Var(X_3) &= 500^2*0.5 + 250^2*0.3 + (-250)^2*0.2 - 275^2 = 80,625
+    \end{align*}
+$$
+
+Which strategy has the highest expected profit? Strategy 2.
+
+Explain why you would or would not advise the investor to adopt this strategy. The "best" strategy depends on your preference, if you'd like a high risk high return choice or safe (low risk low return) choice.
+
+## 4.30
+
+Assume $X \sim Bern(0.8)$. $E(X) = p = 0.8$. $Var(X) = p(1-p) = 0.8*0.2 = 0.16$.
+
+## 4.49
+
+A company receives large shipments of parts from two sources. Seventy percent of the shipments come from a supplier whose shipments typically contain 10% defectives, while the remainder are from a supplier whose shipments typically contain 20% defectives. A manager receives a shipment but does not know the source. A random sample of 20 items from this shipment is tested, and 1 of the parts is found to be defective. What is the probability that this shipment came from the more reliable supplier? (Hint: Use Bayes' theorem)
+
+Summarize the questions:
+
+$A$: Shipment is from reliable supplier. $P(A) = 0.7$.\
+$\bar{A}$: Shipment is from the other supplier. $P(\bar{A}) = 0.3$.\
+$X$: Number of defectives.
+
+Find $P(A \mid X = 1)$.
+
+Now,\
+$X \mid A \sim Binom(n=20, p = 0.1)$. Hence, $P(X=1\mid A) = 0.27$.\
+
+```{r}
+dbinom(x = 1, size = 20, p = 0.1)
+```
+
+$X \mid \bar{A} \sim Binom(n=20, p = 0.2)$. Hence, $P(X=1\mid \bar{A}) = 0.057$.\
+
+```{r}
+dbinom(x = 1, size = 20, p = 0.2)
+```
+
+$$
+\begin{align}
+P(A \mid X = 1)
+&= \frac{P(X = 1 \mid A) * P(A)}{P(X = 1)} \quad \text{(Bayes' theorem)}\\
+&= \frac{P(X = 1 \mid A) * P(A)}{P(X = 1 \mid A) * P(A) + P(X = 1 \mid \bar{A})*P(\bar{A})}\\
+&= \frac{0.27 * 0.7}{0.27 * 0.7 + 0.057 * 0.3} = 0.917
+\end{align}
+$$
+
+## 5.21
+
+Let $X \sim N(\mu = 0.2, \sigma^2 = 0.0025)$.
+
+a\. $P(X > 0.4)$.
+
+```{r}
+pnorm(q = 0.4, mean = 0.2, sd = sqrt(0.0025), lower.tail = F)
+```
+
+b\. $P(0.15< X < 0.28)$.
+
+```{r}
+pnorm(q = 0.28, mean = 0.2, sd = sqrt(0.0025)) - pnorm(q = 0.15, mean = 0.2, sd = sqrt(0.0025))
+```
+
+c\. $P(X < 0.1)$.
+
+```{r}
+pnorm(q = 0.1, mean = 0.2, sd = sqrt(0.0025))
+```
+
+d\. Find d such that $P(X > d) = 0.2$.
+
+```{r}
+qnorm(p = 0.2, mean = 0.2, sd = sqrt(0.0025), lower.tail = F)
+```
+
+e\. Find e and f such that $P(e< X < f) = 0.05$ and $X$ is in the symmetric interval around the mean.
+
+```{r}
+qnorm(p = 0.475, mean = 0.2, sd = sqrt(0.0025))
+qnorm(p = 0.475, mean = 0.2, sd = sqrt(0.0025), lower.tail = F)
+```
+
+## 5.87
+
+Let $X$ be the delivery times in minutes. $X \sim N(\mu = 30, \sigma = 6)$.
+
+a\. $P(25 < X < 35)$
+
+```{r}
+pnorm(q = 35, mean = 30, sd = 6) - pnorm(q = 25, mean = 30, sd = 6)
+```
+
+b\. $P(X > 45)$ Free pizza
+
+```{r}
+pnorm(q = 45, mean = 30, sd = 6, lower.tail = F)
+```
+
+c\. Suppose one orders 6 pizzas, find probability that s/he gets at least one free pizza.\
+We can think of $Y$ as an event where one gets free pizza. Then $Y \sim Binom(n=6, p=0.006)$.
+
+$$
+P(Y \ge 1) = 1 - P(Y=0) 
+$$
+
+```{r, echo=FALSE}
+1 - dbinom(x = 0, size = 6, prob = 0.006)
+```
+
+d\. Find the shortest interval $[a, b]$ such that $P(a < X < b) = 0.8$.
+
+```{r}
+a = qnorm(p = 0.1, mean = 30, sd = 6)
+b = qnorm(p = 0.1, mean = 30, sd = 6, lower.tail = FALSE)
+```

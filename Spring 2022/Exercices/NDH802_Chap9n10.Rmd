@@ -1,0 +1,304 @@
+---
+title: "NDH802 - Hypothesis testing"
+author: "Chapter 9 and 10"
+output: 
+ prettydoc::html_pretty:
+  theme: hpstr
+  highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 9.37
+
+The probability of type II error is: $\beta = P(\bar{x}\le 5.041|\mu = \text{each of the mu given in the sub-questions})$. $\text{power} = 1 - \beta$.
+
+```{r}
+#we calculate this similarly to the way we solve exercises in previous chapters
+beta_a = pnorm(q = 5.041, mean = 5.1, sd = 0.1/sqrt(16))
+power_a = 1 - beta_a
+
+beta_b = pnorm(q = 5.041, mean = 5.03, sd = 0.1/sqrt(16))
+power_b = 1 - beta_b
+
+beta_c = pnorm(q = 5.041, mean = 5.15, sd = 0.1/sqrt(16))
+power_c = 1 - beta_c
+
+beta_d = pnorm(q = 5.041, mean = 5.07, sd = 0.1/sqrt(16))
+power_d = 1 - beta_d
+```
+
+## 9.41
+
+Summarize the question:
+
+```{r}
+n = 1562
+x_bar = 4.27
+s = 1.32
+mu_a = 4
+alpha = 0.01
+```
+
+a\. Two-sided test at $\alpha = 0.01$
+
+$$
+\begin{align*}
+H_o&: \mu_a = 4 \\
+H_1&: \mu_a \ne 4
+\end{align*}
+$$
+
+As many of you ask for "the book way":
+
+```{r}
+se = s/sqrt(n)
+z_alpha = qnorm(p = alpha/2, lower.tail = F)
+UCL = mu_a + z_alpha*se
+LCL = mu_a - z_alpha*se
+```
+
+`r x_bar` \> `r round(UCL,2)`, or $\bar{x}>$ UCL, we reject the null hypothesis.
+
+b\. We want to calculate the probability that we reject the null hypothesis that we should not have. Because $\mu_b = 3.95 < \mu_a$, the so-called "fail to reject" area starts from the LCL we previously found. Accordingly, $\beta = P(\bar{X} > LCL|\mu_b = 3.95)$. Please refer to the plot below for the visual illustration.
+
+```{r}
+mu_b = 3.95
+beta = pnorm(q = LCL, mean = mu_b, sd = se, lower.tail = F)
+```
+
+DON'T freak out! The following code is for illustration purpose only and WON'T be in the exam. Simply run the whole code chunk for the plot to show.
+
+The curve on the right, with $\mu = \mu_a = 4$, represents the distribution of the sample mean based on the null hypothesis in question a. The curve on the left, with $\mu = \mu_b = 3.95$, represents the distribution of the sample mean based on the true population mean in question b. The red area is the $\alpha$ in question a, based on which we calculate the critical value. The green area is the $\beta$ that we calculated in question b.
+
+```{r, echo=FALSE}
+colorArea <- function(from, to, density, ..., col="blue", dens=NULL){
+    y_seq <- seq(from, to, length.out=500)
+    d <- c(0, density(y_seq, ...), 0)
+    polygon(c(from, y_seq, to), d, col=col, density=dens)}
+
+curve(dnorm(x, mean = mu_a, sd = se), from = mu_b - 4*se, to = mu_a + 4*se, ylab = "", xlab = "X_bar")
+colorArea(from = mu_b - 4*se, to = LCL, dnorm, mean = mu_a, sd = se, col = rgb(225, 0, 0, max = 255, alpha = 200))
+colorArea(from = UCL, to = mu_a + 4*se, dnorm, mean = mu_a, sd = se, col = rgb(225, 0, 0, max = 255, alpha = 200))
+curve(dnorm(x, mean = mu_b, sd = se), from = mu_b - 4*se, to = mu_a + 4*se, add = TRUE)
+colorArea(from = LCL, to = mu_a + 4*se, dnorm, mean = mu_b, sd = se, col = rgb(0, 150, 100, max = 255, alpha = 100))
+```
+
+## 9.65
+
+$$
+\begin{align*}
+H_o: \mu \le 40 \\
+H_1: \mu > 40
+\end{align*}
+$$
+
+```{r}
+#summrize the assumption
+n_965 = 125
+xbar_965 = 40.9
+s_squared_965 = 65
+
+t_965 = (xbar_965 - 40)/sqrt(s_squared_965/n_965)
+pvalue_965 = pt(q = t_965, df = n_965-1, lower.tail = FALSE)
+```
+
+p-value = `r pvalue_965` is not very small, hence the claim is not very strong.
+
+## 10.4
+
+$$
+\begin{align*}
+H_o: \mu_2 = \mu_1 \\
+H_1: \mu_2 > \mu_1
+\end{align*}
+$$
+
+```{r}
+#load data into your Global environment
+price <- read.csv("https://tinyurl.com/HouseSellingPrice")[, -1]
+
+#t.test on all data
+t.test(x = price$Sale.2.Price, 
+       y = price$Sale.1.Price,
+       #here we specify paired = TRUE because we want to do matched t-test
+       paired = TRUE,
+       #here we specify alternative = "greater" because that is our H1
+       alternative = "greater")
+
+#t.test on Atlanta data
+t.test(x = price[price$Atlanta == 1, "Sale.2.Price"],
+       y = price[price$Atlanta == 1, "Sale.1.Price"],
+       paired = TRUE, alternative = "greater")
+```
+
+p-value in both cases are less than the alpha we normally specify, therefore we fail to reject the null hypotheses.
+
+## 10.34
+
+Here I chose $\alpha = 0.05$ for example, feel free to choose other $\alpha$ as you reason.
+
+```{r}
+nutrition <- read.csv("https://tinyurl.com/FoodNutritionAtlas")[, -1]
+#summary(nutrition)
+```
+
+$$
+\begin{align*}
+H_o: \mu_{adult-metro} = \mu_{adult-nonmetro}\\
+H_1: \mu_{adult-metro} \ne \mu_{adult-nonmetro}
+\end{align*}
+$$
+
+```{r}
+#The following code is simply data manipulation
+#"PCT_OBESE_ADULTS" of adults living in metro cities
+adult_metro = nutrition[nutrition$metro == 1, "PCT_OBESE_ADULTS"]
+#"PCT_OBESE_ADULTS" of adults living in non-metro cities
+adult_nonmetro = nutrition[nutrition$metro == 0, "PCT_OBESE_ADULTS"]
+#perform the t test
+t.test(x = adult_metro,
+       y = adult_nonmetro,
+       #we specify alternative = "two.sided" because H1 is "not equal"
+       alternative = "two.sided")
+```
+
+p-value is smaller than alpha, we reject the null hypothesis.
+
+$$
+\begin{align*}
+H_o: \mu_{child-metro} = \mu_{child-nonmetro}\\
+H_1: \mu_{child-metro} \ne \mu_{child-nonmetro}
+\end{align*}
+$$
+
+```{r}
+#This is similar, but on the children
+child_metro = nutrition[nutrition$metro == 1, "PCT_Child_OBESITY"]
+child_nonmetro = nutrition[nutrition$metro == 0, "PCT_Child_OBESITY"]
+t.test(x = child_metro, y = child_nonmetro, alternative = "two.sided")
+```
+
+p-value is greater than alpha, we fail to reject the null hypothesis.
+
+## 10.48
+
+$\alpha = 0.05$
+
+$$
+\begin{align*}
+H_o: \mu_{SalesO} = \mu_{SalesC}\\
+H_1: \mu_{SalesO} > \mu_{SalesC}
+\end{align*}
+$$
+
+```{r}
+ole <- read.csv("https://tinyurl.com/OleSales")[, -1]
+
+t.test(x = ole$Olesales,
+       y = ole$Carlsale,
+       alternative = "greater")
+```
+
+p-value \< alpha, we reject the null hypothesis.
+
+$$
+\begin{align*}
+H_o: \mu_{PriceO} = \mu_{PriceC}\\
+H_1: \mu_{PriceO} \ne \mu_{PriceO}
+\end{align*}
+$$
+
+```{r}
+t.test(x = ole$Oleprice,
+       y = ole$Carlpric,
+       alternative = "two.sided")
+```
+
+p-value \> alpha, we fail to reject the null hypothesis.
+
+## 10.52
+
+Let $x_1, x_2$ denote the HEI scores of the immigrants in the first and second interview; $y_1, y_2$ denote the HEI scores of the natives in the first and second interview. Suppose $\alpha = 0.01$.
+
+```{r}
+#data prep
+hei <- read.csv("https://tinyurl.com/HEIInterview")[, -1]
+
+x1 = hei[hei$immigrant == 1 & hei$daycode == 1, "HEI2005"]
+y1 = hei[hei$immigrant == 0 & hei$daycode == 1, "HEI2005"]
+x2 = hei[hei$immigrant == 1 & hei$daycode == 2, "HEI2005"]
+y2 = hei[hei$immigrant == 0 & hei$daycode == 2, "HEI2005"]
+```
+
+Below are the hypotheses we want to test for the first interview.
+
+$$
+\begin{align*}
+H_o: \mu_{x1} = \mu_{y1}\\
+H_1: \mu_{x1} > \mu_{y1}
+\end{align*}
+$$
+
+```{r}
+#difference in diet from the first interview
+t.test(x = x1, y = y1, alternative = "greater")
+```
+
+p-value \< alpha. We reject the null hypothesis.
+
+Below are the hypotheses we want to test for the second interview.
+
+$$
+\begin{align*}
+H_o: \mu_{x2} = \mu_{y2}\\
+H_1: \mu_{x2} > \mu_{y2}
+\end{align*}
+$$
+
+```{r}
+#difference in diet from the second interview
+t.test(x = x2, y = y2, alternative = "greater")
+```
+
+## 10.56
+
+Let $f_1, f_2$ denote the daily cost of women in the first and second interview; $m_1, m_2$ denote the daily cost of men in the first and second interview.
+
+```{r}
+#data prep
+f1 = hei[hei$female == 1 & hei$daycode == 1, "daily_cost"]
+m1 = hei[hei$female == 0 & hei$daycode == 1, "daily_cost"]
+f2 = hei[hei$female == 1 & hei$daycode == 2, "daily_cost"]
+m2 = hei[hei$female == 0 & hei$daycode == 2, "daily_cost"]
+```
+
+Below are the hypotheses we want to test for the first interview. $$
+\begin{align*}
+H_o: \mu_{f1} = \mu_{m1} \\
+H_1: \mu_{f1} < \mu_{m1}
+\end{align*}
+$$
+
+```{r}
+#difference in daily cost from the first interview
+t.test(x = f1, y = m1, alternative = "less")
+```
+
+p-value \< alpha. We reject the null hypothesis.
+
+Below are the hypotheses we want to test for the second interview.
+
+$$
+\begin{align*}
+H_o: \mu_{f2} = \mu_{m2} \\
+H_1: \mu_{f2} < \mu_{m2}
+\end{align*}
+$$
+
+```{r}
+#difference in daily cost from the seond interview
+t.test(x = f2, y = m2, alternative = "less")
+```

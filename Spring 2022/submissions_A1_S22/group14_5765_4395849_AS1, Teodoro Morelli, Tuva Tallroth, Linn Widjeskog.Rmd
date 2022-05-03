@@ -1,0 +1,240 @@
+---
+title: "NDH802 - Assignment 1"
+author: "Group no 14; Teodoro Morelli, Tuva Tallroth, Linn Widjeskog. "
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+------------------------------------------------------------------------
+
+-   The assignment includes 2 questions, 6 points each.
+-   Submit your assignment via Canvas before 15:00 CET, April 6, 2022.
+-   Your submission should be an RMarkdown file with your solutions in words and/or R code. If you handwrite parts of your assignment, insert it as an image near the corresponding question(s). Name the files NDH802_Assignment1_GroupNumber.
+-   You should work in groups and contribute equally.
+-   You can copy my code, but make sure you understand it.
+-   You should not have the exact solutions and/or results with other groups.
+-   Results without code/justifications will not be graded.
+
+------------------------------------------------------------------------
+
+### Set things up
+
+Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
+
+```{r}
+#setwd("")
+our_group <- 14
+```
+
+Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
+
+```{r, echo=FALSE}
+inference_dataset <- read.csv("https://cda.hhs.se/NDH802data2022.csv")
+set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
+                           size = 1000000,
+                           replace = FALSE), -1]; rm(inference_dataset)
+```
+
+#### Data description
+
++-------------------+------------------------------------------------------------------------------------------------------------+
+| Variable          | Description                                                                                                |
++===================+============================================================================================================+
+| cust.id           | Unique customer id                                                                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| age               | Customer age in year 2021                                                                                  |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| email             | If there is an email of the customer in the system                                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| member.since      | Year from which the customer become a member. They can only register at the physical stores.               |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| distance.to.store | Distance (in km) from customer's address to the physical store they register their membership              |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| store.trans       | Total number of offline transactions the customer made in year 2021                                        |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| store.spend       | Total amount (in SEK) the customer spend from offline transaction in year 2021                             |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.visits     | Total number of time the customer visit (does not necessarily mean purchase) the online store in year 2021 |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.trans      | Total number of online transactions the customer made in year 2021                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.spend      | Total amount (in SEK) the customer spend from online transactions in year 2021                             |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| points            | Total loyalty points the customer accumulates since they become a member deducted by points they have used |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| main.format       | | The format in which the customer made the most transactions in year 2021                                 |
++-------------------+------------------------------------------------------------------------------------------------------------+
+
+\newpage
+
+### Question 1. Mean and variance
+
+(a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
+
+```{r,fig.height=2, fig.width=5}
+hist(df[, "total.spend"], main="Total spend", xlab = "total spend", ylab = "number of customers", breaks = 50)
+options(scipen = 999)
+```
+
+The peak can be explained by looking at the different axes we have, number of customers and total spend. The peak, in this case around 40 000, means that this is the most usual amount spent in total, including around 60 000 customers. That is the amount of spend that the largest amount of customers spend in total. We see that the staples becomes smaller and smaller the further to the right we look, meaning that those amounts of spends becoming more and more unusual the further to the right we look.
+
+(b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+
+```{r,fig.height=3, fig.width=5}
+boxplot(total.spend ~ main.format, data = df, ylim = c(0,350000), main = "boxplot of supermarket, online store and convinence store" )
+```
+
+From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+
+The box in between the whiskers has a thick straight line going through it, this thick straight line represents the the median value, we can clearly see that the total spend in terms of median value for online is \> than for convenience store and supermarket. Furthermore 50% of the data which in this case is the total spend for the different store formats is above and under the straight thick line previously mentioned. For online store.spend 50% of this data is well over both supermarket and convenience store, thus we can conclude that online contributes most to the total spend. Furthermore 25% inside the box that's either above or under the the median value contains data that data that is contained within these parameters shown by the box. The 25% inside the box under  the median value of online total.spend is still \> than the 25% inside the box above the median value for both supermarket and convince store. Also proving that online is the format that contributes the most to the total.spend.
+
+(c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+```{r}
+mean(df[df$main.format == "Supermarket","distance.to.store"])
+#4.770155
+#comment:
+
+mean(df[df$main.format == "Convenience store","distance.to.store"])
+#1.330787
+#comment:
+
+var(df[df$main.format == "Supermarket","distance.to.store"])
+#33.47533
+#comment:
+
+var(df[df$main.format == "Convenience store","distance.to.store"])
+#0.3822426
+#comment:
+
+```
+
+### Question 2. Probability theory
+
+Consider the following events:
+
+> (A) Customer made at least one offline transaction
+>
+> (B) Customer made at least one online transaction
+
+(a) **Compute** $P(A)$ **and** $P(B)$**. (1p)**
+
+P(A) is the probability that a customer has made at least one offline transaction
+
+P(B) is the probability that a customer has made at least one online transaction
+
+to find this probability we need to divide the amount of customers who have done either A or B with the total amount of customers
+
+```{r}
+#to find total amount of customers we will use the "nrow" function as it counts the amounts of rows, and as each row is a different customers we can use it; we will call it "totalcustomers"
+totalcustomers = nrow(df)
+
+#To calcualte P(A) and P(B) we first need to find the amount of customers that are in the respective category.
+#customers who belong to event A
+customerAoffline = nrow(df[df$store.trans>0,])
+#custoemrs who belong to event B
+customerBonline = nrow(df[df$online.trans>0,])
+
+#calucalting P(A) and P(B) by dividing the amount of customers who are either A (customerAoffline) or B (customerBonline) with the total number of customers (totalcustomers)
+customerAoffline/totalcustomers
+#P(A) = 100%
+customerBonline/totalcustomers
+#P(B) = 96,0184%
+
+#Comment: the probability of A is 100% meaning that all customers have made a offline transaction, on the other hand only 96% has made a online transaction as the probability of B is equaly to 96.0184%. 
+```
+
+(a) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+Complement ($\bar{B}$) are the set of basic outcomes that belong to the sample space, but not event AskadeinteståB?. In other the complement ($\bar{B}$) are the the other outcomes that occour in the sample space, and because event A is 100% we understand that by subtracting P(B) with P(A); which in other words P(A) = S, sample space; will get us Complement ($\bar{B}$) i.e the ouctomes that belong to the sample space but do not inccur in B. Thus this gives the following calculation: P(A)-P(B)= 1 - 0.960184 = 0,039816, or 3.98%
+
+A simple example explaining this would be if B = { 1, 2, 3, 4} and A = { 1, 2, 3, 4, 5, 6, 7, 8} then **find B complement** ( B'). **Complement** of set A contains the elements present in universal set but not in set A. Elements are 5, 6, 7, 8. ∴ B **complement** = ($\bar{B}$) = { 5, 6, 7, 8}.
+
+Thus P($\bar{B}$) is the number of customers who made no online transactions i.e \<0, or the rest of sample space which we know is the part which B does not cover i.e the entire samplespace, or P(A) as it covers the entire smaple space and is equal to p(A)
+
+```{r}
+#by taking <1 we see the customers who have not done a online transaction
+ComplementB=(df$online.trans<1)
+#
+quantityofCB=sum(ComplementB)
+#
+quantityofCB/totalcustomers
+#the result is 0.039816, or 3.9816%
+```
+
+(a) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+
+P(B∩A) is the chance that a given customer has made both a online and a store transaction. This point where both a online and store transaction has been made is called the intersection point, this point covers the area with all the basic outcomes that belong to both events A and B.
+
+To calculate this thus wee need to find the intersection point. We know that A covers the entire sample space and that B covers only around 96 procent. We know the defintion of the Intersection (A**∩**B) is the set of all basic outcomes that belong to both (events) A and B. Thus the answer 1-0.039816 = 0.960184
+
+\
+→ P(A∩B) = (Na∩b)/N
+
+to calculate this we will take the\
+
+```{r}
+#we start by finding the customers who are in the intersection point by calculating all the rows where the customers have done at least 1 transaction online&offline
+intersection = sum(df$store.trans>= 1 & df$online.trans>=1, na.rm = TRUE)
+
+#then we need divide by total customers to get the percentage
+intersection/totalcustomers
+#answer is: 0.960184
+
+```
+
+P(B∣A) is the probability that a customer made at least one online transaction GIVEN that the customer has done at least one offline transaction. As we know all customers, 100%, has done a offline transaction, and that only around 96% has done a online transaction, we know the probabilty of that customer who did the online transaction is 96% so that means that P(B∣A) = %96.0184 i.e the chance to buy online is 96.0184 % if they did a offline transaction.
+
+```{r}
+#we had to divide by total customers as otherwise we got a error "integer overflow", by dividing with total customers it worked so then we multiplied by total customers to get the orginal answer.
+((customerAoffline/totalcustomers)*(customerBonline/totalcustomers))/customerAoffline*totalcustomers
+
+#answer: 0.960184, or 96.0184%
+
+```
+
+(a) **Are** $A$ **and** $B$ **independent events? Why/why not? (1p)**
+
+Statistically independent: A and B are statistically independent **Iff** (if and only if) the probability of both A and B is the same as the probability of A times the probability of B
+
+This gives the equation: P(A∩B) = P(A)\*P(B)
+
+**test**:
+
+probability of both A and B = P(A∩B) = 96.0184 %
+
+probability of A times the probability of B = P(A)\*P(B) = 100% \* 96.0184% = 96.0184 %
+
+The equation holds thus the events A and B are statistically independent.
+
+(a) **Compare and explain (with formula) the similarities/differences among** $P(B)$**,** $P(B \cap A)$ **and** $P(B \mid A)$ **(2p).**
+
+**-P(B)** is the probability that event B will happen. The formula is: P(B) = Nb/N where Nb is the number of times the event B occurs within a certain number of times which is N. So if the chance of getting eventing B which is a "2" on a dice and the the dice has 6 sides which means the probability is 1/6 of getting event B to happen; Nb = 1 and N = 6, thus P(B) in this scenario is P(B) = Na/N=1/6
+
+**-P(B∩A)** is the probability that both event A and B will occur and is called the intersection point, in other words the intersection point covers the area with all basic outcomes that belong to both events A and B. So here we only take in account the the events that happen in the intersection point.
+
+The formula for calculating this is → P(A∩B) = (Na∩b)/N where (Na∩b)/N =Number of events that occur in both A and B divided/ by the total number of events
+
+\-**P(BIA)** is the the probability B occurring given A has already happened. The formula for calculating this is P(BIA) = P(B∩A) / P(A) where P(B∩A) is the probability that both event A and B will occur and P(A) is the probability of event A happening. The reason we divide them is because A has already happened, and we want to know what the remaining chance of P(B∩A) of getting event B so therefor we MUST divide with A if it's given it has already happened.
+
+**Comparison and similarities:** Whilst P(B) is used to find the probability of only event B happening, P(B∩A) is used to find the probability of the event happening is in the area with all basic outcomes that belong to both events A and B and P(BIA) is the the probability B occurring given A has already happened. Thus they are all very different in their use and produce different outcomes in terms of what we are trying to find. One similarity would be that all of them in their formulas are divided by a denominator which is the number of events that could happen, expect for P(BIA) which is divided with P(A).\
+
+\vfill
+
+## Well done!
+
+Thank you for your extra effort in the explanation and comments. Also, example is also a great way to explain abstract concepts. I see some seemingly typos (e.g., Q2c, you said "the number of customers who made no online transactions i.e \<0" which is not possible) but I grade as my judgment on your understanding.
+
+Q1a. Nice graph, nice comment. 2p
+
+Q1b. Nice graph, yet incorrect comment. 1p
+
+Q1c. Correct calculation. 1p
+
+Q2abcd. Great. 4p
+
+Q2e. Sorry to say I think you misunderstood the question. Here we still refer to event A and B in this assignment and the question wants you to explain why $P(B) = P(B \cap A) = P(B \mid A)$. 0.5p

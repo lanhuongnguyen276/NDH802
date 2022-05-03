@@ -1,6 +1,6 @@
 ---
-title: "NDH802 - Assignment 1"
-author: "Group no. "
+title: "NDH802 - Assignment 1_5"
+author: "Group no.5 "
 output: pdf_document
 ---
 
@@ -26,17 +26,14 @@ rm(list=ls())
 Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
 
 ```{r}
-#setwd("")
-our_group <- 27
+our_group <- 5
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
 
 ```{r, echo=FALSE}
-inference_dataset <- read.csv("https://cda.hhs.se/NDH802data2022.csv")
-set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
-                           size = 1000000,
-                           replace = FALSE), -1]; rm(inference_dataset)
+ inference_dataset = read.csv("https://cda.hhs.se/NDH802data2022.csv")
+set.seed(5);df <- inference_dataset[sample(1:nrow(inference_dataset), size = 1000000, replace = FALSE), -1]; rm(inference_dataset)
 ```
 
 #### Data description
@@ -75,23 +72,36 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
-
     ```{r}
-    hist()
+    hist(df$total.spend/1000, ylim=c(0, 250000), breaks=seq(from=0, to=330, by=20), main = "Total money spent (stores & online combined)", xlab="Total money spent (in thousands of SEK)", ylab="Number of customers", col = "lightblue3")
     ```
 
-(b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+    The histogram showcases a **skewed right distribution**, with the peaks showing the **mode** of the observations, i.e. the most frequently occurring value, in this specific case being around 20 - 40 thousand SEK.
+
+(b) Take a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
 ```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+ boxplot (your_variable_of_interest ~ the_group, data = your_df,
+ ylim = c(-10, 100)) # adjust the ylim that better illustrates your data)
+```
+
+```{r}
+boxplot (total.spend / 1000 ~ main.format, ylab = "Total money spent (in thousands SEK)", xlab = "Store format utilized", data = df, ylim = c(0, 330))
 ```
 
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+    ```{r}
+    mean(df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+    var (df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+    ```
+
+    ```{r}
+    mean(df[df$main.format == "Convenience store", "distance.to.store"], na.rm = TRUE)
+    var(df[df$main.format == "Convenience store", "distance.to.store"], na.rm = TRUE)
+    ```
+
+    When it comes to the **means** of the two groups, it seems rather logical that the average distance to the convenience store is much lower than that of the average distance to the supermarket, which is what the results show us. Essentially the Convenience stores are more closely located in terms of geographical proximity, whereas the Supermarkets are further located, in order to perhaps save costs associated with rent. When it comes to the **variances** of the two groups, we can see that there is a much larger *spread* in distance to store for the Supermarkets, in comparison to the Convenience store, signalling that most Convenience stores have values close to the mean distance. The same can however not be said for Supermarkets, where it's quite the opposite.
 
 ### Question 2. Probability theory
 
@@ -103,15 +113,62 @@ Consider the following events:
 
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
+    ```{r}
+    N_Off = nrow(df[df$store.trans > 0,])
+    N_On = nrow(df[df$online.trans > 0,])
+    N_Total = nrow(df)
+    ProbabilityA = N_Off/N_Total
+    ProbabilityB = N_On/N_Total
+    ```
+
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+    The complement of B is everything in the sample space, **except for** event $B$. Considering that $B$ shows if customers have made at least one online transaction, $\bar{B}$ has to denote customers who have not made at least one online transaction.
+
+    ```{r}
+    ProbabilityB_Complement = 1 - ProbabilityB
+    ```
 
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
 
+    ```{r}
+    ProbabilityB_intersect_A = ProbabilityA * ProbabilityB
+    ```
+
+    ```{r}
+    ProbabilityB_given_A = ProbabilityB_intersect_A / ProbabilityA
+    ```
+
 (d) Are $A$ and $B$ independent events? Why/why not? (1p)
 
-(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+    If events A and B are independent, that means the events' occurances **don't influence each other**, in the regard that you can for instance only choose one of the two, as is the case for **mutually exclusive events**. If you choose to go to the store to make a purchase, you are still free to make an online purchase from the same store if you so wish. Had events A and B instead been *A: Made all purchases online*, and *B: Made all purchases offline*, then these would not have been independent events, but rather mutually exclusive.
+
+(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).\
+    \
+    When comparing the probabilities: B, B interesct A as well as B given A, we see that they all have the same probabilties of occuring, but why is that? If we look at the formulas, we see that:\
+
+    -   $P(B)$ is simply $P(B)$\
+    -   $P(B \cap A)$ is comparatively calculated by taking $P(A)$ \* $P(B)$, but considering everyone in the data frame has made at least one offline transaction (i.e. purchases their groceries physically) the probability for the intersection (A & B) is the same as $P(B)$\
+    -   $P(B \mid A)$ is comparatively calculated by taking $P(B \cap A)$ / $P(A)$, but once again, considering everyone in the data frame has made at least one offline transaction (i.e. $P(A)$ = 1), the probability that customers will have made at least one online purchase given that they have already made one offline purchases is the same regardless.\
+    -   While $P(B)$ shows the probability of consumers making at least one online transaction, and $P(B \cap A)$ shows the probability of consumers making both at least one offline & online transaction, $P(B \mid A)$ shows the probability of consumers making at least one online purchase, given the knowledge that every consumer has made at least one offline transaction (i.e. that event A has occurred), but considering everyone is already aware that everyone has made at least one offline transaction, this does not alter the probability for a customer to make at least one online transaction.\
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Awesome!
+
+Q1a. I love your careful touches on the histogram labels. The comment is on point. 2p.
+
+Q1b. The plot is nice. You did not answer the second sub-question. 1p
+
+Q1c. Correct calculation and nicely reasoned. 2p
+
+Q2ab. Great. 2p
+
+Q2c. Technically the result is correct. However, your formula to calculate $P(B \cap A)$ only hold if and only if A and B are independent. They are, but you have not explained it till now. 0.5p
+
+Q2d. What you explain is correct. However, we are referring to statistical independence which we can testing by checking if $P(B \cap A) = P(A)*P(B)$. 0.5p
+
+Q2e. WONDERFUL! 2p

@@ -1,6 +1,6 @@
 ---
 title: "NDH802 - Assignment 1"
-author: "Group no. "
+author: "Group no. 3"
 output: pdf_document
 ---
 
@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 3
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -75,23 +75,41 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
-
     ```{r}
-    hist()
+    df$total.spend = df$store.spend + df$online.spend
+    hist(df[,"total.spend"], xlim = c(0,350000), breaks = 100, main = "Total spend", xlab = "Total spend", col = "lightblue3")
     ```
+
+    The peak of a histogram generally represents the class in which the frequency of data in a category is the highest. In this case, the peak represents that around 60000 of the customers spend around 40000.
 
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
 ```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+boxplot(
+total.spend/1000 ~ main.format,
+data = df,
+ylim = c(0, 400)
+)
 ```
 
+This boxplot shows distribution, showing that the majority of shoppers being in the box while outlines belongs to the wicks. The online box is the highest and therefore contributes the most to total expenditure of all formats, the highest average.
+
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+```{r}
+mean(df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+mean(df[df$main.format == "Convenience store","distance.to.store"], na.rm = TRUE)
+```
+
+```{r}
+var(df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+var(df[df$main.format == "Convenience store","distance.to.store"], na.rm = TRUE)
+
+```
+
+Explanation mean: The mean of the distance for convenience store shoppers are lower because they are usually located closer to the customers compared to supermarkets and therefore they register their membership at the closest one.
+
+Explanation variance: The variance is also lower for the convenience shoppers which could be because the stores are located evenly far away from the customers compared to supermarkets which vary much more.
 
 ### Question 2. Probability theory
 
@@ -101,17 +119,87 @@ Consider the following events:
 >
 > (B) Made at least one online transaction
 
+P_BAR = 0.040107
+
 (a) Compute $P(A)$ and $P(B)$. (1p)
+
+    ```{r}
+    N <- nrow(df)
+    N_A = sum(df$store.trans >0, na.rm = TRUE)
+    P_A = N_A/N
+    ```
+
+    ```{r}
+    N_B = sum(df$online.trans >0, na.rm = TRUE)
+    P_B = N_B/N
+    ```
 
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
 
+    ```{r}
+    #"N_Bar" means the complement of B
+    N_Bar = N-N_B
+    P_Bar = 1-P_B
+    #P_BAR = 0.040107
+    ```
+
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+
+    ```{r}
+    N_B_A = sum(df$store.trans >0 & df$online.trans >0, na.rm = TRUE)
+    P_B_intersect_A = N_B_A/N
+
+    ```
+
+    ```{r}
+    P_B_given_A = N_B_A/N_A
+    ```
 
 (d) Are $A$ and $B$ independent events? Why/why not? (1p)
 
+    **P(A∩B) = P(A) · P(B) means they are independent**
+
+    1**·0.959893**
+
+    P_B\_intersect_A = N_B\_A/N
+
+    0.959893
+
+    Yes, they are independent
+
 (e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+    ```{r}
+    #All are statisticlly independant, since they had the same probability
+    #P_B = N_B/N
+    #Similariteies are drawn to the equation to the second equation of an intersect event as both are compared agaist: N (total number of transactions). Both are indepentant events, P_B is not correlated with A in any form, A will instead offer an intersect analysis that shows: not mutalually exclusive and independant.
+
+    #P_B_intersect_A = N_B_A/N
+    #One can conclude that for the intersect equaltion the utalization of A and B are tanke into account. Both sampel group subject has to be gatherd to calculate the probability, the diffrence is in the intersection case one can conclude that no previous knowlage was given of the seperate probablilities, compared to third equation. P_A was clearly known before the event B took place.
+
+    #P_B_given_A = N_B_A/N_A
+    #B given A is the last qeuation, is compared only against the sample group of B and thus exclusive for it as event.A had already taken place, which is the main differnace, prenotion. The similarities are therefore that it uses the sa,e total number subject to A and B event and therefore proves that the two are interliked, compared against as givens
+    ```
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+Fantastic!
+
+Q1a. 2p
+
+Q1b. The plot is nice, 1p. The second answer is not correct. Let's discuss in class.
+
+Q1c. Super. 2p
+
+Q2a. 1p
+
+Q2b. You have not defined the event $\bar{B}$. 0.5p
+
+Q2c. Great. 1p
+
+Q2d. 1p
+
+Q2e. I vaguely understand what you are trying to articulate, yet the arguments are not strongly solid. Let's discuss in class. 1p

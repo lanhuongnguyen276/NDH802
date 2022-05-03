@@ -1,0 +1,395 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={NDH802 Solutions to rec. exercises Chap 4 and 5},
+  pdfauthor={Huong},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{NDH802 Solutions to rec. exercises Chap 4 and 5}
+\author{Huong}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{section}{%
+\subsection{4.13}\label{section}}
+
+The number of computers sold per day at Dan's Computer Works is defined
+by the following probability distribution:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.12}}@{}}
+\toprule
+x & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\midrule
+\endhead
+P(x) & 0.03 & 0.11 & 0.15 & 0.22 & 0.19 & 0.26 & 0.04 \\
+\bottomrule
+\end{longtable}
+
+a. \(P(3 \le X < 6) = P(X=3) + P(X=4) + P(X=5) = 0.22 + 0.19 + 0.26\)
+
+b.
+\(P(X \ge 3) = P(X=3) + P(X=4) + P(X=5) + P(X=6) = 0.22 + 0.19 + 0.26 + 0.04\)
+
+c. \(P(X \le 4) = 1 - P(X=5) - P(X=6) = 1 - 0.26 - 0.04\)
+
+d.
+\(P(2 < X \le 5) = P(3 \le X < 6) = P(X=3) + P(X=4) + P(X=5) = 0.22 + 0.19 + 0.26\)
+
+\hypertarget{section-1}{%
+\subsection{4.29}\label{section-1}}
+
+An investor is considering three strategies for a \$1,200 investment.
+The probable returns are estimated as follows:
+
+\begin{itemize}
+\item
+  Strategy 1: A certain profit of \$200. That is, \(E(X_1) = 200\),
+  \(Var(X_1) = 0\).
+\item
+  Strategy 2: A profit of \$12,000 with probability 0.15 and a loss of
+  \$1,200 with probability 0.85.
+
+  That is,
+\end{itemize}
+
+\[
+    \begin{align*}
+    E(X_2) &= 12000*0.15 - 1200 * 0.85 = 780 \\
+    Var(X_2) &= 12000^2*0.15 + (-1200)^2*0.85 - 780^2 = 22,215,600
+    \end{align*}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  Strategy 3: A profit of \$500 with probability 0.50, a profit of \$250
+  with probability 0.30 and a loss of \$250 with probability 0.20. That
+  is,
+\end{itemize}
+
+\[
+\begin{align*}
+    E(X_3) &= 500*0.5 + 250*0.3 - 250 * 0.2 = 275 \\
+    Var(X_3) &= 500^2*0.5 + 250^2*0.3 + (-250)^2*0.2 - 275^2 = 80,625
+    \end{align*}
+\]
+
+Which strategy has the highest expected profit? Strategy 2.
+
+Explain why you would or would not advise the investor to adopt this
+strategy. The ``best'' strategy depends on your preference, if you'd
+like a high risk high return choice or safe (low risk low return)
+choice.
+
+\hypertarget{section-2}{%
+\subsection{4.30}\label{section-2}}
+
+Assume \(X \sim Bern(0.8)\). \(E(X) = p = 0.8\).
+\(Var(X) = p(1-p) = 0.8*0.2 = 0.16\).
+
+\hypertarget{section-3}{%
+\subsection{4.49}\label{section-3}}
+
+A company receives large shipments of parts from two sources. Seventy
+percent of the shipments come from a supplier whose shipments typically
+contain 10\% defectives, while the remainder are from a supplier whose
+shipments typically contain 20\% defectives. A manager receives a
+shipment but does not know the source. A random sample of 20 items from
+this shipment is tested, and 1 of the parts is found to be defective.
+What is the probability that this shipment came from the more reliable
+supplier? (Hint: Use Bayes' theorem)
+
+Summarize the questions:
+
+\(A\): Shipment is from reliable supplier. \(P(A) = 0.7\).\\
+\(\bar{A}\): Shipment is from the other supplier.
+\(P(\bar{A}) = 0.3\).\\
+\(X\): Number of defectives.
+
+Find \(P(A \mid X = 1)\).
+
+Now,\\
+\(X \mid A \sim Binom(n=20, p = 0.1)\). Hence,
+\(P(X=1\mid A) = 0.27\).\\
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbinom}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{20}\NormalTok{, }\AttributeTok{p =} \FloatTok{0.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2701703
+\end{verbatim}
+
+\(X \mid \bar{A} \sim Binom(n=20, p = 0.2)\). Hence,
+\(P(X=1\mid \bar{A}) = 0.057\).\\
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dbinom}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\NormalTok{, }\AttributeTok{size =} \DecValTok{20}\NormalTok{, }\AttributeTok{p =} \FloatTok{0.2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.05764608
+\end{verbatim}
+
+\[
+\begin{align}
+P(A \mid X = 1)
+&= \frac{P(X = 1 \mid A) * P(A)}{P(X = 1)} \quad \text{(Bayes' theorem)}\\
+&= \frac{P(X = 1 \mid A) * P(A)}{P(X = 1 \mid A) * P(A) + P(X = 1 \mid \bar{A})*P(\bar{A})}\\
+&= \frac{0.27 * 0.7}{0.27 * 0.7 + 0.057 * 0.3} = 0.917
+\end{align}
+\]
+
+\hypertarget{section-4}{%
+\subsection{5.21}\label{section-4}}
+
+Let \(X \sim N(\mu = 0.2, \sigma^2 = 0.0025)\).
+
+a. \(P(X > 0.4)\).\\
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{), }\AttributeTok{lower.tail =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.167124e-05
+\end{verbatim}
+
+b. \(P(0.15< X < 0.28)\).\\
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.28}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{)) }\SpecialCharTok{{-}} \FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7865455
+\end{verbatim}
+
+c. \(P(X < 0.1)\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.02275013
+\end{verbatim}
+
+d. Find d such that \(P(X > d) = 0.2\)~
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qnorm}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{), }\AttributeTok{lower.tail =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2420811
+\end{verbatim}
+
+e. Find e and f such that \(P(e< X < f) = 0.05\) and \(X\) is in the
+symmetric interval around the mean
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qnorm}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.475}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1968647
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qnorm}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.475}\NormalTok{, }\AttributeTok{mean =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{sd =} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.0025}\NormalTok{), }\AttributeTok{lower.tail =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2031353
+\end{verbatim}
+
+\hypertarget{section-5}{%
+\subsection{5.87}\label{section-5}}
+
+Let \(X\) be the delivery times in minutes.
+\(X \sim N(\mu = 30, \sigma = 6)\).
+
+a. \(P(25 < X < 35)\)\\
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \DecValTok{35}\NormalTok{, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{6}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \DecValTok{25}\NormalTok{, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{6}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5953432
+\end{verbatim}
+
+b. \(P(X > 45)\) Free pizza
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \DecValTok{45}\NormalTok{, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{6}\NormalTok{, }\AttributeTok{lower.tail =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.006209665
+\end{verbatim}
+
+c. Suppose one orders 6 pizzas, find probability that s/he gets at least
+one free pizza.\\
+We can think of \(Y\) as an event where one gets free pizza. Then
+\(Y \sim Binom(n=6, p=0.006)\).
+
+\[
+P(Y \ge 1) = 1 - P(Y=0) 
+\]
+
+\begin{verbatim}
+## [1] 0.0354643
+\end{verbatim}
+
+d. Find the shortest interval \([a, b]\) such that
+\(P(a < X < b) = 0.8\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a }\OtherTok{=} \FunctionTok{qnorm}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{6}\NormalTok{)}
+\NormalTok{b }\OtherTok{=} \FunctionTok{qnorm}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{6}\NormalTok{, }\AttributeTok{lower.tail =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

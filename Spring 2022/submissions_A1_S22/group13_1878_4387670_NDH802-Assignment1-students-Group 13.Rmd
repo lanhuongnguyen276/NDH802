@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 13
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -73,25 +73,41 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 ### Question 1. Mean and variance
 
+***Anna Kälebo (50714) ; Mark Csontos (50745) ; Monica Profus (50734) ; Aleksandar Desnica (50710)***
+
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
-
     ```{r}
-    hist()
+    df$total.spend = df$store.spend + df$online.spend
+    hist(df[,"total.spend"], xlim = c(0,330000), breaks = 100, main = "Expected spend", xlab = "Total spend", col = "lightblue3")
+
     ```
+
+    Explanation: The top of the chart can be explained as the majority total expenditure from the most (Highest freqency) amount of customers. However we do not know on what lineage, in other amount of time this is covered but rather just what in that case the majority spends.
 
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
 ```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+ boxplot( 
+  total.spend/1000 ~ main.format,
+   data = df,
+   ylim = c(0, 380) 
+ )
 ```
 
-(c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+The histogram shows the distribution with the majority of the shopper being in the box while outliers belonging to the wicks, therefore it is safe to state that online contributes mostly to total exp as it has the highest box of all of the formats, thus indicating the highest average.
+
+C. Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+```{r}
+mean(df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+mean(df[df$main.format == "Convenience store","distance.to.store"], na.rm = TRUE) 
+```
+
+```{r}
+var(df[df$main.format == "Supermarket","distance.to.store"], na.rm = TRUE)
+var(df[df$main.format == "Convenience store","distance.to.store"], na.rm = TRUE)
+```
 
 ### Question 2. Probability theory
 
@@ -101,17 +117,94 @@ Consider the following events:
 >
 > (B) Made at least one online transaction
 
-(a) Compute $P(A)$ and $P(B)$. (1p)
+Compute $P(A)$ and $P(B)$. (1p)
 
-(b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+Missing values -- true
 
-(c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+Na means missing values and rm is remove
 
-(d) Are $A$ and $B$ independent events? Why/why not? (1p)
+```{r}
+total.trans=sum 
+```
 
-(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+```{r}
+N <- nrow(df) 
+N_A = sum(df$store.trans >0, na.rm = TRUE)
+P_A = N_A/N
+P_A = 1
+```
+
+```{r}
+N_B = sum(df$online.trans >0, na.rm = TRUE)
+P_B = N_B/N
+P_B = 0.9598
+```
+
+What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+$\bar{B}$ is the complement
+
+```{r}
+N_BAR = N-N_B
+P_BAR = 1-P_B
+P_BAR = 0.040106
+```
+
+(a) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+
+    Guide: N_A\_B is the total amount of A and B cases, meaning that it´s the total amount of cases that have transactions over 0 on the online.trans and store.trans(offline) in the df file. After coding that we take and divide it by N as you can see in N_A\_B/N_B in order to get the probability of an intersect between the total A and B cases in regards to N which total amount of all cases and not just A and B.
+
+    ```{r}
+    N_A_B = sum(df$store.trans >0 & df$online.trans >0, na.rm = TRUE)
+    P_A_Intersect_B= N_A_B/N
+    ```
+
+    ```{r}
+    P_B_given_A = N_A_B/N_A
+    ```
+
+(b) Are $A$ and $B$ independent events? Why/why not? (1p)
+
+    ```{r}
+    P(A∩B) = P(A) · P(B) means they are independent
+    1 x 0.9598 = 0.9598
+
+    P_A_Intersect_B= N_A_B/N 
+    0.9598
+    Yes they are independent
+
+    ```
+
+(c) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+    ```{r}
+    1. P_B = N_B/N
+    The equation draws similarities to the second equation of an intersect event as both are compared against N which the total number of transactions. Furthermore, as they both are events are independent P_B is not correlated with A in any form and thus will offer an interesting intersect analysis which shows that altough independent they are not mutually exclusive.
+
+    2. P_A_Intersect_B= N_A_B/N 
+    Similarly to the third equation, one can conclude that for the intersect equation the utilization of cases that both serve the A and B event are taken into acount. Namely in order to calculate the probability one has to gather the whole sample group subject to both event. Differences being that, in the intersection case one can conclude that no previous knowledge of the seperate probabilities was given, compared to the third equation. which clearly states that P_A was known before the event B takes place as it is a given. 
+
+    3. P_B_given_A = N_A_B/N_B
+    Lastly,as mentioned previously the last equation which is B given A is compared only against the sample group of B and thus is exclusive to it as event A already had taken place which is the main difference compared to the other events studied, as this one takes it as a prenotion that event A had taken place. In continuation, the only similarity is that it uses the same total number of subjects to event A and B and as such proves that the two are interlinked if compared against each other as givens.
+    ```
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+Good job!
+
+Q1a. Nicely done. 2p
+
+Q1b. The graph looks nice however the comment is incorrect. 1p
+
+Q1c. Calculations are correct. You did not answer the second question. 1p
+
+Q2a. Correct. 1p
+
+Q2b. You did not define $\bar{B}$. 0.5p
+
+Q2cd. Correct. 2p
+
+Q2e. Your answer is not relevant to the question. 0.5p

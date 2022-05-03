@@ -1,0 +1,411 @@
+---
+title: "NDH802 - Assignment 1"
+author: "Group no. 12"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+```
+
+------------------------------------------------------------------------
+
+-   The assignment includes 2 questions, 6 points each.
+-   Submit your assignment via Canvas before 15:00 CET, April 6, 2022.
+-   Your submission should be an RMarkdown file with your solutions in words and/or R code. If you handwrite parts of your assignment, insert it as an image near the corresponding question(s). Name the files NDH802_Assignment1_GroupNumber.
+-   You should work in groups and contribute equally.
+-   You can copy my code, but make sure you understand it.
+-   You should not have the exact solutions and/or results with other groups.
+-   Results without code/justifications will not be graded.
+
+------------------------------------------------------------------------
+
+### Set things up
+
+Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
+
+```{r}
+# Add a second backslash. This is because “\\” has the special meaning of a single backslash.
+
+#setwd("C:\\Users\\Dougl\\Documents\\SSE\\Year_1\\NDH802 Data Analytics\\R_DataAnalytics\\AS1")
+
+our_group <- 12
+```
+
+Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
+
+```{r, echo=FALSE}
+inference_dataset <- read.csv("https://cda.hhs.se/NDH802data2022.csv")
+
+set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
+                           size = 1000000,
+                           replace = FALSE), -1]; rm(inference_dataset)
+```
+
+#### Data description
+
++-------------------+------------------------------------------------------------------------------------------------------------+
+| Variable          | Description                                                                                                |
++===================+============================================================================================================+
+| cust.id           | Unique customer id                                                                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| age               | Customer age in year 2021                                                                                  |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| email             | If there is an email of the customer in the system                                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| member.since      | Year from which the customer become a member. They can only register at the physical stores.               |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| distance.to.store | Distance (in km) from customer's address to the physical store they register their membership              |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| store.trans       | Total number of offline transactions the customer made in year 2021                                        |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| store.spend       | Total amount (in SEK) the customer spend from offline transaction in year 2021                             |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.visits     | Total number of time the customer visit (does not necessarily mean purchase) the online store in year 2021 |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.trans      | Total number of online transactions the customer made in year 2021                                         |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| online.spend      | Total amount (in SEK) the customer spend from online transactions in year 2021                             |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| points            | Total loyalty points the customer accumulates since they become a member deducted by points they have used |
++-------------------+------------------------------------------------------------------------------------------------------------+
+| main.format       | | The format in which the customer made the most transactions in year 2021                                 |
++-------------------+------------------------------------------------------------------------------------------------------------+
+
+\newpage
+
+### Question 1. Mean and variance
+
+(a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
+
+**Answer.**
+
+The total spend of the customers can be computed as
+
+```{r}
+# Total spend irregardless of store format
+sum(df[,"total.spend"])
+```
+
+If we then want to plot the numbers into a **histogram**, we can do so as
+
+```{r, echo=FALSE}
+hist(
+  # Define data
+  data = df,
+  
+  # Select the 'total spend'
+  df[,"total.spend"] / 1000,
+  breaks = 100,
+  xlim = c(0,350),
+  ylim = c(0,80000),
+  
+  #Titles and legends
+  main = "Total Customer Spend (kSEK)",
+  xlab = "Total Spend",
+  sub = "*Disregards store format",
+  
+  #Aesthetic changes
+  col = "lightblue1"
+)
+```
+
+This histogram, with an asymmetrical skewed-right distribution, shows the spending patterns among the customers in the sample, where the total spend is plotted against the x-axis and the frequency, i.e. how many people spent roughly the same amount, is plotted against the y-axis. Judging by this, most of the customers spent less than 100 kSEK with a peak at around 40 kSEK.
+
+(b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+
+**Answer.**
+
+```{r,fig.height=6, fig.width=6, echo=FALSE}
+boxplot(
+  # Define data
+  data = df,
+  
+  # Select col total.spend and facet on format
+  df[,"total.spend"] ~ main.format,
+  horizontal = TRUE,
+  
+  # Titles and legends
+  main = "Total Customer Spend (kSEK)",
+  xlab = "Total Spend",
+  ylab = "Store Format",
+  # Mean subtitle, see later code
+  sub = "*mean",
+  col.sub = "red",
+  
+  
+  # Aesthetic changes
+  col = c("lightblue4", "lightblue3", "lightblue"),
+  notch = TRUE,
+  # Hide outliers
+  outline = FALSE
+)
+
+## =====================================
+
+# Aggregate calculated store format means in a list 
+df_storeformat_means <-
+  aggregate(
+  df$total.spend,
+  list(df$main.format),
+  mean
+)
+
+## ====================================
+
+# Plot out the means
+points(
+  
+  # NOTE: transposed/flipped axes
+  x = df_storeformat_means$x,
+  y = 1:nrow(df_storeformat_means),
+  
+  col = "red",
+  pch = 16
+)
+```
+
+The box plot is a graphical representation of the *five-number representation* (min\<Q1\<median\<Q3\<max). All formats show signs of having asymmetrical skewed-right distributions, since the *mean* is greater than the *median* in all three box plots. Here, the outliers (not shown) can play different roles both depending on what data set is analyzed and what story we want to tell. In this case, outliers are omitted from the visual representation to place greater emphasis on the *five-number* representation.
+
+However, the box plot is but a mean to exhibit the distribution of the data, which is *not* to say that the further to the right the more is spent in total. A quick calculation of the totals can be computed as
+
+```{r, echo=TRUE}
+# Total spend irrespective of format
+TotSpend <- sum(df$total.spend)
+
+# Total spend per store format
+TotSpendSup <- sum(df[df$main.format == "Supermarket", "store.spend"])
+
+TotSpendCon <- sum(df[df$main.format == "Convenience store", "store.spend"])
+
+TotSpendOnl <- sum(df[,"online.spend"])
+
+# # Results
+# TotSpend
+# # -------------------
+# TotSpendSup
+# TotSpendCon
+# TotSpendOnl
+
+# Share of total spend
+ShareSup <- TotSpendSup / TotSpend
+ShareCon <- TotSpendCon / TotSpend
+ShareOnl <- TotSpendOnl / TotSpend
+```
+
+```{r}
+# Results, shares
+ShareSup
+ShareCon
+ShareOnl
+```
+
+As we can see, online contributes to about a fifth of the total spend, whereas the format Supermarket dominates.
+
+(c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+**Answer.**
+
+```{r}
+# Mean distance to supermarket
+mean(
+  df[df$main.format == "Supermarket","distance.to.store"],
+  na.rm = TRUE
+)
+
+# Var distance to supermarket
+var(
+  df[df$main.format == "Supermarket","distance.to.store"],
+  na.rm = TRUE
+)
+
+# Mean distance to convenience store
+mean(
+  df[df$main.format == "Convenience store", "distance.to.store"],
+  na.rm = TRUE
+)
+
+# Var distance to convenience store
+var(
+  df[df$main.format == "Convenience store", "distance.to.store"],
+  na.rm = TRUE
+)
+
+```
+
+The sample mean, $\bar{x}$, distance to a Supermarket or a Convenience store is computed by summing the total distance each customer has to either store, and then divides that distance by the total number of customers, $n$.
+
+The sample variance, $s^{2}$, is the sum of the squared differences between each observation and the sample mean divided by the sample size minus 1, $n-1$. In this example, the variance tells us that people generally don't have very far to the nearest convenience store. The same can not be said about supermarkets.
+
+### Question 2. Probability theory
+
+Consider the following events:
+
+> (A) Made at least one offline transaction
+>
+> (B) Made at least one online transaction
+
+(a) Compute $P(A)$ and $P(B)$. (1p)
+
+**Answer.**
+
+$A$ - "Made at least one offline transaction"
+
+$B$ - "Made at least one online transaction"
+
+Classical probability suggests that
+
+$$
+P(A) = \frac{N_{A}}{N}
+$$
+
+Therefore,
+
+```{r}
+n_A <- sum(df[,"store.trans"] > 0, na.rm = TRUE)
+n_B <- sum(df[,"online.trans"] > 0, na.rm = TRUE)
+n <- nrow(df)
+
+P_A <- n_A/n
+P_B <- n_B/n
+
+# Results
+P_A
+P_B
+```
+
+The probability that a randomly chosen customer has made at least one offline transaction as per `store.trans`, denoted $P(A)$, is 100%, meaning *all* customers have made at least one offline transaction in the sample space. Furthermore, the probability that a randomly chosen customer has made at least one online transaction as per `offline.trans`, denoted $P(B)$, is 96%, which means that most but not all customers have made at least one online transaction.
+
+(b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+**Answer.**
+
+The complement of $B$ (defined previously as: "Made at least one online transaction") is any constituted by all customers in the sample space who have *not* made any online transactions. From the `df`, these subjects are identified through `online.trans` when it equals zero.
+
+```{r}
+Bbar <- sum(df[,"online.trans"]==0, na.rm=TRUE)
+
+P_Bbar <- Bbar/n
+
+# Results
+P_Bbar
+```
+
+Similarly, the complement to $B$ can also be computed if we know the probability of event B, $P(B)$, and subtracting it from the set of the total basic outcomes in the sample space, 1, as such:
+
+```{r}
+P_Bbar <- 1 - P_B
+
+# Results
+P_Bbar
+```
+
+(c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
+
+**Answer.**
+
+To compute the intersection of events $A$ and $B$, we need to first see how many observations fulfill both events and then divide that number by the total number of basic outcomes, $n$. Using equations, that is
+
+$$
+P(A \cap B)= \frac {n_{A \cap B}}{n}
+$$
+
+In this case, we can compute the probability of the intersection of event $A$ and $B$, $P(A \cap B)$, as
+
+```{r}
+n_AnB <- sum(df$store.trans>0 & df$online.trans>0)
+
+# Number of outcomes that satisfies event A and B
+n_AnB
+
+# Total number of basic outcomes
+n
+
+# The probability of the intersection
+P_AnB <- n_AnB / n
+
+# Results
+P_AnB
+```
+
+The *conditional probability* of $P(A|B)$, read: "the probability of event $A$, given that event $B$ has occurred." is derived from
+
+$$
+P(A|B)= \frac {P(A \cap B)}{P(B)} \textrm{ provided that } P(B)>0
+$$
+
+and
+
+$$
+P(B|A)= \frac {P(A \cap B)}{P(A)} \textrm{ provided that } P(A)>0
+$$
+
+The given conditional probability $P(B|A)$ is therefore
+
+```{r}
+P_BgA<- P_AnB/P_A
+
+# Results
+P_BgA
+```
+
+(d) Are $A$ and $B$ independent events? Why/why not? (1p)
+
+**Answer.**
+
+Yes, the events $A$ and $B$ are *statistically independent events*, since the following equation holds:
+
+$$
+P(A \cap B)=P(A) \cdot P(B)
+$$
+
+```{r}
+P_AnB == P_A * P_B
+
+# The same test can be carried out using: setequal()
+```
+
+Their statistical independence can also be proven by the **Multiplication Rule of Probabilities**, that is
+
+$$
+P(A|B)=P(A) \textrm{ provided that P(B) > 0}
+$$
+
+and,
+
+$$
+P(B|A)=P(B) \textrm{ provided that P(A) > 0}
+$$
+
+Since these three conditions hold, the events are statistically independent.
+
+(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+**Answer.**
+
+The first mentioned probability, $P(B)$, expresses the probability of event $B$ occurring, in this case defined as a randomly chosen customer in the sample space having "made at least one online transaction." The definition of $P(B)$ is as follows
+
+$$
+P(B)= \frac{N_{B}}{N}
+$$
+
+where $N_B$ refers to the number of outcomes where event $B$ occurs and the total number of basic outcomes is denoted $N$.
+
+The second probability mentioned, $P(B \cap A)$ (which is the same as $P(A \cap B)$), refers to the *intersection* of events $A$ and $B$. The intersection of events translates to [both]{.ul} events occurring. In this case, since the events were proven *statistically independent*, the intersection of the two events equals the product of them. If, say, the events instead were *mutually exclusive*, then the intersection would be an *empty set*.
+
+The last mentioned probability, $P(B|A)$, is a *conditional probability*. That is to say, in plain English: "What is the probability of event $B$ given that event $A$ has occurred?"
+
+## Fantastic!
+
+Thank you for making extra effort in everything, from the graphs, the comments, the explanation. Most are well motivated and presented. I also love it that you approach the same question using different ways. I hope you had fun and keep up the good work! Some comments:
+
+Q1a. Despite how much I appreciate your effort in making the nice graph and comment, you have not really discussed the meaning of the peak in the histogram. 1.5p
+
+Q1b. PERFECT! Well reasoned. 2p.
+
+Q1c. Correct calculation. The comment on the variance is on point. However you have not discussed the difference between the 2 means that you calculated. 1.5p
+
+Q2abcd. Excellent answers. 4p
+
+Q2e. What you gave is the definitions of the probabilities of interests. I don't see the clear explanations of why they are equal in our case. 1p

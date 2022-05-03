@@ -1,6 +1,6 @@
 ---
 title: "NDH802 - Assignment 1"
-author: "Group no. "
+author: "Group no.17"
 output: pdf_document
 ---
 
@@ -26,8 +26,8 @@ rm(list=ls())
 Set your working directory and fill in your group number. For example, if you are group 3, make it `our_group <- 3`. If you don't fill in your group number or fill in the wrong number, your assignment will **not** be graded.
 
 ```{r}
-#setwd("")
-our_group <- 27
+#setwd("17")
+our_group <- 17
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -75,23 +75,70 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
+    Answer: As one can tell, the histogram is skewed right which entails that the vast majority of customers is below the median of total spend.
 
     ```{r}
-    hist()
+       hist(df[,"total.spend"] / 1000,
+       xlim = c(0, 350), 
+       breaks = 100,xlab = "Total spend ('000 SEK)",
+       main = "Total Spend",col = "magenta", 
+       ylab = "Number of Customers", 
+       ylim = c(0,70000))
     ```
 
-(b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+```{r}
+df[,c("total.spend","store.spend","online.spend")]
+```
 
-```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+(a) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+
+    Answer: One could not draw the conclusion that online spend contributes the most through solely looking at the box plot, further strengthened by the sum of store and online spend in the chunk below. Store spend is much greater than online spend.
+
+    ```{r}
+    sum(df$store.spend/1000)
+    #store spend=58115040
+    sum(df$online.spend / 1000)
+    #online spend=14928242
+    ```
+
+    Note, the first box plot is without outlines and the second is with. Depending of business, and format of stores, the importance of outlines differs in importance. A problem which may occur is if a customer that is an outlier has a much larger spend than the median, resulting in a mean which may provide a less accurate result. Therefore, businesses that have outliers with big contribution to total earnings, outliers would provide a more accurate representation.
+
+    ```{r,fig.height=5,fig.width=6}
+    boxplot(df$total.spend/1000 ~ df$main.format, 
+    ylim=c(0,480),
+    xlab="Format of Store", 
+    ylab = "Total Spend KSEK", 
+    col="lightblue3", 
+    outline = FALSE)
+
+    ```
+
+```{r,fig.height=6,fig.width=6}
+boxplot(df$total.spend/1000 ~ df$main.format,
+ylim=c(0,480),
+xlab="Format of Store", 
+ylab = "Total Spend KSEK", 
+col="lightblue3")
+ 
 ```
 
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+```{r}
+mean(df[df$main.format == "Supermarket","distance.to.store"], na.rm=T)  
+# mean of distance to store, supermarket is: 4.7646333
+
+mean(df[df$main.format== "Convenience store","distance.to.store"], na.rm=T) 
+# mean of distance to store, convenience store is:1.332368
+
+var(df[df$main.format== "Convenience store","distance.to.store"], na.rm=T)
+# variance of conveninience to store 0.3830201
+
+var(df[df$main.format == "Supermarket","distance.to.store"], na.rm=T)
+# Variance of distance to store of supermarket is 33.26686
+
+#The average distance to store is smaller to convenience store than supermarket. The variance is also remarkably higher for supermarket stores, indicating that the differences between distance to store relative to the mean of distance in supermarket is bigger than to convenience store. 
+```
 
 ### Question 2. Probability theory
 
@@ -103,15 +150,86 @@ Consider the following events:
 
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
+    ```{r}
+    N = nrow(df)
+    N_OT = nrow(df[df[,"online.trans"] !="0",])
+    # --> number of online transactions = 960008
+    N_OlT = nrow(df[df[,"store.trans"] !="0",])
+    # --> number of offline transactions = 1000000
+    N_INT = nrow(df[df[,"store.trans"] !="0" & df[,"online.trans"] !="0",])
+    # --> number of customers which has performed both online and offline transactions = 960008
+    ```
+
+    ```{r}
+    P_B = N_OT/N
+    #0.960008 --> number of online transactions / number of rows(transactions)
+    P_A = N_OlT/N
+    #1 --> number of offline transactions / number of rows(transactions)   
+    ```
+
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+    Answer: The complement of B is every basic outcome which doesn't satisfy event B, ie., no online transaction.
+
+    Define $\bar{B}$ : P($\bar{B}$ ) = 1- P(B)
+
+    ```{r}
+    P_Bcomp. = (1-P_B)
+    # Probability of complement B = 0.039992
+    ```
 
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
 
+    ```{r}
+    II=(N_INT/N)
+    #0.960008 --> by using classical probability, the number of rows which are both online and offline transactions divided by total number of rows = probability of intersection (II=Intersect) II=Intersection of event B and A
+
+    PBgivenA = (II / P_A)
+    #0.960008 --> Intersect divided by Probability will give probability of A
+    ```
+
 (d) Are $A$ and $B$ independent events? Why/why not? (1p)
 
+    ANSWER: Two events are statistically independent if $P(B \cap A)$=P(A)P(B) (an occured event B does not affect probability of event A) Furthermore, P(B∣A) equals=P(B) which is a clear indicator that the events are independent.
+
+    ```{r}
+    I=0.960008
+    P_A * P_B == 0.960008
+    # To check if p(a) and p(b)are statistically independent, the condition that p(a) x p(b) = intersections must hold, which it does
+     
+    ```
+
 (e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+    $P(B)$ is the probability of event B occurring, which in this case is that a singular customer made at least one online transaction. $P(B \cap A)$ is the intersection between event A and B both occurring, which in this case is a customer making a transaction both offline and online. $P(B \mid A)$ is conditional probability and involves how the probability of B may be affected by event A occurring. In this case, the probability of an online purchase given that the customer has made an offline transaction. If two events are statistically independent, P(B) will equal $P(B \mid A)$, which will be illustrated in formula below:
+
+    P(B)=$P(B \cap A)$ U P($\bar{A}$ U B)
+
+    $P(B \mid A)$ = P(B) IFF statistically independent
+
+    --\> $P(B \cap A)$ U P($\bar{A}$ U B) = $P(B \mid A)$ IFF statistically independent
+
+    Statistical dependence can be ensured through calculating p(a) x p(b) = $P(B \cap A)$ Calculation of intersection can be calculated differently than how it was conducted in the exercise:
+
+    $P(B \mid A)$ = $P(B \cap A)$ / P(A)
+
+    --\> $P(B \cap A)$ = $P(B \mid A)$ x P(A)
+
+    If events were to be mutually exclusive, i.e., can not occur jointly, the intersection=0
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Good job
+
+Q1a. The plot is nice. Your comment on the peak is not on point. 1p
+
+Q1b. I really really love your answer for this question. Very well motivated! 2p
+
+Q1c. I was looking for more explanation, e.g., the higher mean implies that people whose main format is supermarket live further to the store as compared to the people whose main format is convenience store. But I will give you full score and please keep it in mind for the future assignment. 2p
+
+Q2a to d. Nicely done. 4p
+
+Q2e. I had a hard time following your arguments and I don't find them relevant to the question. 1p

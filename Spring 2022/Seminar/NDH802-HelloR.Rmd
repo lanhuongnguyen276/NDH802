@@ -122,9 +122,9 @@ If you are like, *"Why do I have to do this while it's equally easy to do it wit
 
 #### Load your data
 
-Now let's create another chunk, copy and paste this `read.csv("https://bit.ly/3r918BW")` into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
+Now let's create another chunk, copy and paste this `read.csv("https://tinyurl.com/NHD802salaries")` into your chunk, then Ctrl(Windows)/Cmd(Mac) + Enter. What do you see?
 
-Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://bit.ly/3r918BW")`
+Similar to giving 2+2 a shorter name "x", you can name your data table. Now try paste it to your code chunk `salaries = read.csv("https://tinyurl.com/NHD802salaries")`
 
 This is loading your data into R Environment. From now on (until you restart your R session), whenever you type `salaries`, R will understand you refer to the above data.
 

@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 11
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -109,9 +109,31 @@ Consider the following events:
 
 (d) Are $A$ and $B$ independent events? Why/why not? (1p)
 
-(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p)
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Well done!
+
+Q1ab. The graphs and comments are both excellent! 4p
+
+Q1c. The calculations are correct. Comment on the variance is perfect. However, be careful with your comment on the mean. We are not sure that customers in general live nearer to the convenient store, we only know that consumers whose main format is convenience store live closer to the store. I hope you see the difference. 1.5p
+
+Q2ac. Correct. 2p
+
+Q2bd. I was not able to see the entire of your answer. Next time please submit the Rmd file (Rmd is a must, pdf is a nice to have). If you only submit pdf file, make sure that everything is shown and readable. 2p
+
+Q2e. I think I understand where you're coming from yet your proof is hard to follow. I guess you mean something like this?
+
+$$
+P(A \cap B) = P(B \cap A) \Rightarrow P(A \cap B) = P(B\mid A) * P(A)
+$$We already have, $P(A) = 1$, therefore, $P(A \cap B) = P(B\mid A)$. What is more, A and B are independent, therefore:
+
+$$\begin{align}
+ P(A \cap B) &= P(B\mid A) \\
+\Rightarrow  P(A)*P(B) &= P(B\mid A)\\
+\Rightarrow P(B) &= P(B\mid A)
+\end{align}$$

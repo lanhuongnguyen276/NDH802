@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 7
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -75,13 +75,30 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
+    The histogram shows the total spend among customers, including store spend and online spend. The histogram has a tail that extends farther to the right, indicating a right-skewed distribution of the data. This means that lower amount of spend corresponds to higher frequency and vice verse, where higher amount of spend tend to come from a relatively small proportion of the customers.
 
-    ```{r}
-    hist()
-    ```
+```{r}
+df[,c("total.spend","store.spend","online.spend")]
+```
+
+```{r}
+hist(df[,"total.spend"]/1000,ylim=c(0, 70000),xlim = c(0, 350), breaks = 100,ylab="Number of customers",xlab = "total spend ('000 SEK)",main = "Total Spend",col =blues9)
+```
 
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
+
+    From the box plot data below we can only see how the data is spread out and not the sum of the total spend. It shows the total spend from each customer based on the store format but it does not show how many customers each store format has. The box shows 50% of the customer's spend and the whiskers stretching outside the box shows 25% of the customer's spend on each side. Thus, by only looking at the box plot we can't conclude which store format contributes most to total spend. However, what we can do is compute the total spend and the total spend of online and offline to then get a percentage share of how much each of them contributes to total spend. From that data we can see that the offline share is about 79,5% and that the online share makes up about 20,5% of total spend which means that online is not the store format which contributes most to total spend.
+
+```{r}
+boxplot(df$total.spend ~ df$main.format,ylim=c(0, 350000),xlab = "Store Format",ylab = "Total Spend",col=rainbow(5))
+
+Totspend=sum(df[,"total.spend"])
+Totstorespend=sum(df[,"store.spend"])
+Totspendonline=sum(df[, "online.spend"])
+Shareoffline = Totstorespend/Totspend
+Shareonline = Totspendonline/Totspend
+
+```
 
 ```{r,fig.height=6, fig.width=6}
 # boxplot(
@@ -93,6 +110,17 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
 
+The first two values shows the average distance to store for the customers having convenient stores and supermarkets as their main store formats. The numbers show that customers having supermarkets as their main store format has longer distance to store on average compared to those who has convenient stores as their main store format.
+
+When comparing the variances between the two we can see that the customers having supermarkets as their main store format has a much higher variance than those who has convenient store as their main store format. This means that the distance to store between the supermarket customers differed a lot more from the mean than the distance to store between the convenient store customers.
+
+```{r}
+mean(df[df$main.format == "Supermarket","distance.to.store"], na.rm = T)
+mean(df[df$main.format == "Convenience store","distance.to.store"], na.rm = T)
+var(df[df$main.format == "Supermarket","distance.to.store"], na.rm = T)
+var(df[df$main.format == "Convenience store","distance.to.store"], na.rm = T)
+```
+
 ### Question 2. Probability theory
 
 Consider the following events:
@@ -101,17 +129,87 @@ Consider the following events:
 >
 > (B) Made at least one online transaction
 
+```{r}
+N=nrow(df)
+N_A=sum(df[,"store.trans"]>0)
+N_B=sum(df[,"online.trans"]>0)
+N_B_A=sum(df$store.trans>0 & df$online.trans>0, na.rm=T)
+
+```
+
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
-(b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+    $$
+    P(A)=\frac{N_A}{N}
+    $$
+
+    $$
+    P(B)=\frac{N_B}{N}
+    $$
+
+    ```{r}
+    P_A=N_A/N
+    P_B=N_B/N
+    ```
+
+(b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. The complement of $B$ is everything that is not $B$ and can be defined as: $\bar{B}$. In order to calculate $\bar{B}$ we can use the following formula: $P(\bar B)=1-P(B)$ were $1$ is the entire sample space and $P(B)$ is just the probability of $B$.
+
+    ```{r}
+    P_barB=1-P_B
+    ```
 
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
 
-(d) Are $A$ and $B$ independent events? Why/why not? (1p)
+    $$
+    P(B \cap A)=\frac{N_{B \cap A}}{N}
+    $$
+
+    $$
+    P(B \mid A)=\frac{P(B \cap A)}{P(A)}
+    $$
+
+    ```{r}
+    P_BandA=N_B_A/N
+    P_BgivenA=P_BandA/P_A
+    ```
+
+(d) Are $A$ and $B$ independent events? Why/why not? (1p) $A$ and $B$ are independent if:
+
+    $P(A|B)=P(A) \textrm{ , if B > 0}$
+
+    or:
+
+    $P(B|A)=P(B) \textrm{ , if A > 0}$
+
+    ```{r}
+    P_BgivenA==P_B
+    ```
+
+Since $A>0$ and also that the equation yields a TRUE answer, it indicates that event $A$ and $B$ are statistically independent which means that the probability of $B$ doesn't change given that we know $A$.
 
 (e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+The probability of event B can be defined as: $P(B)=\frac{N_B}{N}$. However, this can be further expressed as the probability of the intersection of event $B$ and $A$ which is: $P(B \cap A)=\frac{N_{B \cap A}}{N}$ plus the probability of the intersection between the complement of A and B which is $P(\bar A \cap B)=\frac{N_{\bar A \cap B}}{N}$.
+
+The probability of the intersection between event $B$ and $A$ which is defined as: $P(B \cap A)=\frac{N_{B \cap A}}{N}$ can also be further expressed via the multiplication rule as either: $P(B\cap A)=P(A|B) P(B)$ or $P(B\cap A)=P(B|A) P(A)$ . Then, if we divide the both sides of the second equation with $P(A)$ we get: $P(B \mid A)=\frac{P(B \cap A)}{P(A)}$ which is the probability of event B given that event A already has occurred. By using Bays Theorem, $P(B \mid A)=\frac{P(B \cap A)}{P(A)}$ can be expressed as $P(B \mid A)=\frac{P(A \mid B) P(B)}{P(A)}$.
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Wonderful!
+
+I really reading your work. Very well motivated and elaborated. I also appreciate your effort in writing in different languages, verbal and formula. I hope you had fun and keep up the good work!
+
+Q1a. Nice touch on the color! However you have not discussed the peak of the histogram as asked. 1.5p
+
+Q1bc. Fantastic answer. Love them! 4p
+
+Q2ac. Nicely done. 2p
+
+Q2b. You have not really defined $\bar{B}$ . 0.5p
+
+Q2d. Note. $B$ is an event and in this case cannot be 0. $P(B)$ can be 0. 1p
+
+Q2e. Everything you wrote is correct. However they are not relevant to why in this case, $P(B \cap A) = P(B \mid A) = P(B)$. 0.5p

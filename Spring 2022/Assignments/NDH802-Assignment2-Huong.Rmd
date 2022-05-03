@@ -44,7 +44,7 @@ rm(inference_dataset)
 \newpage
 
 ### Question 1.
-  
+
 Based on your data,
 
 (a) What is the probability that a randomly selected customer made no online transactions? (1p)
@@ -53,32 +53,32 @@ Based on your data,
 sum(df$online.trans == "0")/nrow(df)
 ```
 
+(b) What is the probability that a randomly selected customer made at least 3 online transactions?
 
-(b) What is the probability that a a randomly selected customer made at least 3 online transactions?
 ```{r}
 p = 1-sum(df$online.trans %in% c(0,1,2))/nrow(df)
 ```
 
-
-    For Question 1c-e, assuming you randomly and independently sample 10 customers from your `df`.
+For Question 1c-e, assuming you randomly and independently select 10 customers from your `df`.
 
 (c) How many customers can you expect to make at least 3 online transactions? (1p)
+
 ```{r}
 n = 10
 E = n*p
 ```
 
-
 (d) What is the probability that exactly 5 of them made at least 3 online transactions? (1p)
+
 ```{r}
 dbinom(x = 5, size = 10, prob = p)
 ```
 
 (e) What is the probability that more than 5 of them made at least 3 online transactions? (1p)
+
 ```{r}
 1- pbinom(q = 5, size = 10, prob = p)
 ```
-
 
 ### Question 2.
 

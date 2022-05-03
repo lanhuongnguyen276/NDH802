@@ -1,6 +1,6 @@
 ---
 title: "NDH802 - Assignment 1"
-author: "Group no. "
+author: "Group no. 2 "
 output: pdf_document
 ---
 
@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 2
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -74,24 +74,63 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 ### Question 1. Mean and variance
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
-
-    Answer:
-
-    ```{r}
-    hist()
-    ```
-
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
+```{r}
+# Question a
+# The peak shows how much most customers spend. Most of the customers have a low total spend of around 50.000. In general the distribution in a histogram is scewed right. 
+df$total.spend=df$store.spend+df$online.spend
+
+hist(df[, "total.spend"],
+     xlim=c(0,300000),
+     breaks = 100, main= "Expected spend",
+     xlab = "Total spend",
+     col = "pink")
+
+```
+
 ```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+# question b
+# Yes, firstly it has the highest 'minimum total spend. Secondly online stores has the highest median spend and thirdly the 25% data set above the median has the highest expenditure in the  online format.
+
+boxplot(
+total.spend ~ main.format,
+data = df,
+ylim = c(1, 200000), 
+xlab = "Format",
+ylab = "Total Spend",
+col = "yellow")
+
 ```
 
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+**Mean for supermarket and convenience store**
+
+```{r}
+mean(df[df$main.format == "Supermarket", "distance.to.store"], na.rm=TRUE)
+```
+
+```{r}
+mean(df[df$main.format == "Convenience store", "distance.to.store"], na.rm=TRUE)
+```
+
+**Variance for supermarket and convenience store**
+
+```{r}
+var(df[df$main.format == "Supermarket", "distance.to.store"], na.rm=TRUE)
+```
+
+```{r}
+var(df[df$main.format == "Convenience store", "distance.to.store"], na.rm=TRUE)
+```
+
+```{r}
+#Answer question c
+#It makes sense that the supermarket has a longer mean distance than the convince stores since they are usually located further away. The purpose of a convince store is to be close. It's also reasonable that the supermarket has a higher variance than the convince stores, since people usually just want to go there when they live nearby.
+```
+
+### 
 
 ### Question 2. Probability theory
 
@@ -103,15 +142,83 @@ Consider the following events:
 
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
+    ```{r}
+    #P(A) calculated below:
+    prop.table(table(df$store.trans != 0))
+    ```
+
+    ```{r}
+    #Shows that every customer in the register has carried out an offline transaction thus making the P(B) calculated below:
+
+    prop.table(table(df$online.trans != 0))
+    ```
+
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+    ```{r}
+    # 1 - probability = complement
+    #The first method gives:
+    1 - 0.959939
+
+    ```
 
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
 
-(d) Are $A$ and $B$ independent events? Why/why not? (1p)
+    ```{r}
+    #Computing P(B intersect A):
+    prop.table(table(df$store.trans !=0 & df$online.trans !=0))
+    ```
 
-(e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+    ```{r}
+    #Computing p(B given A)
+    #Calculating the intersect as above:
+    prop.table(table(df$store.trans !=0 & df$online.trans !=0))
+
+    #Calculting the probability of A:
+    prop.table(table(df$store.trans != 0))
+    ```
+
+(d) **Are A and B independent events? Why/why not? (1p)** **Answer:** Events are independent if p(A∩B) = p(A) \* P(B).
+
+```{=html}
+<!-- -->
+```
+    P(A) = 1
+    P(B) = 0,959939
+
+    Probability of p(A∩B) = 0,959939, thus they are independent events
+
+(e) **Compare and explain (with formula) the similarities/differences among P(B), P(B ∩ A) and P(B \| A) (2p)**
+
+    **Answer:** P(B) is the probability that event b occurs in a sample data set. P(B) = number of successful trials (b occurs) / total data set.
+
+    P(B ∩ A) is when the both event A and B occurs. Assuming independent events. P(B ∩ A) = P(B)\*P(A)
+
+    P(B \| A) = P(**B ∩ A)/P(A),** which is the probability of B occurring given that A has occurred.
+
+    A similarity is that in conditional probability you also incorporate P(B ∩ A) in the formula for independent events.
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Good job!
+
+Some minor comments:
+
+Q1a: You should have said the peak is the mode of total spend and explain the meaning of the mode in general and in this data. I do not suggest you give the histogram the title "Expected spend", because "Expected" usually refer to the mean of the distribution. Here I still give you full score but I would like you to understand these key things. 2p
+
+Q1b. You get 1p for the plot and no point for the second sub-question. Let's discuss this in the course because it is crucial.
+
+Q1c. You get 1p for the calculation and 0.5 for the argument relating the means.
+
+Q2a. Correct. 1p
+
+Q2b. You have not defined the event $\bar{B}$. 1 - p(B) is the property, not definition. 0.5p
+
+Q2c. You have not compute $P(B \mid A)$. 0.75p
+
+Q2d. Correct. 1p
+
+Q2e. Your answer does not explain why they three are similar. 1p.

@@ -1,15 +1,69 @@
 ---
-title: "NDH802 Solutions to rec. exercises Chap 7"
+title: "NDH802 Solutions to rec. exercises Chap 6 and 7"
 author: "Huong"
 date: "5/2/2021"
-output: pdf_document
-  # prettydoc::html_pretty:
-  #   theme: hpstr
-  #   highlight: github
+output: 
+   prettydoc::html_pretty:
+     theme: hpstr
+     highlight: github
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 6.16
+
+Assume $\sigma = 40, n = 100$.
+
+a\. SE of the sample mean
+
+$$
+SE = \frac{\sigma}{\sqrt{n}}= \frac{40}{\sqrt{100}}=4
+$$
+
+```{r}
+se = 40/sqrt(100)
+```
+
+\
+b. $P(\bar{X} - \mu > 5) = P(\bar{X} > \mu + 5)$. Note that this probability does not depend on $\mu$. Imagine the bell curve of the same variance sliding on the x-axis, the area under the curve does not change.
+
+Now recall the Central Limit Theorem? "When we draw samples from the population that is normally distribution with mean $\mu$ and SD $\sigma$, the sample mean is normally distributed with mean $\mu$ and SD $\sigma/\sqrt{n}$" (which is the SE we found in a.)
+
+To find this probability, we can plug in any $\mu$. For example, these two give the same result:
+
+```{r}
+pnorm(q = 5, mean = 0, sd = se, lower.tail = FALSE)
+pnorm(q = 105, mean = 100, sd = se, lower.tail = FALSE)
+```
+
+c\. $P(\mu - \bar{X} > 4) = P(\bar{X} < \mu - 4)$. Similar to b.,
+
+```{r}
+pnorm(q = -4, mean = 0, sd = se)
+```
+
+\
+d. $P(\mu - \bar{X} > 3)$ or $P(\bar{X} - \mu > 3)$. Equivalently, we can write $P(\bar{X} < \mu - 3)$ or $P( \bar{X} > \mu + 3)$. Because $\bar{X}$ follows normal distribution, these probabilities should be equal. For fun, let's give it a try.
+
+```{r}
+pnorm(q = -3, mean = 0, sd = se)
+pnorm(q = 3, mean = 0, sd = se, lower.tail = FALSE)
+```
+
+## 6.76
+
+Let $X$ be the scores. $X \sim N(\mu, \sigma^2 = 2500)$. A random sample of 25 scores was taken. Let $\bar{x}$ denote the sample mean. Find $P(\bar{x} - 10 < \mu < \bar{x} + 10)$.
+
+**Small notes**: We use small $\bar{x}$ here because the random variable is defined in such way in the question. Typically in the course we use capital $\bar{X}$ to denote the random variable the sample mean.
+
+Back to the the question:
+
+$$P(\bar{x} - 10 < \mu < \bar{x} + 10) = P(\mu - 10 < \bar{x} < \mu + 10)$$
+
+```{r}
+pnorm(10, mean = 0, sd = 10) - pnorm(-10, mean = 0, sd = 10) 
 ```
 
 ## 7.14
@@ -170,10 +224,61 @@ CL = 1-2*half_alpha
 
 The confidence level is then `r round(100*CL,2)`%.
 
-### Key takeaways
+## 8.30 
+
+Summarize what are given:
+
+```{r}
+n_A = 40; s_A = 20; x_bar_A = 340;
+n_B = 50; s_B = 30; x_bar_B = 285;
+alpha = 1 - 0.9
+df = n_A+n_B-2
+```
+
+We assume the independent random samples are taken from the normal populations with unknown variances.
+
+**Case 1**. If the population variances are assumed to be equal, we use formula 8.7 (Newbold 2019, p. 340) to first find the polled sample variance:
+
+```{r}
+s_p_squared = ((n_A-1)*s_A^2 + (n_B-1)*s_B^2)/df
+```
+
+The ME is:
+
+```{r}
+t_score = qt(p = alpha/2, df = df, lower.tail = F)
+ME = t_score*sqrt(s_p_squared/n_A + s_p_squared/n_B)
+```
+
+The confidence interval is the mean difference $\pm$ ME:
+
+```{r}
+d_bar = x_bar_A - x_bar_B
+UCL_8.30 = d_bar + ME
+LCL_8.30 = d_bar - ME
+```
+
+**Case 2**. If the population variances are assumed to be [**not**]{.ul} equal, we use formula 8.10 (Newbold 2019, p. 342)
+
+```{r}
+nu = ((s_A^2)+(s_B^2))^2 / ((s_A^2/n_A)^2/(n_A-1)+(s_B^2/n_B)^2/(n_B-1))
+```
+
+Similarly we find the ME, then the CI
+
+```{r}
+t_score_ne = qt(p = alpha/2, df = nu, lower.tail = FALSE)
+ME_ne = t_score*sqrt(s_p_squared/n_A + s_p_squared/n_B)
+UCL_8.30_ne = d_bar + ME_ne
+LCL_8.30_ne = d_bar - ME_ne
+```
+
+## Key takeaways
 
 Theoretically,
 
 -   When population variance/SD is known, we use z-distribution. To find z-score in R, `qnorm(p=alpha/2, lower.tail = F)`
 
 -   When population variance/SD is unknown, we use t-distribution. To find t-score in R, `qt(p=alpha/2, df=n-1, lower.tail = F)`
+
+-   Pay attention to the difference between matched and independent samples.

@@ -27,7 +27,7 @@ Set your working directory and fill in your group number. For example, if you ar
 
 ```{r}
 #setwd("")
-our_group <- 27
+our_group <- 8
 ```
 
 Run this code chunk to load data into your R Environment. The command will randomly select 1,000,000 rows of data from the original data set. Hereby each and every group should have a unique `df`. Accordingly, your results should be different from other groups' and you should not be comparing them.
@@ -75,23 +75,39 @@ set.seed(our_group); df <- inference_dataset[sample(1:nrow(inference_dataset),
 
 (a) Compute the `total.spend` of the customer (that includes `store.spend` and `online.spend`). Plot the histogram of `total.spend`. Imagine you will present this to your manager. Make it readable and self-explanatory (e.g., add the title for the chart and labels for the axes where needed). (1p) How do you explain the peak of the histogram, in general and in this context? (1p)
 
-    Answer:
+The peak of the histogram is the most common total spend for a customer, which in this case is around 50 000. Around 60 000 - 65 000 times the amount of total spend (50 000) have been done.
 
-    ```{r}
-    hist()
-    ```
+```{r}
+df$total.spend=df$store.spend+df$online.spend
+
+hist(df[,"total.spend"],breaks=50, xlim=c(0,350000))
+```
 
 (b) Make a box plot for `total.spend` for 3 groups, customers whose main format is supermarket, convenience store and online. Refer to the code provided and modify it (1p). From this figure, would you conclude that online is the format that contributes the most to the `total.spend`? Why/why not? (1p)
 
+    *"online" contribute the most to total spend, you can see in the box plot that the median is the highest,* which means that the overall spend are higher than the convenience store and supermarket.
+
 ```{r,fig.height=6, fig.width=6}
-# boxplot(
-#   your_variable_of_interest ~ the_group,
-#   data = your_df,
-#   ylim = c(-10, 100) # adjust the ylim that better illustrates your data
-# )
+boxplot(
+  total.spend/1000 ~ main.format,
+  data = df,
+  ylim = c(-10, 350) # adjust the ylim that better illustrates your data
+)
+
 ```
 
 (c) Compute the mean and variance of `distance.to.store` of the customers whose `main.format` is supermarket and of the customers whose `main.format` is convenient store (1p). Comment on the difference between the means of the two groups; and the difference between the variances of the two groups (1p).
+
+    The difference of the means for supermarket and convenience store is that the mean is higher when it comes to supermarket, more people that a higher distance to supermarket than convernice store. The variance is also bigger when it comes to supermarkets rather than convenience which means that there is a higher spread of answers.
+
+    ```{r}
+    mean(df[df$main.format == "Supermarket","distance.to.store"])
+    var(df[df$main.format == "Supermarket", "distance.to.store"])
+
+    mean(df[df$main.format == "Convenience store","distance.to.store"])
+    var(df[df$main.format == "Convenience store", "distance.to.store"])
+
+    ```
 
 ### Question 2. Probability theory
 
@@ -103,15 +119,89 @@ Consider the following events:
 
 (a) Compute $P(A)$ and $P(B)$. (1p)
 
+    ```{r}
+    N_store.trans = nrow(df[df$store.trans>0,])
+    N_online.trans = nrow(df[df$online.trans>0,]) 
+
+    total = nrow(df)
+
+    P_store.trans = N_store.trans/total
+    P_online.trans = N_online.trans/total
+    ```
+
 (b) What is the complement of $B$? Formally, define event $\bar{B}$ and compute $P(\bar{B})$. (1p)
+
+    *Complement means everyone that is not included. B = made at least one purchase online. So this is the opposite which are everyone that has not purchased at least once online*
+
+    *After writing the formula and computing it:*
+
+    *The probability that we get someone that has not purchased at least once online is approx 4 %*
+
+    ```{r}
+
+    complement = 1-P_online.trans
+
+    complement
+    ```
 
 (c) Compute $P(B \cap A)$ and $P(B \mid A)$. (1p)
 
+    ```{r}
+    N_intersection = 959834
+    P_intersection = 959834/1000000 
+    P_intersection
+
+    P_conditional = P_intersection/P_store.trans
+    P_conditional
+    ```
+
 (d) Are $A$ and $B$ independent events? Why/why not? (1p)
 
+    Yes, they are independent events which we can see by the equation. $P(A)$ = 100% which means that all the customers at least once made a offline transaction and then times $P(B)$ = $P(A\cap B)$ = independent events.
+
+    $$
+    P(A \cap B) = P(A) * P(B)
+    $$
+
+    ```{r}
+
+    P_intersection
+    P_store.trans * P_online.trans
+
+    ```
+
 (e) Compare and explain (with formula) the similarities/differences among $P(B)$, $P(B \cap A)$ and $P(B \mid A)$ (2p).
+
+    If you run P_online.trans $P(B)$ , P_intersection $P (A \cap B)$ and. p_conditional P(B\|A) you can see that they have the same probabilities.
+
+    $P (A \cap B)$ = $P(B)$ \* $P(A)$. $P(A)$ is equal to 100% which means that everyone has made at least one offline transaction. So the probability of intersection is the same as the probability of B.
+
+    $$P (A \mid B) $$ = $P(A\cap B)$ / $P(A)$ and considering $P(A)$ = 1 the probability of a customer will have made at least one online purchase given that they have already made one offline purchases is the same regardless.
+
+    Even though every customer has made one purchase offline, the probability of a customer making an online transaction is not effected.
+
+    ```{r}
+    P_online.trans
+    P_intersection
+    P_conditional
+
+    ```
 
 \vfill
 
 *Have fun and good luck!*\
 *Huong and Emelie*
+
+## Good job!
+
+Q1a. Nicely done! 2p
+
+Q1b. The graph is great, the comment is incorrect. 1p
+
+Q1c. You could have make the explanation a little bit more elaborated but I'll give you full score this time. Please bear in mind that well motivated answers are more appreciated. 2p
+
+Q2abd. Great! 3p
+
+Q2c. You give calculations without code hence this answer won't be graded. 0.5p
+
+Q2e. Wonderful! 2p
