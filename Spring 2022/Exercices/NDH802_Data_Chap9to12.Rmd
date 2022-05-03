@@ -1,0 +1,36 @@
+---
+title: "Data for chapter 9, 10, 11, 12"
+author: "NDH802"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#6.82
+bottles <- read.csv("https://tinyurl.com/bottlesdata")[, -1]
+
+#10.4
+price <- read.csv("https://tinyurl.com/HouseSellingPrice")[, -1]
+
+#10.34
+nutrition <- read.csv("https://tinyurl.com/FoodNutritionAtlas")[, -1]
+
+#10.48
+ole <- read.csv("https://tinyurl.com/OleSales")[, -1]
+
+#10.52; 10.56; 11.97; 12.114
+hei <- read.csv("https://tinyurl.com/HEIInterview")[, -1]
+
+#12.107
+salary <- read.csv("https://tinyurl.com/SalaryStudy")[, -1]
+
+#12.112, 12.113
+colleges <- read.csv("https://tinyurl.com/PrivateCollegesDataset")[, -1]
+```
+
+
+
+
