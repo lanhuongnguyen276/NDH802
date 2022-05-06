@@ -63,6 +63,10 @@ Adjusted_R_squared = 1-(SSE/df)/(SST/(n-1)) #We don't cover adjusted R-squared i
 
 For interpretation of b0 and b1, please refer to the last video on this [page](https://sse.instructure.com/courses/986/pages/may-2-regression?module_item_id=23852).
 
+**Model evaluation:** p-value and R-squared
+
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Spring%25202022/Exercices/pr.jpg?raw=true)
+
 #### Prediction
 
 After fitting the model, we can write it as:
