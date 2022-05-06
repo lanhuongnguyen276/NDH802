@@ -1,0 +1,215 @@
+---
+title: "NDH802 - Regression"
+author: "Chapter 11 and 12"
+output: 
+ prettydoc::html_pretty:
+   theme: hpstr
+   highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+> *We assign the computation to computers---our tasks are to think, analyze, and make recommendations*" (Newbold, 2019, p. 433).
+
+## 11.5
+
+We fit the linear regression
+
+$y = b_0 + b_1x$
+
+```{r}
+#data input
+x = c(2,4,3,6,3,5,6,2)
+y = c(5,10,8,18,6,15,20,4)
+
+#a. scatter plot
+plot(x, y)
+
+#b. calculating the regression coefficients by the book.
+b1 = cov(x, y)/(sd(x)^2)
+b0 = mean(y) - b1 * mean(x)
+
+#b. calculating the regression coefficients with R shortcut
+mod = lm(y ~ x)
+summary(mod)
+
+#for fun, we plot the line
+plot(x, y); abline(mod, col = "blue")
+```
+
+For learning purpose, we can try calculating some of the components by hand using the formula provided in the lecture slides and in the course book p. 437. `lm()` automatically calculates and report them in the model summary.
+
+```{r}
+# extracting the quantities we need
+e = mod$residuals
+y_hat = mod$fitted.values
+y_bar = mean(y)
+n = length(y)
+df = mod$df.residual #degree of freedom: n - number of IV - 1
+Residuals = summary(e)
+
+# calculations
+SST = sum((y-y_bar)^2) #Newbold 2019, p. 437, formula 11.9
+SSE = sum(e^2) #Newbold 2019, p. 437, formula 11.10
+SSR = sum((y_hat-y_bar)^2) #Newbold 2019, p. 437, formula 11.11
+Residual_SE = sqrt(SSE/df) #Newbold 2019, p. 441, formula 11.14
+R_squared = SSR/SST #Newbold 2019, p. 439, formula 11.12
+Adjusted_R_squared = 1-(SSE/df)/(SST/(n-1)) #We don't cover adjusted R-squared in this course but in case you're interested, Newbold 2019, p. 495-496
+```
+
+![](https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Spring%25202022/Exercices/reg.jpeg)
+
+For interpretation of b0 and b1, please refer to the last video on this [page](https://sse.instructure.com/courses/986/pages/may-2-regression?module_item_id=23852).
+
+#### Prediction
+
+After fitting the model, we can write it as:
+
+$y = -3.5695 + 3.6954*x$
+
+Prediction (in this course) is simply plugging in the new x to the model to find the new y.
+
+```{r}
+#the more systematic way. normally, we fit the model many times, and we may want to automatize the process like this
+b0 = coef(mod)[1]
+b1 = coef(mod)[2]
+
+#the simplier way, you copy an paste it from the summary(mod)
+b0 = -3.5695
+b1 = 3.6954
+
+#For example, we have a new x = 5
+newx = 5
+#We plug the new x in the model
+yPred = b0 + b1 * newx
+```
+
+## 11.97
+
+Data description:
+
+To investigate the relationship between the HEI score and the daily cost, we estimate this linear model:
+
+$HEI = b_0 + b_1*DailyCost$
+
+```{r}
+#data prep
+hei <- read.csv("https://tinyurl.com/HEIInterview")[, -1]
+
+x1 = hei[hei$daycode == 1, "daily_cost"] #daily cost, first interview
+y1 = hei[hei$daycode == 1, "HEI2005"] #HEI score, first interview
+x2 = hei[hei$daycode == 2, "daily_cost"] #daily cost, second interview
+y2 = hei[hei$daycode == 2, "HEI2005"] #HEI score, second interview
+
+#Build the regression based on the first interview data
+mod1 = lm(y1 ~ x1)
+summary(mod1)
+
+#plot the data with the fitted line
+plot(x1, y1, xlab = "daily cost", ylab = "HEI score", main = "First interview"); abline(mod1, col = "red2", lwd = 2)
+
+#Build the regression based on the second interview data
+mod2 = lm(y2 ~ x2)
+summary(mod2)
+
+#plot the data with the fitted line
+plot(x2, y2, xlab = "daily cost", ylab = "HEI score", main = "Second interview"); abline(mod2, col = "blue2", lwd = 2)
+```
+
+Alternatively, we can code as follows. Please understand that it is just another way of coding, not thinking. The best way is the way you feel most comfortable with.
+
+```{r}
+#afterloading the data, we go straight into fitting the model.
+mod1.1 = lm(hei[hei$daycode == 1, "HEI2005"] ~ hei[hei$daycode == 1, "daily_cost"],
+            data = hei)
+mod2.1 = lm(hei[hei$daycode == 2, "HEI2005"] ~ hei[hei$daycode == 2, "daily_cost"],
+            data = hei)
+```
+
+## 12.114
+
+This is not part of the question, but let's start with something simple:
+
+$HEI = b_0 + b_1*BMI+ b_5*female$
+
+```{r}
+mod_ex = lm(HEI2005 ~ BMI + female, data = hei)
+summary(mod_ex)
+
+# plot(HEI2005 ~ BMI, data = hei, col = "gray")
+# abline(a = coef(mod_ex)[1], b = coef(mod_ex)[2], col="red")
+# abline(a = coef(mod_ex)[1] + coef(mod_ex)[3], b = coef(mod_ex)[2], col="blue")
+```
+
+a\. Here we are asked to fit the basic linear model:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode$
+
+```{r}
+mod_a = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode, data = hei)
+summary(mod_a)
+```
+
+b\. We add one more IV, immigrant:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*immigrant$
+
+```{r}
+mod_b = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + immigrant, data = hei)
+summary(mod_b)
+```
+
+c\. We add one more IV, single:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*single$
+
+```{r}
+mod_c = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + single, data = hei)
+summary(mod_c)
+```
+
+c\. We add one more IV, fsp:
+
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*fsp$
+
+```{r}
+mod_d = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
+          female + age + daycode + fsp, data = hei)
+summary(mod_d)
+```
+
+## 12.107
+
+```{r}
+#data prep
+salary <- read.csv("https://tinyurl.com/SalaryStudy")[, -1]
+
+#It is important to learn what we should include in the model
+#It is equally important to learn what we should NOT include in the model
+
+#we may not want to include the IVs that are highly correlated (multicollinearity)
+#for example, age and Experience
+cor(salary)
+#If you want to learn more about multicollinearity -> Newbold chapter 13.
+
+#This is an example. Adjust it as you reason
+mod.12107 = lm(Salary ~ Gender + Experience + Market, data = salary)
+summary(mod.12107)
+```
+
+## FAQs regarding OLS regression.
+
+-   **Will I be asked to calculate the coefficients, R-squared, t-statistics, p-values (of an OLS regression) by hand in the exam?** No.
+
+-   **Do I need to be able to interpret those quantities and the OLS regression model summary from R?** Yes.
+
+-   **Do I need to memorize the formulae to calculate the coefficients, R-squared, t-statistics, p-values, SSE, SSR, SST?** No, but you are expected to be able to explain their meanings and relationship among them. For example, what happens to R-squared if SSE increases.
+
+-   **Will I be asked to plot the data in the exam?** No, but you are expected to be able to explain/comment on the plots. For example, the questions could be similar to Assignment 1 Question 1 but on different kinds of plot (e.g., scatter plot, box plot, histogram).
+
+-   **Will I be working with data in the exam?** It is possible. You are expected to be able to perform basic data entry, data manipulation (e.g., extracting the rows/columns), performing different types of hypothesis testing, run OLS regression. Long story short, if you can handle the data in all the assignments and recommended exercises, you're good for the exam.

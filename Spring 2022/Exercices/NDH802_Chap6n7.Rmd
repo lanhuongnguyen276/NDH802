@@ -1,11 +1,10 @@
 ---
 title: "NDH802 Solutions to rec. exercises Chap 6 and 7"
 author: "Huong"
-date: "5/2/2021"
-output: 
-   prettydoc::html_pretty:
-     theme: hpstr
-     highlight: github
+output: pdf_document
+   #prettydoc::html_pretty:
+    # theme: hpstr
+     #highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -50,6 +49,84 @@ d. $P(\mu - \bar{X} > 3)$ or $P(\bar{X} - \mu > 3)$. Equivalently, we can write 
 ```{r}
 pnorm(q = -3, mean = 0, sd = se)
 pnorm(q = 3, mean = 0, sd = se, lower.tail = FALSE)
+```
+
+## 6.75
+
+Let X be the number of students preferring brand A. We can write that $X \sim Binomial(n = 200, p = 0.6)$.
+
+```{r}
+n = 200
+p = 0.6
+```
+
+a\. We want to compute $P(X >2/3*200)$. We can do it in 2 ways:
+
+**The direct way:**
+
+```{r}
+a1 = pbinom(q = 2/3 * n, size = n, p = p, lower.tail = FALSE)
+```
+
+**The approximation way:**
+
+As we learn, when we have substantially large number of trials in a binomial distribution, we can approximate it with a normal distribution $N(\mu = np, \sigma^2 = np(1-p))$.
+
+```{r}
+mu = n*p
+sigma = sqrt(n*p*(1-p))
+a2 = pnorm(q = 2/3 * n, mean = mu, sd = sigma, lower.tail = F)
+```
+
+a1 and a2 are closed but not identical.
+
+b\. We want to compute $P(0.55*200 < X < 0.65*200)$. We can do it in 2 ways:
+
+**The direct way:**
+
+Similar to Assignment 2 Q2, we find $P(X < 0.65*200)$ then subtract $P(0.55*200 < X)$ from it.
+
+```{r}
+pbinom(q = 0.65 * n, size = n, p = p) - pbinom(q = 0.55 * n, size = n, p = p)
+```
+
+**The approximation way**: very similar to Assignment 2 Q2
+
+```{r}
+pnorm(q = 0.65 * n, mean = mu, sd = sigma) - pnorm(q = 0.55 * n, mean = mu, sd = sigma)
+```
+
+c\. We do the same thing we did in question a, with n = 50.
+
+```{r}
+n50 = 50
+c1 = pbinom(q = 2/3 * n50, size = n50, p = p, lower.tail = FALSE)
+c2 = pnorm(q = 2/3 * n50, mean = n50*p, sd = sqrt(n50*p*(1-p)), lower.tail = F)
+c(a1, c1)
+```
+
+As we can see from the numbers, when the sample size decreases, the probability of observing 2/3 of the sample members preferring brand A increases. You can refer to the plots below for the visualization. The vertical lines represent the cut off points (2/3 of the students in the sample). Note that the area on the right hand side of the blue line (question c) is visually larger than the area on the right hand side of the red line (question a).
+
+**Note**: You're not expected to be able to plot this in this course including the exam. Simply run the whole code chunk for the plots to show. But if you'd like to learn, we're here to help.
+
+```{r, echo=FALSE}
+{
+  par(mfrow = c(1, 2))
+  hist(
+    rbinom(n = 10000, size = 200, prob = p),
+    breaks = 25, border = F,
+    main = "n = 200",
+    xlab = "Number of students preferring brand A"
+  )
+  abline(v = 2 / 3 * 200, col = "red")
+  hist(
+    rbinom(n = 10000, size = 50, prob = p),
+    breaks = 25, border = F,
+    main = "n = 50",
+    xlab = "Number of students preferring brand A"
+  )
+  abline(v = 2 / 3 * 50, col = "blue")
+}
 ```
 
 ## 6.76
@@ -224,7 +301,7 @@ CL = 1-2*half_alpha
 
 The confidence level is then `r round(100*CL,2)`%.
 
-## 8.30 
+## 8.30
 
 Summarize what are given:
 
