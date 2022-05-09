@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We fit the linear regression
 
-$y = b_0 + b_1x$
+$y = b_0 + b_1x + \varepsilon$
 
 ```{r}
 #data input
@@ -65,20 +65,20 @@ For interpretation of b0 and b1, please refer to the last video on this [page](h
 
 **Model evaluation:** p-value and R-squared
 
-![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Spring%25202022/Exercices/pr.jpg?raw=true)
+![](https://github.com/lanhuongnguyen276/NDH802/blob/master/Spring%25202022/Exercices/pr1.jpg?raw=true)
 
 #### Prediction
 
 After fitting the model, we can write it as:
 
-$y = -3.5695 + 3.6954*x$
+$\hat{y} = -3.5695 + 3.6954*x_{new}$
 
-Prediction (in this course) is simply plugging in the new x to the model to find the new y.
+Prediction (in this course) is simply plugging in the new x to the model to find the $\hat{y}$.
 
 ```{r}
 #the more systematic way. normally, we fit the model many times, and we may want to automatize the process like this
-b0 = coef(mod)[1]
-b1 = coef(mod)[2]
+b0 = as.numeric(coef(mod)[1])
+b1 = as.numeric(coef(mod)[2])
 
 #the simplier way, you copy an paste it from the summary(mod)
 b0 = -3.5695
@@ -92,11 +92,9 @@ yPred = b0 + b1 * newx
 
 ## 11.97
 
-Data description:
-
 To investigate the relationship between the HEI score and the daily cost, we estimate this linear model:
 
-$HEI = b_0 + b_1*DailyCost$
+$HEI = b_0 + b_1*DailyCost + \varepsilon$
 
 ```{r}
 #data prep
@@ -136,20 +134,22 @@ mod2.1 = lm(hei[hei$daycode == 2, "HEI2005"] ~ hei[hei$daycode == 2, "daily_cost
 
 This is not part of the question, but let's start with something simple:
 
-$HEI = b_0 + b_1*BMI+ b_5*female$
+$HEI = b_0 + b_1*BMI+ b_5*female + \varepsilon$
 
 ```{r}
 mod_ex = lm(HEI2005 ~ BMI + female, data = hei)
 summary(mod_ex)
 
-# plot(HEI2005 ~ BMI, data = hei, col = "gray")
-# abline(a = coef(mod_ex)[1], b = coef(mod_ex)[2], col="red")
-# abline(a = coef(mod_ex)[1] + coef(mod_ex)[3], b = coef(mod_ex)[2], col="blue")
+{#you are not expected to code the below plot. only for visualization
+plot(HEI2005 ~ BMI, data = hei, col = "gray")
+abline(a = coef(mod_ex)[1], b = coef(mod_ex)[2], col="red") #male
+abline(a = coef(mod_ex)[1] + coef(mod_ex)[3], b = coef(mod_ex)[2], col="blue") #female
+}
 ```
 
 a\. Here we are asked to fit the basic linear model:
 
-$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode$
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + \varepsilon$
 
 ```{r}
 mod_a = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
@@ -159,7 +159,7 @@ summary(mod_a)
 
 b\. We add one more IV, immigrant:
 
-$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*immigrant$
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*immigrant + \varepsilon$
 
 ```{r}
 mod_b = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
@@ -169,7 +169,7 @@ summary(mod_b)
 
 c\. We add one more IV, single:
 
-$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*single$
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*single+ \varepsilon$
 
 ```{r}
 mod_c = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
@@ -179,7 +179,7 @@ summary(mod_c)
 
 c\. We add one more IV, fsp:
 
-$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*fsp$
+$HEI = b_0 + b_1*docbp + b_2*waistper + b_3*BMI+ b_4*sroverweight + b_5*female + b_6*age + b_7*daycode + b_8*fsp+ \varepsilon$
 
 ```{r}
 mod_d = lm(HEI2005 ~ doc_bp + waistper + BMI + sr_overweight +
@@ -208,9 +208,11 @@ summary(mod.12107)
 
 ## FAQs regarding OLS regression.
 
+-   **Will I be asked to fit an OLS regression?** It is possible.
+
 -   **Will I be asked to calculate the coefficients, R-squared, t-statistics, p-values (of an OLS regression) by hand in the exam?** No.
 
--   **Do I need to be able to interpret those quantities and the OLS regression model summary from R?** Yes.
+-   **Do I need to be able to interpret the OLS regression model summary from R?** Yes, especially the R-squared, p-values, magnitude and sign of the coefficients.
 
 -   **Do I need to memorize the formulae to calculate the coefficients, R-squared, t-statistics, p-values, SSE, SSR, SST?** No, but you are expected to be able to explain their meanings and relationship among them. For example, what happens to R-squared if SSE increases.
 

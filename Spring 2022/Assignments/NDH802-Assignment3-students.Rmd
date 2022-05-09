@@ -71,21 +71,21 @@ In order to get full score for this question, you need to formulate the null and
 
 ### Question 3. Correlation and regression
 
-(a) Your objective for 2022 is to increase the customer `total.spend`. In order to do that, you first aim to understand which factors (independent variables - IVs) are the most influential. Write your own linear regression equation (modify the one below), explain your choice of IVs \footnote{You are free to include any variables in `df` as your IVs}, perform the estimation, print out the model estimation. $$ total.spend = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \varepsilon $$ *Heads up:*
+Your objective for 2022 is to increase the customer `total.spend`. In order to do that, you first aim to understand which factors (independent variables - IVs) are the most influential. Write your own linear regression equation (modify the one below), explain your choice of IVs \footnote{You are free to include any variables in `df` as your IVs}, perform the estimation, print out the model estimation. $$ total.spend = \beta_0 + \beta_1var_1 + \ldots + \beta_nvar_n + \varepsilon $$ *Heads up:*
 
 -   `main.format` and `member.since` are categorical variable, hence a little more difficult to work with.
 -   The more IVs do not not always guarantee the better model.
 
-(b) Interpret the results, in both statistical and business language. (0.5p)\
-    Discuss a strategic plan to increase customer `total.spend` based on your model. (0.5p)
+(a) Interpret the results, in both statistical and business language. (1p)\
+    Discuss a strategic plan to increase customer `total.spend` based on your model. (1p)
 
-(c) Imagine you have three new customers. Based on your linear regression model, which customer (choose one) do you think will have highest `total.spend` and why? (1p)
+(b) Imagine you have three new customers. Based on your linear regression model, which customer (choose one) do you think will have highest `total.spend` and why? (1p)
 
     ```{r, echo=FALSE}
     read.csv("https://raw.githubusercontent.com/lanhuongnguyen276/NDH802/master/Spring%202022/Assignments/NDH802_new_data.csv")[,-1]
     ```
 
-(d) What is the key underlying assumption of linear regression model? When is linear regression model useful and when is it not? (1p)
+(c) What are the key underlying assumptions of linear regression model? When is linear regression model useful and when is it not? (1p)
 
 \vfill
 
