@@ -1,10 +1,10 @@
 ---
-title: "NDH802 Solutions to rec. exercises Chap 6 and 7"
+title: "NDH802 Solutions to rec. exercises Chap 6, 7 and 8"
 author: "Huong"
-output: pdf_document
-   #prettydoc::html_pretty:
-    # theme: hpstr
-     #highlight: github
+output: 
+   prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -140,7 +140,7 @@ Back to the the question:
 $$P(\bar{x} - 10 < \mu < \bar{x} + 10) = P(\mu - 10 < \bar{x} < \mu + 10)$$
 
 ```{r}
-pnorm(10, mean = 0, sd = 10) - pnorm(-10, mean = 0, sd = 10) 
+pnorm(10, mean = 0, sd = sqrt(2500)) - pnorm(-10, mean = 0, sd = sqrt(2500))
 ```
 
 ## 7.14
@@ -338,14 +338,15 @@ LCL_8.30 = d_bar - ME
 **Case 2**. If the population variances are assumed to be [**not**]{.ul} equal, we use formula 8.10 (Newbold 2019, p. 342)
 
 ```{r}
-nu = ((s_A^2)+(s_B^2))^2 / ((s_A^2/n_A)^2/(n_A-1)+(s_B^2/n_B)^2/(n_B-1))
+nu = ((s_A^2/n_A)+(s_B^2/n_A))^2 / ((s_A^2/n_A)^2/(n_A-1)+(s_B^2/n_B)^2/(n_B-1))
 ```
 
 Similarly we find the ME, then the CI
 
 ```{r}
 t_score_ne = qt(p = alpha/2, df = nu, lower.tail = FALSE)
-ME_ne = t_score*sqrt(s_p_squared/n_A + s_p_squared/n_B)
+ME_ne = t_score_ne*sqrt(s_A^2/n_A + s_B^2/n_B)
+d_bar = x_bar_A - x_bar_B
 UCL_8.30_ne = d_bar + ME_ne
 LCL_8.30_ne = d_bar - ME_ne
 ```
@@ -359,3 +360,16 @@ Theoretically,
 -   When population variance/SD is unknown, we use t-distribution. To find t-score in R, `qt(p=alpha/2, df=n-1, lower.tail = F)`
 
 -   Pay attention to the difference between matched and independent samples.
+
+```{r}
+n_a = 60
+p = 0.8
+
+pbinom(q = n_a*0.7-1, size = n_a, prob = p )
+pnorm(q = n_a*0.7, mean = n_a*p, sd = sqrt(n_a*p*(1-p)))
+
+n_b = 6
+pbinom(q = n_b*0.7, size = n_b, prob = p)
+
+pnorm(q = n_b*0.7, mean = n_b*p, sd = sqrt(n_b*p*(1-p)))
+```

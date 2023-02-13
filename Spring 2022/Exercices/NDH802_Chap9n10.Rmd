@@ -103,6 +103,9 @@ s_squared_965 = 65
 
 t_965 = (xbar_965 - 40)/sqrt(s_squared_965/n_965)
 pvalue_965 = pt(q = t_965, df = n_965-1, lower.tail = FALSE)
+
+t.obs = (mean(data))/(sd(data)/sqrt(length(data))
+pt(q = t.obs, df = length(data)-1)
 ```
 
 p-value = `r pvalue_965` is not very small, hence the claim is not very strong.
